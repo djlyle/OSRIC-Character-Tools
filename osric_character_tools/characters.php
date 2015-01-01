@@ -32,6 +32,7 @@ echo "<td>{$row['CharacterHeight']}</td>";
 echo "<td>{$row['CharacterWeight']}</td>";
 echo "<td><a href='editcharacter.php?CharacterId={$row['CharacterId']}'>Edit Character</a></td>";
 echo "<td><a href='equipcharacter.php?CharacterId={$row['CharacterId']}'>Equip Character</td>";
+echo "<td><a href='deletecharacter.php?CharacterId={$row['CharacterId']}'>Delete Character</td>";
 echo "</tr>";
 }
 echo "</table>";

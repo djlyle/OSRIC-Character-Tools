@@ -1,4 +1,17 @@
 <?php
+
+ function deleteCharacter($cxn,$characterId)
+{
+	if($characterId != -1)
+	{
+		/*TODO: make this a transaction.  Ideally this should all be one transaction that fails or succeeds as one atomic unit*/
+		$query = sprintf("DELETE FROM `character_items` WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+		$query = sprintf("DELETE FROM `characters` WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+	}
+}
+
  function getCharacter($cxn,$characterId)
 {
 	if($characterId == -1)
