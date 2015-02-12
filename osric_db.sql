@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 3.4.10.1deb1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 16, 2014 at 07:27 AM
--- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- Host: localhost
+-- Generation Time: Feb 12, 2015 at 12:11 AM
+-- Server version: 5.5.41
+-- PHP Version: 5.3.10-1ubuntu3.15
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -35,21 +35,34 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`CharacterId`),
   UNIQUE KEY `Id` (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `characters`
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`) VALUES
-('Roland', 1, 42, 65, 140, 1),
+('Roland', 1, 43, 65, 141, 1),
 ('Broomhelda', 2, 26, 62, 123, 3),
 ('Oscar', 1, 98, 34, 95, 4),
 ('Laura', 2, 32, 62, 123, 5),
 ('Dirk Smirk', 1, 30, 70, 180, 6),
 ('Gary', 1, 78, 76, 164, 7),
-('', 0, 0, 0, 0, 8),
-('Stuart', 1, 22, 69, 160, 9);
+('Stuart', 1, 22, 69, 160, 9),
+('Char1', 0, 3, 3, 3, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_coins`
+--
+
+CREATE TABLE IF NOT EXISTS `character_coins` (
+  `CharacterId` bigint(20) NOT NULL,
+  `CoinId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`CharacterId`,`CoinId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -69,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(1, 1, 80),
+(1, 1, 89),
 (1, 2, 1),
 (1, 3, 1),
 (1, 4, 1),
@@ -206,7 +219,35 @@ INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
 (9, 97, 4),
 (9, 98, 1),
 (9, 104, 1),
-(9, 105, 2);
+(9, 105, 2),
+(10, 1, 6),
+(10, 7, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `coins`
+--
+
+CREATE TABLE IF NOT EXISTS `coins` (
+  `CoinId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `CoinName` varchar(16) NOT NULL,
+  `CoinValueInGoldCoins` float NOT NULL,
+  `CoinEncumbranceInLbs` float NOT NULL,
+  PRIMARY KEY (`CoinId`),
+  UNIQUE KEY `CoinId` (`CoinId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `coins`
+--
+
+INSERT INTO `coins` (`CoinId`, `CoinName`, `CoinValueInGoldCoins`, `CoinEncumbranceInLbs`) VALUES
+(1, 'Gold', 1, 0.1),
+(2, 'Silver', 0.1, 0.1),
+(3, 'Copper', 0.01, 0.1),
+(4, 'Platinum', 5, 0.1),
+(5, 'Electrum', 0.5, 0.1);
 
 -- --------------------------------------------------------
 
