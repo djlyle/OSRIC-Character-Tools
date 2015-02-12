@@ -10,7 +10,7 @@
 </head>
 <body>
 <?php
-include("/inc/misc.inc");
+include("./inc/misc.inc");
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $query = "SELECT * from characters";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
