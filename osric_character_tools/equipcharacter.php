@@ -7,8 +7,8 @@ $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to s
 $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
 $totalItemEncumbrance = getTotalItemEncumbrance($cxn,$characterId);
-$totalTreasureEncumbrance = 1500;
-$totalEncumbrance = $totalItemEncumbrance + $totalTreasureEncumbrance;
+$totalCoinEncumbrance = getTotalCoinEncumbrance($cxn,$characterId);
+$totalEncumbrance = $totalItemEncumbrance + $totalCoinEncumbrance;
 $totalValue = getTotalCost($cxn,$characterId);
 ?>
 
