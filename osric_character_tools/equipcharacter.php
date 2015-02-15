@@ -6,7 +6,9 @@ $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
-$totalEncumbrance = getTotalEncumbrance($cxn,$characterId);
+$totalItemEncumbrance = getTotalItemEncumbrance($cxn,$characterId);
+$totalTreasureEncumbrance = 1500;
+$totalEncumbrance = $totalItemEncumbrance + $totalTreasureEncumbrance;
 $totalValue = getTotalCost($cxn,$characterId);
 ?>
 
@@ -27,6 +29,29 @@ echo "{$totalValueStr} (gp in value)";
 echo "<br/><br/>";
 echo "<a href='characters.php'>Return to list of characters</a>";
 echo "<hr/>";
+echo "<h3>Coins:</h3>";
+echo "<div><input type='submit' value='submit coin inventory'/></div>";
+echo "<table id='osric_character_coins'>";
+echo "<tr><td>Coin Name</td><td>Quantity</td></tr>";
+$query = "SELECT * FROM character_coins cc INNER JOIN coins c on cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+while($row = mysqli_fetch_assoc($result))
+{
+    echo "<tr>";
+    echo "<td>{$row['CoinName']}</td>";
+    $coinId = $row['CoinId'];
+	if($row['Quantity']){
+		$coinQuantity = $row['Quantity'];
+	}
+	else {
+		$coinQuantity = 0;
+	}
+	echo "<td><input type='number' min='0' max='9999999' name='editedCoin{$coinId}' value='{$coinQuantity}'></input></td>";    
+    echo "</tr>";
+}
+echo "</table>";
+echo "<hr/>";
+
 echo "<h3>Equipment:</h3>";
 echo "<p>To add equipment not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new equipment\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
 

@@ -1,5 +1,5 @@
 <?php
-function getTotalEncumbrance($cxn, $characterId)
+function getTotalItemEncumbrance($cxn, $characterId)
 {
 	$query = "SELECT SUM(e.TotalItemEncumbrance) AS TotalEncumbrance FROM (SELECT (i.ItemEncumbrance * ci.Quantity) AS TotalItemEncumbrance FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}') AS e";
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute getTotalEncumbrance query.");
@@ -20,6 +20,14 @@ function updateCharacterItems($cxn, $characterId, $itemId, $itemQuantity)
 	$query = "UPDATE character_items SET Quantity = '{$itemQuantity}' WHERE character_items.CharacterId = {$characterId} AND character_items.ItemId = {$itemId}";
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterItems query.");
 	return $result;
+}
+
+function updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity)
+{
+    echo "characterId={$characterId},coinId={$coinId},coinQuantity={$coinQuantity}";
+    $query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterId = {$characterId} AND character_coins.CoinID = {$coinId}";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterCoins query.");
+    return $result; 
 }
 
 ?>

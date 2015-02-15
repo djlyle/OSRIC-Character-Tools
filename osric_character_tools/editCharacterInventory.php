@@ -11,6 +11,8 @@ $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
 $editedItemTag = "editedItem";
 $editedItemTagLen = strlen($editedItemTag);
+$editedCoinTag = "editedCoin";
+$editedCoinTagLen = strlen($editedCoinTag);
 foreach($_POST as $field => $value)
 {
 	/*Check if the name of the element in the POST array begins with "editedItem".  If it does then
@@ -24,7 +26,17 @@ foreach($_POST as $field => $value)
 		$itemQuantity = trim($value);
 		
 		$result = updateCharacterItems($cxn, $characterId, $itemId, $itemQuantity);
+        
 	}
+
+    if(strpos($field,$editedCoinTag) === 0)
+    {
+        $coinIdLen = strlen($field) - $editedCoinTagLen;
+        $coinId = substr($field,$editedCoinTagLen,$coinIdLen);
+        $coinQuantity = trim($value);
+        
+        $result = updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity);    
+    }
 }
 ?>
 <html>
