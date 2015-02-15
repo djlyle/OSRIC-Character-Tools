@@ -9,7 +9,6 @@ function getTotalItemEncumbrance($cxn, $characterId)
 
 function getTotalCoinEncumbrance($cxn, $characterId)
 {
-    echo "characterId={$characterId}";
     $query = "SELECT SUM(e.TotalCoinEncumbrance) AS TotalEncumbrance FROM (SELECT (c.CoinEncumbranceInLbs * cc.Quantity) AS TotalCoinEncumbrance FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = '{$characterId}') AS e"; 
     $result = mysqli_query($cxn,$query) or die("Couldn't execute getTotalCoinEncumbrance.");
     $row = mysqli_fetch_assoc($result);

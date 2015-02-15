@@ -33,7 +33,8 @@
 function editCharacter($cxn,$character)
 {
 	$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight");
-	$characterId = $character['CharacterId'];	
+	$characterId = $character['CharacterId'];
+    
 	if($characterId == -1)
 	{
 		/*Create a new character*/
@@ -91,5 +92,29 @@ function editCharacter($cxn,$character)
 		$query = $query . " WHERE CharacterId = '{$characterId}'";
 	}
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+
+    if($characterId == -1)
+    {
+        $newCharacterId = mysqli_insert_id($cxn);        
+        initCharacterCoinsToZero($cxn,$newCharacterId);    
+    }
+}
+
+function initCharacterCoinsToZero($cxn,$characterId)
+{
+    /*Insert zeroed out quantities of each coin type for the character in the character_coins table*/
+    $query = "SELECT CoinId FROM coins";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute coins query.");   
+    $k=0;    
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $coinIds[$k] = $row['CoinId'];
+        $k = $k + 1;            
+    }
+    foreach($coinIds as $coinId)
+    {
+        $query = "INSERT INTO character_coins (CharacterId,CoinId,Quantity) VALUES ('{$characterId}','{$coinId}','0')";
+        mysqli_query($cxn,$query) or die("Couldn't execute INSERT INTO character_coins with zero quantity value.");
+    }    
 }
 ?>
