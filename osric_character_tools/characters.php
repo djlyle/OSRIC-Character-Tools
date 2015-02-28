@@ -20,7 +20,7 @@ $genderArray = array("Unknown","Male","Female");
 <?php
 /*Display results in table*/
 echo "<table id='osric_characters'>";
-echo "<tr><td>Name</td><td>Gender</td><td>Age (years)</td><td>Height (inches)</td><td>Weight (lbs)</td><td>Edit</td><td>Equip</td></tr>";
+echo "<tr><td>Name</td><td>Gender</td><td>Age (years)</td><td>Height (inches)</td><td>Weight (lbs)</td><td>Edit</td><td>Abilities</td><td>Equip</td></tr>";
 while($row = mysqli_fetch_assoc($result))
 {
 echo "<tr>";
@@ -31,8 +31,9 @@ echo "<td>{$row['CharacterAge']}</td>";
 echo "<td>{$row['CharacterHeight']}</td>";
 echo "<td>{$row['CharacterWeight']}</td>";
 echo "<td><a href='editcharacter.php?CharacterId={$row['CharacterId']}'>Edit Character</a></td>";
-echo "<td><a href='equipcharacter.php?CharacterId={$row['CharacterId']}'>Equip Character</td>";
-echo "<td><a href='deletecharacter.php?CharacterId={$row['CharacterId']}'>Delete Character</td>";
+echo "<td><a href='editcharacterabilities.php?CharacterId={$row['CharacterId']}'>Edit Character Abilities</a></td>";
+echo "<td><a href='equipcharacter.php?CharacterId={$row['CharacterId']}'>Equip Character</a></td>";
+echo "<td><a href='deletecharacter.php?CharacterId={$row['CharacterId']}'>Delete Character</a></td>";
 echo "</tr>";
 }
 echo "</table>";
