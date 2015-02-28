@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2015 at 03:31 PM
+-- Generation Time: Feb 28, 2015 at 03:49 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.15
 
@@ -36,15 +36,15 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   PRIMARY KEY (`CharacterId`),
   UNIQUE KEY `Id` (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `characters`
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`) VALUES
-('Donald1', 1, 33, 72, 176, 26, 0),
-('Donald2', 1, 4, 1, 3, 27, 0);
+('Donaldette1', 2, 26, 62, 121, 28, 0),
+('Donald1', 1, 40, 65, 135, 29, 0);
 
 -- --------------------------------------------------------
 
@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `CharacterAbilityStrength`, `CharacterAbilityDexterity`, `CharacterAbilityConstitution`, `CharacterAbilityIntelligence`, `CharacterAbilityWisdom`, `CharacterAbilityCharisma`) VALUES
-(26, 18.8, 7, 7, 5, 6, 11),
-(27, 5.1, 6, 7, 8, 9, 11);
+(28, 5, 6, 5, 11, 3, 12),
+(29, 18.8, 15, 10, 15, 11, 2);
 
 -- --------------------------------------------------------
 
@@ -89,32 +89,16 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
-(0, 1, 0),
-(0, 2, 0),
-(0, 3, 0),
-(0, 4, 0),
-(0, 5, 0),
-(1, 1, 2),
-(24, 1, 0),
-(24, 2, 0),
-(24, 3, 0),
-(24, 4, 0),
-(24, 5, 0),
-(25, 1, 10),
-(25, 2, 1),
-(25, 3, 0),
-(25, 4, 0),
-(25, 5, 0),
-(26, 1, 3),
-(26, 2, 6),
-(26, 3, 4),
-(26, 4, 5),
-(26, 5, 1),
-(27, 1, 800),
-(27, 2, 120),
-(27, 3, 10),
-(27, 4, 2),
-(27, 5, 1);
+(28, 1, 3),
+(28, 2, 5),
+(28, 3, 1),
+(28, 4, 4),
+(28, 5, 6),
+(29, 1, 4444),
+(29, 2, 12),
+(29, 3, 33),
+(29, 4, 32),
+(29, 5, 12);
 
 -- --------------------------------------------------------
 
@@ -134,15 +118,12 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(26, 1, 2),
-(26, 2, 1),
-(26, 3, 1),
-(26, 4, 1),
-(26, 5, 1),
-(26, 6, 1),
-(27, 6, 1),
-(27, 7, 1),
-(27, 8, 1);
+(28, 7, 2),
+(28, 9, 1),
+(29, 1, 3),
+(29, 2, 3),
+(29, 3, 1),
+(29, 4, 1);
 
 -- --------------------------------------------------------
 

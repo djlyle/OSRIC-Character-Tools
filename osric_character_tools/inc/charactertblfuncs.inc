@@ -11,6 +11,8 @@ function deleteCharacter($cxn,$characterId)
 		$result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the characters table.");
         $query = sprintf("DELETE FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
         $result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_abilities table.");
+        $query = sprintf("DELETE FROM `character_coins` WHERE CharacterId='%s'",$characterId);
+        $result = mysqli_query($cxn,$query) or die("Error in trying to delete rows in the character_coins table.");
 	}
 }
 
