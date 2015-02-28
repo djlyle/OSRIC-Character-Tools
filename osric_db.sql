@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 12, 2015 at 12:11 AM
+-- Generation Time: Feb 27, 2015 at 11:23 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.15
 
@@ -33,23 +33,55 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterHeight` float NOT NULL,
   `CharacterWeight` float NOT NULL,
   `CharacterId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `CharacterArmorClass` int(11) NOT NULL,
+  `CharacterFullHitPoints` int(11) NOT NULL,
+  `CharacterRemainingHitPoints` int(11) NOT NULL,
+  `CharacterExperiencePoints` int(11) NOT NULL,
+  `CharacterLevel` int(11) NOT NULL,
+  `CharacterAlignment` int(11) NOT NULL,
   PRIMARY KEY (`CharacterId`),
   UNIQUE KEY `Id` (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `characters`
 --
 
-INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`) VALUES
-('Roland', 1, 43, 65, 141, 1),
-('Broomhelda', 2, 26, 62, 123, 3),
-('Oscar', 1, 98, 34, 95, 4),
-('Laura', 2, 32, 62, 123, 5),
-('Dirk Smirk', 1, 30, 70, 180, 6),
-('Gary', 1, 78, 76, 164, 7),
-('Stuart', 1, 22, 69, 160, 9),
-('Char1', 0, 3, 3, 3, 10);
+INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterArmorClass`, `CharacterFullHitPoints`, `CharacterRemainingHitPoints`, `CharacterExperiencePoints`, `CharacterLevel`, `CharacterAlignment`) VALUES
+('Roland', 1, 43, 65, 141, 1, 0, 0, 0, 0, 0, 0),
+('Broomhelda', 2, 26, 62, 123, 3, 0, 0, 0, 0, 0, 0),
+('Oscar', 1, 98, 34, 95, 4, 0, 0, 0, 0, 0, 0),
+('Laura', 2, 32, 62, 123, 5, 0, 0, 0, 0, 0, 0),
+('Dirk Smirk', 1, 30, 70, 180, 6, 0, 0, 0, 0, 0, 0),
+('Gary', 1, 78, 76, 164, 7, 0, 0, 0, 0, 0, 0),
+('Stuart', 1, 22, 69, 160, 9, 0, 0, 0, 0, 0, 0),
+('d3', 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0),
+('d111', 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0),
+('d222', 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0),
+('d2223', 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0),
+('d655', 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0),
+('ddd', 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0),
+('d222556', 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0),
+('d222556', 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0),
+('l1', 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0),
+('l2', 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_abilities`
+--
+
+CREATE TABLE IF NOT EXISTS `character_abilities` (
+  `CharacterId` bigint(20) NOT NULL,
+  `CharacterAbilityStrength` float NOT NULL,
+  `CharacterAbilityDexterity` float NOT NULL,
+  `CharacterAbilityConstitution` float NOT NULL,
+  `CharacterAbilityIntelligence` float NOT NULL,
+  `CharacterAbilityWisdom` float NOT NULL,
+  `CharacterAbilityCharisma` float NOT NULL,
+  PRIMARY KEY (`CharacterId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -63,6 +95,28 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
   `Quantity` int(11) NOT NULL,
   PRIMARY KEY (`CharacterId`,`CoinId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `character_coins`
+--
+
+INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
+(0, 1, 0),
+(0, 2, 0),
+(0, 3, 0),
+(0, 4, 0),
+(0, 5, 0),
+(1, 1, 2),
+(24, 1, 0),
+(24, 2, 0),
+(24, 3, 0),
+(24, 4, 0),
+(24, 5, 0),
+(25, 1, 10),
+(25, 2, 1),
+(25, 3, 0),
+(25, 4, 0),
+(25, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -82,12 +136,12 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(1, 1, 89),
-(1, 2, 1),
-(1, 3, 1),
-(1, 4, 1),
+(1, 1, 1),
+(1, 2, 0),
+(1, 3, 0),
+(1, 4, 0),
 (1, 5, 0),
-(1, 6, 23),
+(1, 6, 0),
 (1, 7, 0),
 (1, 8, 0),
 (1, 9, 0),
@@ -111,7 +165,7 @@ INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
 (1, 27, 0),
 (1, 28, 0),
 (1, 29, 0),
-(1, 30, 33),
+(1, 30, 0),
 (1, 31, 0),
 (1, 32, 0),
 (1, 33, 0),
@@ -219,9 +273,7 @@ INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
 (9, 97, 4),
 (9, 98, 1),
 (9, 104, 1),
-(9, 105, 2),
-(10, 1, 6),
-(10, 7, 3);
+(9, 105, 2);
 
 -- --------------------------------------------------------
 
