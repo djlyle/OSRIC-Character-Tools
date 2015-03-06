@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2015 at 03:49 PM
+-- Generation Time: Mar 05, 2015 at 11:55 PM
 -- Server version: 5.5.41
--- PHP Version: 5.3.10-1ubuntu3.15
+-- PHP Version: 5.3.10-1ubuntu3.16
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,15 +36,16 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   PRIMARY KEY (`CharacterId`),
   UNIQUE KEY `Id` (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Dumping data for table `characters`
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`) VALUES
-('Donaldette1', 2, 26, 62, 121, 28, 0),
-('Donald1', 1, 40, 65, 135, 29, 0);
+('R1', 1, 72, 72, 160, 34, 0),
+('R2', 2, 44, 60, 122, 35, 0),
+('R3', 0, 2, 1, 2, 36, 0);
 
 -- --------------------------------------------------------
 
@@ -68,8 +69,9 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `CharacterAbilityStrength`, `CharacterAbilityDexterity`, `CharacterAbilityConstitution`, `CharacterAbilityIntelligence`, `CharacterAbilityWisdom`, `CharacterAbilityCharisma`) VALUES
-(28, 5, 6, 5, 11, 3, 12),
-(29, 18.8, 15, 10, 15, 11, 2);
+(34, 12, 15, 18, 7, 15, 2),
+(35, 3, 10, 6, 8, 3, 18),
+(36, 7, 6, 5, 4, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -89,16 +91,21 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
-(28, 1, 3),
-(28, 2, 5),
-(28, 3, 1),
-(28, 4, 4),
-(28, 5, 6),
-(29, 1, 4444),
-(29, 2, 12),
-(29, 3, 33),
-(29, 4, 32),
-(29, 5, 12);
+(34, 1, 3),
+(34, 2, 2),
+(34, 3, 1),
+(34, 4, 10),
+(34, 5, 5),
+(35, 1, 2),
+(35, 2, 3),
+(35, 3, 100),
+(35, 4, 2),
+(35, 5, 2),
+(36, 1, 1),
+(36, 2, 1),
+(36, 3, 1),
+(36, 4, 1),
+(36, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -118,12 +125,19 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(28, 7, 2),
-(28, 9, 1),
-(29, 1, 3),
-(29, 2, 3),
-(29, 3, 1),
-(29, 4, 1);
+(34, 2, 3),
+(34, 3, 3),
+(34, 4, 1),
+(34, 6, 1),
+(34, 7, 1),
+(34, 9, 1),
+(35, 1, 2),
+(35, 6, 1),
+(35, 8, 1),
+(35, 11, 1),
+(35, 12, 1),
+(36, 97, 10),
+(36, 98, 1);
 
 -- --------------------------------------------------------
 
@@ -139,6 +153,15 @@ CREATE TABLE IF NOT EXISTS `character_status` (
   `CharacterStatusFullHitPoints` int(11) NOT NULL,
   `CharacterStatusRemainingHitPoints` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `character_status`
+--
+
+INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `CharacterStatusExperiencePoints`, `CharacterStatusLevel`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
+(34, 3, 5550, 2, 12, 6),
+(35, 7, 2, 1, 5, 2),
+(36, 1, 10000, 2, 4, 1);
 
 -- --------------------------------------------------------
 

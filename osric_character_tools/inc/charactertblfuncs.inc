@@ -9,6 +9,8 @@ function deleteCharacter($cxn,$characterId)
 		$result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_items table.");
 		$query = sprintf("DELETE FROM `characters` WHERE CharacterId='%s'",$characterId);
 		$result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the characters table.");
+        $query = sprintf("DELETE FROM `character_status` WHERE CharacterId='%s'",$characterId);
+        $result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_status table.");
         $query = sprintf("DELETE FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
         $result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_abilities table.");
         $query = sprintf("DELETE FROM `character_coins` WHERE CharacterId='%s'",$characterId);
@@ -38,6 +40,14 @@ function getCharacterAbilities($cxn,$characterId)
 {
     $query = sprintf("SELECT * FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
     $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbilities query.");
+    $row = mysqli_fetch_assoc($result);
+    return $row;
+}
+
+function getCharacterStatus($cxn,$characterId)
+{
+    $query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterStatus query.");
     $row = mysqli_fetch_assoc($result);
     return $row;
 }
@@ -109,9 +119,18 @@ function editCharacter($cxn,$character)
     {
         $newCharacterId = mysqli_insert_id($cxn);        
         initCharacterCoinsToZero($cxn,$newCharacterId);
-        initCharacterAbilitiesToZero($cxn,$newCharacterId);    
+        initCharacterAbilitiesToZero($cxn,$newCharacterId);
+        initCharacterStatusToZero($cxn,$newCharacterId);    
     }
 }
+
+function initCharacterStatusToZero($cxn,$characterId)
+{
+    /*Insert a new row in the character_status table with status fields zeroed out*/
+    $query = "INSERT INTO character_status (CharacterId,CharacterStatusArmorClass,CharacterStatusExperiencePoints,CharacterStatusLevel,CharacterStatusFullHitPoints,CharacterStatusRemainingHitPoints) VALUE ('{$characterId}','0','0','0','0','0')";                                           
+    $result = mysqli_query($cxn,$query) or die("Couldn't insert a new row in character_status table with status fields zeroed out.");
+}
+
 
 function initCharacterAbilitiesToZero($cxn,$characterId)
 {
@@ -188,4 +207,41 @@ function editCharacterAbilities($cxn,$characterAbilities)
 	echo "query inside editCharacterAbilities={$query}";
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute query to insert or update character_abilities table.");
 }
+
+function editCharacterStatus($cxn,$characterStatus)
+{
+	$columnNames = array("CharacterStatusArmorClass","CharacterStatusExperiencePoints","CharacterStatusLevel","CharacterStatusFullHitPoints","CharacterStatusRemainingHitPoints");
+	$characterId = $characterStatus['CharacterId'];
+    
+	/*Check whether a row with id==$characterId exists in character_abilities table*/
+    $query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
+	$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+    $row = mysqli_fetch_assoc($result);    
+    if($row)
+    {
+        /*Edit an existing row in character_abilities*/
+        $query = "UPDATE character_status ";
+		$query = $query . "SET ";
+		$k = 0;
+		foreach($columnNames as $columnName)
+		{
+			if($k == 0)
+			{
+				$query = $query . $columnName;			
+			}
+			else
+			{
+				$query = $query . "," . $columnName;	
+			}
+			$query = $query . "=" . "'" . $characterStatus[$columnName] . "'";
+			$k = $k + 1;
+		}
+		
+		$query = $query . " WHERE CharacterId = '{$characterId}'";    
+    }
+    	
+	echo "query inside editCharacterStatus={$query}";
+	$result = mysqli_query($cxn,$query) or die("Couldn't execute query to insert or update character_status table.");
+}
+
 ?>
