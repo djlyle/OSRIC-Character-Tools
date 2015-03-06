@@ -204,7 +204,7 @@ function editCharacterAbilities($cxn,$characterAbilities)
 		}
 		$query = $query . ")";
     }	
-	echo "query inside editCharacterAbilities={$query}";
+	/*echo "query inside editCharacterAbilities={$query}";*/
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute query to insert or update character_abilities table.");
 }
 
@@ -240,7 +240,7 @@ function editCharacterStatus($cxn,$characterStatus)
 		$query = $query . " WHERE CharacterId = '{$characterId}'";    
     }
     	
-	echo "query inside editCharacterStatus={$query}";
+	/*echo "query inside editCharacterStatus={$query}";*/
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute query to insert or update character_status table.");
 }
 
