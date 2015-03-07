@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2015 at 12:15 AM
+-- Generation Time: Mar 07, 2015 at 01:14 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `abilities` (
   `AbilityLongName` varchar(32) NOT NULL,
   `AbilityShortName` varchar(8) NOT NULL,
   PRIMARY KEY (`AbilityId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `abilities`
@@ -59,16 +59,18 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterWeight` float NOT NULL,
   `CharacterId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CharacterAlignment` int(11) NOT NULL,
+  `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `characters`
 --
 
-INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`) VALUES
-('R1', 1, 21, 60, 135, 45, 0),
-('R2', 2, 22, 59, 130, 46, 0);
+INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`, `RaceId`) VALUES
+('R1', 1, 21, 60, 135, 45, 0, 2),
+('R2', 2, 22, 59, 130, 46, 0, 1),
+('R3', 1, 2, 3, 1, 50, 0, 6);
 
 -- --------------------------------------------------------
 
@@ -98,7 +100,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (46, 3, 3),
 (46, 4, 2),
 (46, 5, 1),
-(46, 6, 1);
+(46, 6, 1),
+(50, 1, 0),
+(50, 2, 4),
+(50, 3, 0),
+(50, 4, 0),
+(50, 5, 1),
+(50, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -127,7 +135,12 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 (46, 2, 1),
 (46, 3, 1),
 (46, 4, 2),
-(46, 5, 1);
+(46, 5, 1),
+(50, 1, 1),
+(50, 2, 0),
+(50, 3, 0),
+(50, 4, 0),
+(50, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -152,7 +165,8 @@ INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
 (45, 9, 1),
 (46, 1, 1),
 (46, 9, 1),
-(46, 12, 1);
+(46, 12, 1),
+(50, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -175,7 +189,8 @@ CREATE TABLE IF NOT EXISTS `character_status` (
 
 INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `CharacterStatusExperiencePoints`, `CharacterStatusLevel`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
 (45, 3, 1, 1, 5, 2),
-(46, 3, 2, 1, 3, 1);
+(46, 3, 2, 1, 3, 1),
+(50, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -337,23 +352,23 @@ INSERT INTO `items` (`ItemName`, `ItemEncumbrance`, `ItemCost`, `ItemId`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `races` (
-  `raceId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `raceName` varchar(64) NOT NULL,
-  UNIQUE KEY `raceId` (`raceId`)
+  `RaceId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `RaceName` varchar(64) NOT NULL,
+  UNIQUE KEY `raceId` (`RaceId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `races`
 --
 
-INSERT INTO `races` (`raceId`, `raceName`) VALUES
+INSERT INTO `races` (`RaceId`, `RaceName`) VALUES
+(0, 'Human'),
 (2, 'Dwarf'),
 (3, 'Elf'),
 (4, 'Gnome'),
 (5, 'Half Elf'),
 (6, 'Halfling'),
-(7, 'Half-Orc'),
-(8, 'Human');
+(7, 'Half-Orc');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

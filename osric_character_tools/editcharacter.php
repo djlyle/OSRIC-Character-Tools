@@ -14,11 +14,19 @@ if($CharacterId != -1)
 {
 	$character = getCharacter($cxn,$CharacterId);
 }
-$labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)");
-$inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","CharacterAge"=>"float","CharacterWeight"=>"float","CharacterHeight"=>"float");
+$labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
+$inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","CharacterAge"=>"float","CharacterWeight"=>"float","CharacterHeight"=>"float","RaceId"=>"select");
 $selectOptions['CharacterGender'][0] = "Unknown";
 $selectOptions['CharacterGender'][1] = "Male";
 $selectOptions['CharacterGender'][2] = "Female";
+$k=0;
+$query = "SELECT * FROM races";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute races query.");
+while($row = mysqli_fetch_assoc($result))
+{
+    $selectOptions['RaceId'][$k] = $row['RaceName'];
+    $k = $k + 1;
+}
 ?>
 
 /*Character form*/

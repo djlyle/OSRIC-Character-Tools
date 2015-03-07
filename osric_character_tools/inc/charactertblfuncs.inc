@@ -46,7 +46,7 @@ function getCharacterStatus($cxn,$characterId)
 
 function editCharacter($cxn,$character)
 {
-	$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight");
+	$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
 	$characterId = $character['CharacterId'];
     
 	if($characterId == -1)
