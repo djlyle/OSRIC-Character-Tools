@@ -36,14 +36,6 @@ function getCharacter($cxn,$characterId)
 	return $row; 
 }
 
-function getCharacterAbility($cxn,$characterId,$abilityId)
-{
-    $query = sprintf("SELECT * FROM `character_abilities` WHERE CharacterId='%s' AND AbilityId='%s'",$characterId,$abilityId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbility query.");
-    $row = mysqli_fetch_assoc($result);
-    return $row;
-}
-
 function getCharacterStatus($cxn,$characterId)
 {
     $query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
