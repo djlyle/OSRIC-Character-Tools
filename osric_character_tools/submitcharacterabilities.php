@@ -9,10 +9,24 @@ if(@$_POST['cancelbutton'] == "Cancel")
 	header("Location: characters.php");
 }
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-
-/*Note: function editCharacter handles both new and existing characters.  That is, if the character is brand new it inserts it as a new row
-  in the database, otherwise it updates an existing row for an existing character in the database*/
-editCharacterAbilities($cxn,$_POST);
+$editedAbilityTag = "editedAbility";
+$editedAbilityTagLen = strlen($editedAbilityTag);
+foreach($_POST as $field => $value)
+{
+	/*Check if the name of the element in the POST array begins with "editedItem".  If it does then
+	   insert its value into the character_items table using the passed over characterId*/
+	
+	if(strpos($field,$editedAbilityTag) === 0)
+	{
+		/*extract abilityId from $field name, e.g. if $field="editedAbility3" then abilityId == 3*/
+		$abilityIdLen = strlen($field) - $editedAbilityTagLen;
+		$abilityId = substr($field,$editedAbilityTagLen,$abilityIdLen);
+		$abilityValue = trim($value);
+		
+		$result = updateCharacterAbility($cxn, $characterId, $abilityId, $abilityValue);
+        
+	}    
+}
 
 echo "<p>Character abilities updated.</p>";
 echo "<a href='characters.php'>Return to list of characters</a>";

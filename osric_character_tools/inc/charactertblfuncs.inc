@@ -36,10 +36,10 @@ function getCharacter($cxn,$characterId)
 	return $row; 
 }
 
-function getCharacterAbilities($cxn,$characterId)
+function getCharacterAbility($cxn,$characterId,$abilityId)
 {
-    $query = sprintf("SELECT * FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbilities query.");
+    $query = sprintf("SELECT * FROM `character_abilities` WHERE CharacterId='%s' AND AbilityId='%s'",$characterId,$abilityId);
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbility query.");
     $row = mysqli_fetch_assoc($result);
     return $row;
 }
@@ -135,8 +135,19 @@ function initCharacterStatusToZero($cxn,$characterId)
 function initCharacterAbilitiesToZero($cxn,$characterId)
 {
     /*Insert a new row in the character_abilities table with abilities zeroed out*/
-    $query = "INSERT INTO character_abilities (CharacterId,CharacterAbilityStrength,CharacterAbilityDexterity,CharacterAbilityConstitution,CharacterAbilityIntelligence,CharacterAbilityWisdom,CharacterAbilityCharisma) VALUES ('{$characterId}','0','0','0','0','0','0')";
-    $result = mysqli_query($cxn,$query) or die("Couldn't insert a new row in character_abilities table with abilities zeroed out.");
+    $query = "SELECT AbilityId FROM abilities";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute abilities query.");
+    $k=0;
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $abilityIds[$k] = $row['AbilityId'];
+        $k = $k + 1;
+    }
+    foreach($abilityIds as $abilityId)
+    {
+        $query = "INSERT INTO character_abilities (CharacterId,AbilityId,Value) VALUES ('{$characterId}','{$abilityId}','0')";
+        $result = mysqli_query($cxn,$query) or die("Couldn't insert a new row in character_abilities table with abilities zeroed out.");
+    }
 }
 
 function initCharacterCoinsToZero($cxn,$characterId)
@@ -157,56 +168,13 @@ function initCharacterCoinsToZero($cxn,$characterId)
     }    
 }
 
-function editCharacterAbilities($cxn,$characterAbilities)
+function updateCharacterAbility($cxn, $characterId, $abilityId, $value)
 {
-	$columnNames = array("CharacterAbilityStrength","CharacterAbilityDexterity","CharacterAbilityConstitution","CharacterAbilityIntelligence","CharacterAbilityWisdom","CharacterAbilityCharisma");
-	$characterId = $characterAbilities['CharacterId'];
-    
-	/*Check whether a row with id==$characterId exists in character_abilities table*/
-    $query = sprintf("SELECT * FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
-	$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
-    $row = mysqli_fetch_assoc($result);    
-    if($row)
-    {
-        /*Edit an existing row in character_abilities*/
-        $query = "UPDATE character_abilities ";
-		$query = $query . "SET ";
-		$k = 0;
-		foreach($columnNames as $columnName)
-		{
-			if($k == 0)
-			{
-				$query = $query . $columnName;			
-			}
-			else
-			{
-				$query = $query . "," . $columnName;	
-			}
-			$query = $query . "=" . "'" . $characterAbilities[$columnName] . "'";
-			$k = $k + 1;
-		}
-		
-		$query = $query . " WHERE CharacterId = '{$characterId}'";    
-    }
-    else
-    {
-        /*Insert a new row*/
-        $query = "INSERT INTO character_abilities ";
-	    $query = $query . "(CharacterId";
-		foreach($columnNames as $columnName)
-		{
-			$query = $query . "," . "{$columnName}";
-		}
-		$query = $query . ") VALUES (" . "'" . $characterId . "'";
-		foreach($columnNames as $columnName)
-		{
-			$query = $query . "," . "'" . $characterAbilities[$columnName] . "'";
-		}
-		$query = $query . ")";
-    }	
-	/*echo "query inside editCharacterAbilities={$query}";*/
-	$result = mysqli_query($cxn,$query) or die("Couldn't execute query to insert or update character_abilities table.");
+    $query = "UPDATE character_abilities SET Value = '{$value}' WHERE character_abilities.CharacterId = {$characterId} AND character_abilities.AbilityId = {$abilityId}";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterAbility query.");
+    return $result; 
 }
+
 
 function editCharacterStatus($cxn,$characterStatus)
 {

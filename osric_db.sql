@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 05, 2015 at 11:55 PM
+-- Generation Time: Mar 07, 2015 at 12:15 AM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -23,6 +23,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `abilities`
+--
+
+CREATE TABLE IF NOT EXISTS `abilities` (
+  `AbilityId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `AbilityLongName` varchar(32) NOT NULL,
+  `AbilityShortName` varchar(8) NOT NULL,
+  PRIMARY KEY (`AbilityId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `abilities`
+--
+
+INSERT INTO `abilities` (`AbilityId`, `AbilityLongName`, `AbilityShortName`) VALUES
+(1, 'Strength', 'Str'),
+(2, 'Dexterity', 'Dex'),
+(3, 'Constitution', 'Con'),
+(4, 'Intelligence', 'Int'),
+(5, 'Wisdom', 'Wis'),
+(6, 'Charisma', 'Cha');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `characters`
 --
 
@@ -34,18 +59,16 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterWeight` float NOT NULL,
   `CharacterId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CharacterAlignment` int(11) NOT NULL,
-  PRIMARY KEY (`CharacterId`),
-  UNIQUE KEY `Id` (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+  PRIMARY KEY (`CharacterId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `characters`
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`) VALUES
-('R1', 1, 72, 72, 160, 34, 0),
-('R2', 2, 44, 60, 122, 35, 0),
-('R3', 0, 2, 1, 2, 36, 0);
+('R1', 1, 21, 60, 135, 45, 0),
+('R2', 2, 22, 59, 130, 46, 0);
 
 -- --------------------------------------------------------
 
@@ -55,23 +78,27 @@ INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `C
 
 CREATE TABLE IF NOT EXISTS `character_abilities` (
   `CharacterId` bigint(20) NOT NULL,
-  `CharacterAbilityStrength` float NOT NULL,
-  `CharacterAbilityDexterity` float NOT NULL,
-  `CharacterAbilityConstitution` float NOT NULL,
-  `CharacterAbilityIntelligence` float NOT NULL,
-  `CharacterAbilityWisdom` float NOT NULL,
-  `CharacterAbilityCharisma` float NOT NULL,
-  PRIMARY KEY (`CharacterId`)
+  `AbilityId` bigint(20) NOT NULL,
+  `Value` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `character_abilities`
 --
 
-INSERT INTO `character_abilities` (`CharacterId`, `CharacterAbilityStrength`, `CharacterAbilityDexterity`, `CharacterAbilityConstitution`, `CharacterAbilityIntelligence`, `CharacterAbilityWisdom`, `CharacterAbilityCharisma`) VALUES
-(34, 12, 15, 18, 7, 15, 2),
-(35, 3, 10, 6, 8, 3, 18),
-(36, 7, 6, 5, 4, 3, 2);
+INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
+(45, 1, 3),
+(45, 2, 4),
+(45, 3, 5),
+(45, 4, 7),
+(45, 5, 9),
+(45, 6, 17),
+(46, 1, 2),
+(46, 2, 3),
+(46, 3, 3),
+(46, 4, 2),
+(46, 5, 1),
+(46, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -91,21 +118,16 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
-(34, 1, 3),
-(34, 2, 2),
-(34, 3, 1),
-(34, 4, 10),
-(34, 5, 5),
-(35, 1, 2),
-(35, 2, 3),
-(35, 3, 100),
-(35, 4, 2),
-(35, 5, 2),
-(36, 1, 1),
-(36, 2, 1),
-(36, 3, 1),
-(36, 4, 1),
-(36, 5, 1);
+(45, 1, 1),
+(45, 2, 2),
+(45, 3, 6),
+(45, 4, 8),
+(45, 5, 2),
+(46, 1, 1),
+(46, 2, 1),
+(46, 3, 1),
+(46, 4, 2),
+(46, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -125,19 +147,12 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(34, 2, 3),
-(34, 3, 3),
-(34, 4, 1),
-(34, 6, 1),
-(34, 7, 1),
-(34, 9, 1),
-(35, 1, 2),
-(35, 6, 1),
-(35, 8, 1),
-(35, 11, 1),
-(35, 12, 1),
-(36, 97, 10),
-(36, 98, 1);
+(45, 1, 1),
+(45, 7, 1),
+(45, 9, 1),
+(46, 1, 1),
+(46, 9, 1),
+(46, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -159,9 +174,8 @@ CREATE TABLE IF NOT EXISTS `character_status` (
 --
 
 INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `CharacterStatusExperiencePoints`, `CharacterStatusLevel`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
-(34, 3, 5550, 2, 12, 6),
-(35, 7, 2, 1, 5, 2),
-(36, 1, 10000, 2, 4, 1);
+(45, 3, 1, 1, 5, 2),
+(46, 3, 2, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -200,7 +214,6 @@ CREATE TABLE IF NOT EXISTS `items` (
   `ItemEncumbrance` float NOT NULL,
   `ItemCost` float NOT NULL,
   `ItemId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ItemId`),
   UNIQUE KEY `ItemId` (`ItemId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=108 ;
 
@@ -316,6 +329,31 @@ INSERT INTO `items` (`ItemName`, `ItemEncumbrance`, `ItemCost`, `ItemId`) VALUES
 ('Waterskin			', 1, 1, 105),
 ('Whetstone		', 0.5, 0.02, 106),
 ('Wine, pint			', 1, 0.05, 107);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `races`
+--
+
+CREATE TABLE IF NOT EXISTS `races` (
+  `raceId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `raceName` varchar(64) NOT NULL,
+  UNIQUE KEY `raceId` (`raceId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `races`
+--
+
+INSERT INTO `races` (`raceId`, `raceName`) VALUES
+(2, 'Dwarf'),
+(3, 'Elf'),
+(4, 'Gnome'),
+(5, 'Half Elf'),
+(6, 'Halfling'),
+(7, 'Half-Orc'),
+(8, 'Human');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
