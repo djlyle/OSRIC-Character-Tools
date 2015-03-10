@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2015 at 01:14 PM
+-- Generation Time: Mar 09, 2015 at 07:02 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -48,6 +48,34 @@ INSERT INTO `abilities` (`AbilityId`, `AbilityLongName`, `AbilityShortName`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `alignment`
+--
+
+CREATE TABLE IF NOT EXISTS `alignment` (
+  `AlignmentId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `AlignmentName` varchar(32) NOT NULL,
+  `ShortDescription` varchar(32) NOT NULL,
+  PRIMARY KEY (`AlignmentId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `alignment`
+--
+
+INSERT INTO `alignment` (`AlignmentId`, `AlignmentName`, `ShortDescription`) VALUES
+(1, 'Lawful Good', 'Crusader'),
+(2, 'Neutral Good', 'Benefactor'),
+(3, 'Chaotic Good', 'Rebel'),
+(4, 'Lawful Neutral', 'Judge'),
+(5, 'Neutral', ''),
+(6, 'Chaotic Neutral', 'Free Spirit'),
+(7, 'Lawful Evil', 'Dominator'),
+(8, 'Neutral Evil', 'Malefactor'),
+(9, 'Chaotic Evil', 'Destroyer');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `characters`
 --
 
@@ -61,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `characters`
@@ -191,6 +219,33 @@ INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `Cha
 (45, 3, 1, 1, 5, 2),
 (46, 3, 2, 1, 3, 1),
 (50, 1, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classes`
+--
+
+CREATE TABLE IF NOT EXISTS `classes` (
+  `ClassId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ClassName` varchar(64) NOT NULL,
+  PRIMARY KEY (`ClassId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `classes`
+--
+
+INSERT INTO `classes` (`ClassId`, `ClassName`) VALUES
+(1, 'Assassin'),
+(2, 'Cleric'),
+(3, 'Druid'),
+(4, 'Fighter'),
+(5, 'Illusionist'),
+(6, 'Magic User'),
+(7, 'Paladin'),
+(8, 'Ranger'),
+(9, 'Thief');
 
 -- --------------------------------------------------------
 
@@ -354,8 +409,8 @@ INSERT INTO `items` (`ItemName`, `ItemEncumbrance`, `ItemCost`, `ItemId`) VALUES
 CREATE TABLE IF NOT EXISTS `races` (
   `RaceId` bigint(20) NOT NULL AUTO_INCREMENT,
   `RaceName` varchar(64) NOT NULL,
-  UNIQUE KEY `raceId` (`RaceId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  UNIQUE KEY `RaceId` (`RaceId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `races`
