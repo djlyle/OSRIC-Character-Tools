@@ -26,7 +26,7 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$Charact
 <?php
 echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
 
-$query = "SELECT c.ClassId AS ClassesClassId, c.ClassName AS ClassName, cc.ClassId AS CharacterClassesClassId FROM classes c LEFT OUTER JOIN character_classes cc ON c.ClassId = cc.ClassId WHERE cc.CharacterId = $CharacterId OR cc.CharacterId IS NULL";
+$query = "SELECT c.ClassId AS ClassesClassId, c.ClassName AS ClassName, cc.CharacterId AS CharacterId, cc.ClassId AS CharacterClassesClassId FROM classes c LEFT OUTER JOIN character_classes cc ON c.ClassId = cc.ClassId WHERE cc.CharacterId = $CharacterId OR cc.CharacterId IS NULL";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute left outer join on character_classes with classes table query.");
 while($row = mysqli_fetch_assoc($result))
 {    
