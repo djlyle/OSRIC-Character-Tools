@@ -25,38 +25,23 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$Charact
 <form action='submitcharacterclasses.php' method='post'>
 <?php
 echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
-echo "<select name='character_classes' multiple='multiple'>";
 
-
-$query = "SELECT * FROM classes c LEFT OUTER JOIN character_classes cc ON c.ClassId = cc.ClassId WHERE cc.CharacterId = $CharacterId OR cc.CharacterId IS NULL";
+$query = "SELECT c.ClassId AS ClassesClassId, c.ClassName AS ClassName, cc.ClassId AS CharacterClassesClassId FROM classes c LEFT OUTER JOIN character_classes cc ON c.ClassId = cc.ClassId WHERE cc.CharacterId = $CharacterId OR cc.CharacterId IS NULL";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute left outer join on character_classes with classes table query.");
-echo "<option value='-1'>Wonky</option>";
 while($row = mysqli_fetch_assoc($result))
-{
-    $classId = $row['ClassId'];
-if($classId)
-{
-    echo "<option value='-2'>Willy</option>";
-}
-else
-{
-    echo "<option value='-3'>Bar</option>";
-}
-    echo "classId=";
-    echo "{$classId}";
-/*    
-    echo "<option value='{$classId}'";
+{    
+    $classId = $row['ClassesClassId'];  
+    echo "<label>";
+    echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
     if($row['CharacterId'])
     {
-        echo " selected='selected'";        
+        echo " checked='checked'";        
     }
-    echo ">";
+    echo "/>";
     echo "{$row['ClassName']}";
-    echo "</option>";
-*/
+    echo "</label><br/>";
 }
 
-echo "</select>";
 ?>
 <div id="submit">
 	<input type="submit" value="Submit Classes"/>
