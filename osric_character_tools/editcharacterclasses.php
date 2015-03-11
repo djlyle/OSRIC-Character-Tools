@@ -26,19 +26,27 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$Charact
 <?php
 echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
 
-$query = "SELECT c.ClassId AS ClassesClassId, c.ClassName AS ClassName, cc.CharacterId AS CharacterId, cc.ClassId AS CharacterClassesClassId FROM classes c LEFT OUTER JOIN character_classes cc ON c.ClassId = cc.ClassId WHERE cc.CharacterId = $CharacterId OR cc.CharacterId IS NULL";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute left outer join on character_classes with classes table query.");
+$query = "SELECT * FROM character_classes WHERE CharacterId = $CharacterId";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute character_classes query.");
+while($row = mysqli_fetch_assoc($result))
+{
+    $selectedClasses[$row['ClassId']] = true;
+}
+
+$query = "SELECT * FROM classes";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute classes query.");
 while($row = mysqli_fetch_assoc($result))
 {    
-    $classId = $row['ClassesClassId'];  
+    $classId = $row['ClassId'];
+    $className = $row['ClassName'];  
     echo "<label>";
     echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
-    if($row['CharacterId'])
+    if($selectedClasses[$classId])
     {
         echo " checked='checked'";        
     }
     echo "/>";
-    echo "{$row['ClassName']}";
+    echo "{$className}";
     echo "</label><br/>";
 }
 
