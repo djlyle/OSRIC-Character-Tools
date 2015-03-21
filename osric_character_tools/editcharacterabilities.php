@@ -25,15 +25,15 @@ echo "Character Abilities for {$character['CharacterName']} (CharacterId={$Chara
 <?php
 echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
 echo "<table>";
-$query = "SELECT * FROM character_abilities ca INNER JOIN abilities a on ca.AbilityId = a.AbilityId WHERE ca.CharacterId = $CharacterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
-while($row = mysqli_fetch_assoc($result))
+$character_abilities = getCharacterAbilities($cxn,$CharacterId);
+$num_abilities = count($character_abilities);
+for($i=0;$i<$num_abilities;$i++)
 {
     echo "<tr>";
-    echo "<td>{$row['AbilityLongName']}</td>";
-    $abilityId = $row['AbilityId'];
+    echo "<td>{$character_abilities[$i]['AbilityLongName']}</td>";
+    $abilityId = $character_abilities[$i]['AbilityId'];
 	if($row['Value']){
-		$value = $row['Value'];
+		$value = $character_abilities[$i]['Value'];
 	}
 	else {
 		$value = 0;

@@ -40,6 +40,12 @@ for($i=0;$i<$num_rows;$i++)
     
 }
 echo "</td><td>Full HP: {$characterStatus['CharacterStatusFullHitPoints']}</td><td>Remaining HP: {$characterStatus['CharacterStatusRemainingHitPoints']}</td></tr>\n";
+$character_abilities = getCharacterAbilities($cxn,$CharacterId);
+$num_abilities = count($character_abilities);
+for($i=0;$i<$num_abilities;$i++)
+{
+    echo "<tr><td>{$character_abilities[$i]['AbilityShortName']}: {$character_abilities[$i]['Value']}</td></tr>";
+}
 echo "</table>";
 ?>
 </body>

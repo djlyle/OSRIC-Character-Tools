@@ -51,6 +51,14 @@ function editCharacterClasses($cxn,$characterId,$selectedCharacterClasses)
     addClassesForCharacter($cxn,$characterId,$selectedCharacterClasses);
 }
 
+function getCharacterAbilities($cxn,$characterId)
+{
+    $query = sprintf("SELECT * FROM character_abilities ca INNER JOIN abilities a on ca.AbilityId = a.AbilityId WHERE ca.CharacterId = '%s'",$characterId);
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbilities query.");
+    for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+    return $result_set;
+}
+
 function getCharacterClasses($cxn,$characterId)
 {
     $query = sprintf("SELECT * FROM character_classes cc INNER JOIN classes c ON cc.ClassId = c.ClassId WHERE CharacterId='%s'",$characterId);
