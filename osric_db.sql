@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2015 at 07:02 PM
+-- Generation Time: Mar 26, 2015 at 10:29 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -76,6 +76,41 @@ INSERT INTO `alignment` (`AlignmentId`, `AlignmentName`, `ShortDescription`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `armour`
+--
+
+CREATE TABLE IF NOT EXISTS `armour` (
+  `ArmourId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ArmourType` varchar(32) DEFAULT NULL,
+  `ArmourEncumbrance` float NOT NULL,
+  `ArmourMovementRate` float NOT NULL,
+  `ArmourEffectOnArmourClass` int(11) NOT NULL,
+  `ArmourCost` float NOT NULL,
+  PRIMARY KEY (`ArmourId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `armour`
+--
+
+INSERT INTO `armour` (`ArmourId`, `ArmourType`, `ArmourEncumbrance`, `ArmourMovementRate`, `ArmourEffectOnArmourClass`, `ArmourCost`) VALUES
+(1, 'Banded', 35, 90, -6, 90),
+(2, 'Mail hauberk or byrnie (chain)', 30, 90, -5, 75),
+(3, 'Mail, elfin (chain)', 15, 120, -5, -1),
+(4, 'Leather', 15, 120, -2, 5),
+(5, 'Padded gambeson', 10, 90, -2, 4),
+(6, 'Plate', 45, 60, -7, 400),
+(7, 'Ring', 35, 90, -3, 30),
+(8, 'Scale or lamellar', 40, 60, -4, 45),
+(9, 'Shield, large', 10, -1, -1, 15),
+(10, 'Shield, medium', 8, -1, -1, 12),
+(11, 'Shield, small', 5, -1, -1, 10),
+(12, 'Splint', 40, 60, -6, 80),
+(13, 'Studded', 20, 90, -3, 15);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `characters`
 --
 
@@ -96,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`, `RaceId`) VALUES
-('R1', 1, 21, 60, 135, 45, 0, 2),
+('R1', 1, 21, 60, 135, 45, 0, 3),
 ('R2', 2, 22, 59, 130, 46, 0, 1),
 ('R3', 1, 2, 3, 1, 50, 0, 6);
 
@@ -135,6 +170,43 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (50, 4, 0),
 (50, 5, 1),
 (50, 6, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_armour`
+--
+
+CREATE TABLE IF NOT EXISTS `character_armour` (
+  `CharacterId` bigint(20) NOT NULL,
+  `ArmourId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`CharacterId`,`ArmourId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_classes`
+--
+
+CREATE TABLE IF NOT EXISTS `character_classes` (
+  `CharacterId` bigint(20) NOT NULL,
+  `ClassId` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `character_classes`
+--
+
+INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
+(50, 2),
+(50, 7),
+(46, 1),
+(46, 5),
+(45, 1),
+(45, 8),
+(45, 9);
 
 -- --------------------------------------------------------
 
