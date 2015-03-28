@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2015 at 10:29 PM
+-- Generation Time: Mar 27, 2015 at 11:07 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -152,12 +152,12 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
-(45, 1, 3),
-(45, 2, 4),
-(45, 3, 5),
-(45, 4, 7),
-(45, 5, 9),
-(45, 6, 17),
+(45, 1, 0),
+(45, 2, 0),
+(45, 3, 0),
+(45, 4, 0),
+(45, 5, 0),
+(45, 6, 0),
 (46, 1, 2),
 (46, 2, 3),
 (46, 3, 3),
@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `CharacterId` bigint(20) NOT NULL,
   `ArmourId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
+  `ArmourMagic` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`CharacterId`,`ArmourId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -205,8 +206,8 @@ INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (46, 1),
 (46, 5),
 (45, 1),
-(45, 8),
-(45, 9);
+(45, 5),
+(45, 8);
 
 -- --------------------------------------------------------
 
@@ -226,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
-(45, 1, 1),
+(45, 1, 35),
 (45, 2, 2),
 (45, 3, 6),
 (45, 4, 8),

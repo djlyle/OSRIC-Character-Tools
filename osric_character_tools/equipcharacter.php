@@ -51,6 +51,40 @@ while($row = mysqli_fetch_assoc($result))
 }
 echo "</table>";
 echo "<hr/>";
+echo "<h3>Armour:</h3>";
+echo "<p>To add armour not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new armour\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
+echo "<p>To edit existing armour amounts, goto the row in question in the character's armour inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit armour\" button to submit the edited quantities and save them in the database.</p>";
+echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
+echo "<br/>";
+echo "<div><input type='submit' value='submit armour'/></div>";
+echo "<table id='osric_character_armour'>";
+echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td></tr>";
+$query = "SELECT * FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = $characterId";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+$armourQuantity = 0;
+while($row = mysqli_fetch_assoc($result))
+{
+    echo "<tr>";
+	echo "<td>{$row['ArmourType']}</td>";
+	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
+    echo "<td>{$row['ArmourEncumbrance']}</td>";
+    echo "<td>{$row['ArmourMovementRate']}</td>";
+	echo "<td>{$row['ArmourCost']}</td>";
+    echo "<td>{$row['ArmourQuantity']}</td>";
+	$armourId = $row['ArmourId'];
+	if($row['Quantity']){
+		$armourQuantity = $row['Quantity'];
+	}
+	else {
+		$armourQuantity = 0;
+	}
+    $armourMagic = $row['ArmourMagic'];
+	echo "<td><input type='number' min='0' max='9999999' name='editedArmour{$armourId}' value='{$armourQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='editedArmourMagic{$armourId}' value='{$armourMagic}'></input></td>";	
+    echo "</tr>";
+}
+echo "</table>";
+echo "<hr/>";
 
 echo "<h3>Equipment:</h3>";
 echo "<p>To add equipment not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new equipment\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
