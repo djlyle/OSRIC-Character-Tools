@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2015 at 11:07 PM
+-- Generation Time: Mar 28, 2015 at 12:42 AM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -152,24 +152,24 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
-(45, 1, 0),
-(45, 2, 0),
-(45, 3, 0),
-(45, 4, 0),
-(45, 5, 0),
-(45, 6, 0),
+(45, 1, 18),
+(45, 2, 18),
+(45, 3, 18),
+(45, 4, 18),
+(45, 5, 17),
+(45, 6, 16),
 (46, 1, 2),
 (46, 2, 3),
-(46, 3, 3),
-(46, 4, 2),
-(46, 5, 1),
-(46, 6, 1),
-(50, 1, 0),
-(50, 2, 4),
-(50, 3, 0),
-(50, 4, 0),
-(50, 5, 1),
-(50, 6, 0);
+(46, 3, 4),
+(46, 4, 5),
+(46, 5, 3),
+(46, 6, 2),
+(50, 1, 11),
+(50, 2, 12),
+(50, 3, 13),
+(50, 4, 14),
+(50, 5, 15),
+(50, 6, 16);
 
 -- --------------------------------------------------------
 
@@ -227,16 +227,16 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
-(45, 1, 35),
-(45, 2, 2),
-(45, 3, 6),
-(45, 4, 8),
-(45, 5, 2),
-(46, 1, 1),
-(46, 2, 1),
-(46, 3, 1),
-(46, 4, 2),
-(46, 5, 1),
+(45, 1, 13),
+(45, 2, 31),
+(45, 3, 13),
+(45, 4, 31),
+(45, 5, 13),
+(46, 1, 2),
+(46, 2, 3),
+(46, 3, 4),
+(46, 4, 5),
+(46, 5, 22),
 (50, 1, 1),
 (50, 2, 0),
 (50, 3, 0),
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(45, 1, 1),
+(45, 1, 4),
 (45, 7, 1),
 (45, 9, 1),
 (46, 1, 1),

@@ -32,7 +32,7 @@ for($i=0;$i<$num_abilities;$i++)
     echo "<tr>";
     echo "<td>{$character_abilities[$i]['AbilityLongName']}</td>";
     $abilityId = $character_abilities[$i]['AbilityId'];
-	if($row['Value']){
+	if($character_abilities[$i]['Value']){
 		$value = $character_abilities[$i]['Value'];
 	}
 	else {
