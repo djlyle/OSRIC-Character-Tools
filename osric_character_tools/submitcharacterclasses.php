@@ -7,6 +7,7 @@ $characterId = $_POST['CharacterId'];
 if(@$_POST['cancelbutton'] == "Cancel")
 {
 	header("Location: characters.php");
+    exit();
 }
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $selectedCharacterClasses = $_POST['characterClass'];
