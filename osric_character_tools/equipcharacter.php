@@ -70,8 +70,7 @@ while($row = mysqli_fetch_assoc($result))
     echo "<td>{$row['ArmourEncumbrance']}</td>";
     echo "<td>{$row['ArmourMovementRate']}</td>";
 	echo "<td>{$row['ArmourCost']}</td>";
-    echo "<td>{$row['ArmourQuantity']}</td>";
-	$armourId = $row['ArmourId'];
+    $armourId = $row['ArmourId'];
 	if($row['Quantity']){
 		$armourQuantity = $row['Quantity'];
 	}
