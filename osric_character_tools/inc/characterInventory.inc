@@ -37,4 +37,30 @@ function updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity)
     return $result; 
 }
 
+function updateCharacterArmour($cxn, $characterId, $armourId, $quantity, $magic)
+{
+    $query = "UPDATE character_armour SET Quantity = '{$quantity}',ArmourMagic = '{$magic}' WHERE character_armour.CharacterId = {$characterId} AND character_armour.ArmourId = {$armourId}";
+    echo "query: {$query}";    
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute updateArmourInventory query.");
+    
+    return $result;
+}
+
+/*
+<summary>Get id portion of a field given a prefix of the field name.
+</summary>
+*/
+function getFieldId($fieldName,$fieldNamePrefix) 
+{
+    if(strpos($fieldName,$fieldNamePrefix) === 0)
+	{
+        $fieldNamePrefixLen = strlen($fieldNamePrefix);
+		/*extract Id from $field name, e.g. if $field="editedItem3" then Id == 3*/
+		$idLen = strlen($fieldName) - $fieldNamePrefixLen;
+		$id = substr($fieldName,$fieldNamePrefixLen,$idLen);
+        return $id;
+    }
+    return -1;
+}
+
 ?>

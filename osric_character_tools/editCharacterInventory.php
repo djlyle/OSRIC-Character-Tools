@@ -9,33 +9,31 @@ $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
-$editedItemTag = "editedItem";
-$editedItemTagLen = strlen($editedItemTag);
-$editedCoinTag = "editedCoin";
-$editedCoinTagLen = strlen($editedCoinTag);
+
+$armourRows = $_POST['armour'];
+foreach($armourRows as $armourRow)
+{
+    echo "armourRow[quantity]: {$armourRow['quantity']}";
+    echo "armourRow[armourId]: {$armourRow['armourId']}";
+    echo "armourRow[armourMagic]: {$armourRow['armourMagic']}";
+    $result = updateCharacterArmour($cxn, $characterId, $armourRow['armourId'], $armourRow['quantity'], $armourRow['armourMagic']);
+}
+
 foreach($_POST as $field => $value)
 {
-	/*Check if the name of the element in the POST array begins with "editedItem".  If it does then
-	   insert its value into the character_items table using the passed over characterId*/
+    $quantity = trim($value);
 	
-	if(strpos($field,$editedItemTag) === 0)
-	{
-		/*extract itemId from $field name, e.g. if $field="editedItem3" then itemId == 3*/
-		$itemIdLen = strlen($field) - $editedItemTagLen;
-		$itemId = substr($field,$editedItemTagLen,$itemIdLen);
-		$itemQuantity = trim($value);
-		
-		$result = updateCharacterItems($cxn, $characterId, $itemId, $itemQuantity);
-        
-	}
-
-    if(strpos($field,$editedCoinTag) === 0)
+    $coinId = getFieldId($field,"editedCoin");
+    if($coinId != -1)
     {
-        $coinIdLen = strlen($field) - $editedCoinTagLen;
-        $coinId = substr($field,$editedCoinTagLen,$coinIdLen);
-        $coinQuantity = trim($value);
-        
-        $result = updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity);    
+        $result = updateCharacterCoins($cxn, $characterId, $coinId, $quantity);    
+    }
+	
+	$itemId = getFieldId($field,"editedItem");    	
+	if($itemId != -1)
+	{
+		/*extract itemId from $field name, e.g. if $field="editedItem3" then itemId == 3*/	
+		$result = updateCharacterItems($cxn, $characterId, $itemId, $quantity);
     }
 }
 ?>

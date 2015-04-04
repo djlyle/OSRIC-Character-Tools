@@ -19,20 +19,20 @@ $totalValue = getTotalCost($cxn,$characterId);
 <form action="editCharacterInventory.php" method="POST">
 
 <?php
-echo "<h3>{$characterName}</h3>";
-echo "Total Encumbrance: ";
+echo "<h3>{$characterName}</h3>\n";
+echo "Total Encumbrance: \n";
 echo "{$totalEncumbrance} (gp in weight)";
-echo "<br/>";
-echo "Total Value: ";
+echo "<br/>\n";
+echo "Total Value: \n";
 $totalValueStr = sprintf("%01.2f",$totalValue);
 echo "{$totalValueStr} (gp in value)";
-echo "<br/><br/>";
-echo "<a href='characters.php'>Return to list of characters</a>";
-echo "<hr/>";
-echo "<h3>Coins:</h3>";
-echo "<div><input type='submit' value='submit coin inventory'/></div>";
-echo "<table id='osric_character_coins'>";
-echo "<tr><td>Coin Name</td><td>Quantity</td></tr>";
+echo "<br/>\n<br/>\n";
+echo "<a href='characters.php'>Return to list of characters</a>\n";
+echo "<hr/>\n";
+echo "<h3>Coins:</h3>\n";
+echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
+echo "<table id='osric_character_coins'>\n";
+echo "<tr><td>Coin Name</td><td>Quantity</td></tr>\n";
 $query = "SELECT * FROM character_coins cc INNER JOIN coins c on cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
 while($row = mysqli_fetch_assoc($result))
@@ -47,21 +47,22 @@ while($row = mysqli_fetch_assoc($result))
 		$coinQuantity = 0;
 	}
 	echo "<td><input type='number' min='0' max='9999999' name='editedCoin{$coinId}' value='{$coinQuantity}'></input></td>";    
-    echo "</tr>";
+    echo "</tr>\n";
 }
-echo "</table>";
-echo "<hr/>";
-echo "<h3>Armour:</h3>";
-echo "<p>To add armour not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new armour\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
-echo "<p>To edit existing armour amounts, goto the row in question in the character's armour inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit armour\" button to submit the edited quantities and save them in the database.</p>";
+echo "</table>\n";
+echo "<hr/>\n";
+echo "<h3>Armour:</h3>\n";
+echo "<p>To add armour not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new armour\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>\n";
+echo "<p>To edit existing armour amounts, goto the row in question in the character's armour inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit armour\" button to submit the edited quantities and save them in the database.</p>\n";
 echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
-echo "<br/>";
-echo "<div><input type='submit' value='submit armour'/></div>";
-echo "<table id='osric_character_armour'>";
-echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td></tr>";
+echo "<br/>\n";
+echo "<div><input type='submit' value='submit armour'/></div>\n";
+echo "<table id='osric_character_armour'>\n";
+echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td></tr>\n";
 $query = "SELECT * FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = $characterId";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
 $armourQuantity = 0;
+$i = 0;
 while($row = mysqli_fetch_assoc($result))
 {
     echo "<tr>";
@@ -78,12 +79,14 @@ while($row = mysqli_fetch_assoc($result))
 		$armourQuantity = 0;
 	}
     $armourMagic = $row['ArmourMagic'];
-	echo "<td><input type='number' min='0' max='9999999' name='editedArmour{$armourId}' value='{$armourQuantity}'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='editedArmourMagic{$armourId}' value='{$armourMagic}'></input></td>";	
-    echo "</tr>";
+	echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][quantity]' value='{$armourQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][armourMagic]' value='{$armourMagic}'></input></td>";	
+    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][armourId]' value='{$armourId}'></input></td>";    
+    echo "</tr>\n";
+    $i = $i + 1;
 }
-echo "</table>";
-echo "<hr/>";
+echo "</table>\n";
+echo "<hr/>\n";
 
 echo "<h3>Equipment:</h3>";
 echo "<p>To add equipment not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new equipment\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
