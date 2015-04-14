@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 13, 2015 at 07:53 PM
+-- Generation Time: Apr 13, 2015 at 07:59 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `ArmourId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `ArmourMagic` int(11) NOT NULL DEFAULT '0',
-  `EquipmentStatus` int(11) NOT NULL DEFAULT '1',
+  `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -197,13 +197,14 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
 -- Dumping data for table `character_armour`
 --
 
-INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatus`) VALUES
+INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES
 (45, 1, 4, 4, 1),
 (45, 2, 4, 1, 1),
 (45, 4, 5, 9, 1),
 (45, 7, 6, 2, 1),
 (45, 9, 6, 8, 1),
-(51, 1, 2, 0, 1);
+(51, 1, 2, 0, 1),
+(50, 3, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -257,11 +258,11 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 (46, 3, 4),
 (46, 4, 5),
 (46, 5, 22),
-(50, 1, 1),
-(50, 2, 0),
-(50, 3, 0),
-(50, 4, 0),
-(50, 5, 1),
+(50, 1, 2),
+(50, 2, 1),
+(50, 3, 2),
+(50, 4, 1),
+(50, 5, 2),
 (51, 1, 2),
 (51, 2, 3),
 (51, 3, 4),
