@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2015 at 02:24 PM
+-- Generation Time: Apr 13, 2015 at 07:53 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `characters`
@@ -133,7 +133,8 @@ CREATE TABLE IF NOT EXISTS `characters` (
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`, `RaceId`) VALUES
 ('R1', 1, 21, 60, 135, 45, 0, 3),
 ('R2', 2, 22, 59, 130, 46, 0, 1),
-('R3', 1, 2, 3, 1, 50, 0, 6);
+('R3', 1, 2, 3, 1, 50, 0, 6),
+('R4', 0, 1, 3, 2, 51, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (50, 3, 19),
 (50, 4, 18),
 (50, 5, 17),
-(50, 6, 22);
+(50, 6, 22),
+(51, 1, 3),
+(51, 2, 4),
+(51, 3, 5),
+(51, 4, 6),
+(51, 5, 7),
+(51, 6, 8);
 
 -- --------------------------------------------------------
 
@@ -182,17 +189,21 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `ArmourId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `ArmourMagic` int(11) NOT NULL DEFAULT '0',
-  `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`CharacterId`,`ArmourId`)
+  `EquipmentStatus` int(11) NOT NULL DEFAULT '1',
+  KEY `CharacterId` (`CharacterId`,`ArmourId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `character_armour`
 --
 
-INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES
-(45, 1, 1, 0, 1),
-(45, 2, 1, 0, 1);
+INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatus`) VALUES
+(45, 1, 4, 4, 1),
+(45, 2, 4, 1, 1),
+(45, 4, 5, 9, 1),
+(45, 7, 6, 2, 1),
+(45, 9, 6, 8, 1),
+(51, 1, 2, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -215,7 +226,8 @@ INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (46, 1),
 (46, 5),
 (45, 3),
-(45, 9);
+(45, 7),
+(51, 3);
 
 -- --------------------------------------------------------
 
@@ -249,7 +261,12 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 (50, 2, 0),
 (50, 3, 0),
 (50, 4, 0),
-(50, 5, 1);
+(50, 5, 1),
+(51, 1, 2),
+(51, 2, 3),
+(51, 3, 4),
+(51, 4, 5),
+(51, 5, 6);
 
 -- --------------------------------------------------------
 
@@ -269,9 +286,9 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 --
 
 INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(45, 1, 4),
-(45, 7, 1),
-(45, 9, 1),
+(45, 1, 6),
+(45, 7, 5),
+(45, 9, 4),
 (46, 1, 1),
 (46, 9, 1),
 (46, 12, 1),
@@ -299,7 +316,23 @@ CREATE TABLE IF NOT EXISTS `character_status` (
 INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `CharacterStatusExperiencePoints`, `CharacterStatusLevel`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
 (45, 3, 1, 1, 5, 2),
 (46, 3, 2, 1, 3, 1),
-(50, 1, 1, 1, 1, 1);
+(50, 1, 1, 1, 1, 1),
+(51, 1, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_weapons`
+--
+
+CREATE TABLE IF NOT EXISTS `character_weapons` (
+  `CharacterId` bigint(20) NOT NULL,
+  `WeaponId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `WeaponMagic` int(11) NOT NULL,
+  `EquipmentStatusId` int(11) NOT NULL,
+  PRIMARY KEY (`CharacterId`,`WeaponId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -526,6 +559,97 @@ INSERT INTO `races` (`RaceId`, `RaceName`) VALUES
 (5, 'Half Elf'),
 (6, 'Halfling'),
 (7, 'Half-Orc');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weapons`
+--
+
+CREATE TABLE IF NOT EXISTS `weapons` (
+  `WeaponId` bigint(11) NOT NULL AUTO_INCREMENT,
+  `WeaponType` varchar(32) DEFAULT NULL,
+  `WeaponEncumbranceInLbs` float NOT NULL,
+  `WeaponCost` float NOT NULL,
+  PRIMARY KEY (`WeaponId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+
+--
+-- Dumping data for table `weapons`
+--
+
+INSERT INTO `weapons` (`WeaponId`, `WeaponType`, `WeaponEncumbranceInLbs`, `WeaponCost`) VALUES
+(1, 'Arrows', 0.33, 0.33),
+(2, 'Axe, battle', 7, 5),
+(3, 'Axe, hand', 5, 1),
+(4, 'Bolt, heavy crossbow', 0.33, 0.33),
+(5, 'Bolt, light crossbow', 0.17, 0.17),
+(6, 'Bow, long', 12, 60),
+(7, 'Bow, short', 8, 15),
+(8, 'Club', 3, 0.02),
+(9, 'Composite bow, long', 13, 100),
+(10, 'Composite bow, short', 9, 75),
+(11, 'Crossbow, heavy', 12, 20),
+(12, 'Crossbow, light', 4, 12),
+(13, 'Dagger', 1, 2),
+(14, 'Dart', 0.5, 0.2),
+(15, 'Flail, heavy', 10, 3),
+(16, 'Flail, light', 4, 6),
+(17, 'Halberd', 18, 9),
+(18, 'Hammer, war, heavy', 10, 7),
+(19, 'Hammer, war, light', 5, 1),
+(20, 'Javelin', 4, 0.5),
+(21, 'Lance', 15, 6),
+(22, 'Mace, heavy', 10, 10),
+(23, 'Mace, light', 5, 4),
+(24, 'Morning Star', 12, 5),
+(25, 'Pick, heavy', 10, 8),
+(26, 'Pick, light', 4, 5),
+(27, 'Pole arm', 8, 6),
+(28, 'Sling', 0.5, 0.5),
+(29, 'Sling bullet', 0.33, 0.08),
+(30, 'Sling stone', 0.17, 0),
+(31, 'Spear', 5, 1),
+(34, 'Staff', 5, 0),
+(35, 'Sword, claymore/bastard', 10, 25),
+(36, 'Sword, broad', 8, 10),
+(37, 'Sword, long', 7, 15),
+(38, 'Sword, scimitar', 5, 15),
+(39, 'Sword, short', 3, 8),
+(40, 'Sword, two-handed', 25, 30),
+(41, 'Trident', 5, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weapon_as_melee`
+--
+
+CREATE TABLE IF NOT EXISTS `weapon_as_melee` (
+  `WeaponId` bigint(20) NOT NULL,
+  `DamageVsSmallOrMedium` int(11) NOT NULL,
+  `DamageVsLarge` int(11) NOT NULL,
+  `DamageModifierVsSmallOrMedium` int(11) NOT NULL,
+  `DamageModifierVsLarge` int(11) NOT NULL,
+  KEY `WeaponId` (`WeaponId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weapon_as_missile`
+--
+
+CREATE TABLE IF NOT EXISTS `weapon_as_missile` (
+  `WeaponId` bigint(20) NOT NULL,
+  `DamageVsSmallOrMedium` int(11) NOT NULL,
+  `DamageVsLarge` int(11) NOT NULL,
+  `DamageModifierVsSmallOrMedium` int(11) NOT NULL,
+  `DamageModifierVsLarge` int(11) NOT NULL,
+  `RateOfFire` int(11) NOT NULL,
+  `RangeInFt` int(11) NOT NULL,
+  KEY `WeaponId` (`WeaponId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
