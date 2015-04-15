@@ -88,16 +88,49 @@ while($row = mysqli_fetch_assoc($result))
 echo "</table>\n";
 echo "<hr/>\n";
 
+echo "<h3>Weapons:</h3>";
+echo "<p>To add weapons not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new weapons\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>\n";
+echo "<p>To edit existing inventory amounts, goto the row in question in the character's weapon inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit weapon list\" button to submit the edited quantities and save them in the database.</p>";
+echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new weapons</a></div>";
+echo "<br/>";
+echo "<div><input type='submit' value='submit weapons list'/></div>";
+echo "<table id='osric_character_weapons'>";
+echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td></tr>";
+$query = "SELECT * FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = $characterId";
+$result = mysqli_query($cxn,$query) or die("Couldn't execute weapons query.");
+$weaponQuantity = 0;
+$i = 0;
+while($row = mysqli_fetch_assoc($result))
+{
+    echo "<tr>";
+	echo "<td>{$row['WeaponType']}</td>";
+	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
+    echo "<td>{$row['WeaponCost']}</td>";
+    $weaponId = $row['WeaponId'];
+	if($row['Quantity']){
+		$weaponQuantity = $row['Quantity'];
+	}
+	else {
+		$weaponQuantity = 0;
+	}
+    $weaponMagic = $row['WeaponMagic'];
+	echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='{$weaponQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";    
+    echo "</tr>\n";
+    $i = $i + 1;
+}
+echo "</table>\n";
+echo "<hr/>\n";
+
 echo "<h3>Equipment:</h3>";
 echo "<p>To add equipment not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new equipment\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
-
 echo "<p>To edit existing inventory amounts, goto the row in question in the character's equipment inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit equipment list\" button to submit the edited quantities and save them in the database.</p>";
-
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
 echo "<div><input type='submit' value='submit equipment list'/></div>";
 echo "<table id='osric_character_equipment'>";
-echo "<tr><td>Item Name</td><td>Encumbrance (gp)</td><td>Cost (gp)</td><td>Quantity</td></tr>";
+echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td></tr>";
 $query = "SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
 $itemQuantity = 0;

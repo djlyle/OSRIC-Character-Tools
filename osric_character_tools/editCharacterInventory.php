@@ -13,10 +13,18 @@ $characterName = $character['CharacterName'];
 $armourRows = $_POST['armour'];
 foreach($armourRows as $armourRow)
 {
+    /*
     echo "armourRow[quantity]: {$armourRow['quantity']}";
     echo "armourRow[armourId]: {$armourRow['armourId']}";
     echo "armourRow[armourMagic]: {$armourRow['armourMagic']}";
+    */
     $result = updateCharacterArmour($cxn, $characterId, $armourRow['armourId'], $armourRow['quantity'], $armourRow['armourMagic']);
+}
+
+$weaponRows = $_POST['weapon'];
+foreach($weaponRows as $weaponRow)
+{
+    $result = updateCharacterWeapons($cxn, $characterId, $weaponRow['weaponId'], $weaponRow['quantity'], $weaponRow['weaponMagic']);
 }
 
 foreach($_POST as $field => $value)
@@ -29,10 +37,10 @@ foreach($_POST as $field => $value)
         $result = updateCharacterCoins($cxn, $characterId, $coinId, $quantity);    
     }
 	
+    /*extract itemId from $field name, e.g. if $field="editedItem3" then itemId == 3*/	
 	$itemId = getFieldId($field,"editedItem");    	
 	if($itemId != -1)
 	{
-		/*extract itemId from $field name, e.g. if $field="editedItem3" then itemId == 3*/	
 		$result = updateCharacterItems($cxn, $characterId, $itemId, $quantity);
     }
 }

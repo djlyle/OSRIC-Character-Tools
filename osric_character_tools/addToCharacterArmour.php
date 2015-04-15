@@ -38,7 +38,7 @@ foreach($_POST as $field => $value)
 			$count = $count + $armourQuantityToAdd;
 			if($count > 0)
 			{
-				$query = "UPDATE character_armour SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ArmourId = '{$itemId}'";
+				$query = "UPDATE character_armour SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ArmourId = '{$armourId}'";
 				$result = mysqli_query($cxn,$query) or die("Couldn't execute update character_armour query.");
 			}
 		}
