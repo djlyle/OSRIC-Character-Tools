@@ -1,6 +1,6 @@
 <?php
-/*Program: addToCharacterInventory.php
-   Desc: Adds items to character's inventory
+/*Program: addToCharacterWeapons.php
+   Desc: Adds weapons to character's inventory
 */
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");

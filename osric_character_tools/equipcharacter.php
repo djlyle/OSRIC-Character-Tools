@@ -33,10 +33,11 @@ echo "<h3>Coins:</h3>\n";
 echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
 echo "<table id='osric_character_coins'>\n";
 echo "<tr><td>Coin Name</td><td>Quantity</td></tr>\n";
-$query = "SELECT * FROM character_coins cc INNER JOIN coins c on cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
-while($row = mysqli_fetch_assoc($result))
+$character_coins = getCharacterCoins($cxn,$characterId);
+$num_rows = count($character_coins);
+for($i=0;$i<$num_rows;$i++)
 {
+    $row = $character_coins[$i];
     echo "<tr>";
     echo "<td>{$row['CoinName']}</td>";
     $coinId = $row['CoinId'];
@@ -46,7 +47,9 @@ while($row = mysqli_fetch_assoc($result))
 	else {
 		$coinQuantity = 0;
 	}
-	echo "<td><input type='number' min='0' max='9999999' name='editedCoin{$coinId}' value='{$coinQuantity}'></input></td>";    
+	echo "<td><input type='number' min='0' max='9999999' name='coin[{$i}][quantity]' value='{$coinQuantity}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$i}][coinId]' value='{$coinId}'></input></td>";    
+        
     echo "</tr>\n";
 }
 echo "</table>\n";
@@ -59,12 +62,11 @@ echo "<br/>\n";
 echo "<div><input type='submit' value='submit armour'/></div>\n";
 echo "<table id='osric_character_armour'>\n";
 echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td></tr>\n";
-$query = "SELECT * FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = $characterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
-$armourQuantity = 0;
-$i = 0;
-while($row = mysqli_fetch_assoc($result))
+$character_armour = getCharacterArmour($cxn,$characterId);
+$num_rows = count($character_armour);
+for($i=0;$i<$num_rows;$i++)
 {
+    $row = $character_armour[$i];
     echo "<tr>";
 	echo "<td>{$row['ArmourType']}</td>";
 	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
@@ -83,7 +85,6 @@ while($row = mysqli_fetch_assoc($result))
     echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][armourMagic]' value='{$armourMagic}'></input></td>";	
     echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][armourId]' value='{$armourId}'></input></td>";    
     echo "</tr>\n";
-    $i = $i + 1;
 }
 echo "</table>\n";
 echo "<hr/>\n";
@@ -96,12 +97,11 @@ echo "<br/>";
 echo "<div><input type='submit' value='submit weapons list'/></div>";
 echo "<table id='osric_character_weapons'>";
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td></tr>";
-$query = "SELECT * FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = $characterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute weapons query.");
-$weaponQuantity = 0;
-$i = 0;
-while($row = mysqli_fetch_assoc($result))
+$character_weapons = getCharacterWeapons($cxn,$characterId);
+$num_rows = count($character_weapons);
+for($i=0;$i<$num_rows;$i++)
 {
+    $row = $character_weapons[$i];
     echo "<tr>";
 	echo "<td>{$row['WeaponType']}</td>";
 	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
@@ -118,7 +118,6 @@ while($row = mysqli_fetch_assoc($result))
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
     echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";    
     echo "</tr>\n";
-    $i = $i + 1;
 }
 echo "</table>\n";
 echo "<hr/>\n";
@@ -131,11 +130,12 @@ echo "<br/>";
 echo "<div><input type='submit' value='submit equipment list'/></div>";
 echo "<table id='osric_character_equipment'>";
 echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td></tr>";
-$query = "SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
 $itemQuantity = 0;
-while($row = mysqli_fetch_assoc($result))
+$character_items = getCharacterItems($cxn,$characterId);
+$num_rows = count($character_items);
+for($i=0;$i<$num_rows;$i++)
 {
+    $row = $character_items[$i];
 	echo "<tr>";
 	echo "<td>{$row['ItemName']}</td>";
 	echo "<td>{$row['ItemEncumbrance']}</td>";
@@ -147,8 +147,9 @@ while($row = mysqli_fetch_assoc($result))
 	else {
 		$itemQuantity = 0;
 	}
-	echo "<td><input type='number' min='0' max='9999999' name='editedItem{$itemId}' value='{$itemQuantity}'></input></td>";
-	echo "</tr>";
+	echo "<td><input type='number' min='0' max='9999999' name='item[{$i}][quantity]' value='{$itemQuantity}'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$i}][itemId]' value='{$itemId}'></input></td>";    
+    echo "</tr>";
 }
 echo "</table>";
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";

@@ -28,7 +28,7 @@ while($row = mysqli_fetch_assoc($result))
 	echo "<td>{$row['WeaponCost']}</td>";
     $weaponId = $row['WeaponId'];
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";
+    echo "<td><input type='hidden' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";
 	echo "</tr>";
     $i = $i + 1;	
 }
