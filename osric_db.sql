@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2015 at 02:46 PM
+-- Generation Time: Apr 18, 2015 at 03:15 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `characters`
@@ -136,7 +136,8 @@ INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `C
 ('R3', 1, 2, 3, 1, 50, 0, 6),
 ('R4', 0, 1, 3, 2, 51, 0, 2),
 ('R5', 1, 3, 1, 1, 52, 0, 0),
-('R7', 1, 37, 66, 140, 54, 0, 5);
+('R7', 1, 37, 66, 140, 54, 0, 5),
+('R8', 1, 3, 2, 2, 55, 0, 4);
 
 -- --------------------------------------------------------
 
@@ -190,7 +191,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (54, 3, 3),
 (54, 4, 3),
 (54, 5, 2),
-(54, 6, 3);
+(54, 6, 3),
+(55, 1, 4),
+(55, 2, 5),
+(55, 3, 4),
+(55, 4, 5),
+(55, 5, 4),
+(55, 6, 6);
 
 -- --------------------------------------------------------
 
@@ -207,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `character_armour`
@@ -228,7 +235,10 @@ INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, 
 (12, 54, 4, 7, 2, 1),
 (13, 54, 5, 2, 4, 2),
 (14, 54, 1, 1, 1, 1),
-(15, 54, 2, 1, 1, 1);
+(15, 54, 2, 1, 1, 1),
+(16, 55, 1, 3, 1, 1),
+(17, 55, 2, 1, 2, 2),
+(18, 55, 3, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -253,7 +263,8 @@ INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (45, 3),
 (45, 7),
 (51, 3),
-(54, 4);
+(54, 4),
+(55, 5);
 
 -- --------------------------------------------------------
 
@@ -302,7 +313,12 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 (54, 2, 9),
 (54, 3, 9),
 (54, 4, 8),
-(54, 5, 2);
+(54, 5, 2),
+(55, 1, 3),
+(55, 2, 5),
+(55, 3, 6),
+(55, 4, 7),
+(55, 5, 4);
 
 -- --------------------------------------------------------
 
@@ -316,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `ItemId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   PRIMARY KEY (`CharacterItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `character_items`
@@ -336,7 +352,10 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (11, 52, 4, 1),
 (12, 54, 3, 3),
 (13, 54, 4, 3),
-(14, 54, 5, 4);
+(14, 54, 5, 4),
+(15, 55, 1, 3),
+(16, 55, 2, 1),
+(17, 55, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -363,7 +382,8 @@ INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `Cha
 (50, 1, 1, 1, 1, 1),
 (51, 1, 1, 1, 1, 1),
 (52, 0, 0, 0, 0, 0),
-(54, 1, 6000, 2, 9, 6);
+(54, 1, 6000, 2, 9, 6),
+(55, 1, 2, 3, 10, 3);
 
 -- --------------------------------------------------------
 
@@ -379,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `character_weapons` (
   `WeaponMagic` int(11) NOT NULL,
   `EquipmentStatusId` int(11) NOT NULL,
   PRIMARY KEY (`CharacterWeaponId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `character_weapons`
@@ -398,7 +418,11 @@ INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`,
 (10, 54, 2, 3, 2, 0),
 (11, 54, 4, 3, 2, 0),
 (12, 54, 6, 1, 2, 0),
-(13, 54, 11, 1, 3, 0);
+(13, 54, 11, 1, 3, 0),
+(14, 55, 1, 3, 1, 2),
+(15, 55, 2, 1, 0, 1),
+(16, 55, 6, 1, 2, 2),
+(17, 55, 8, 1, 3, 3);
 
 -- --------------------------------------------------------
 

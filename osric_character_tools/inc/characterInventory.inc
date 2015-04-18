@@ -39,17 +39,17 @@ function updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity)
     return $result; 
 }
 
-function updateCharacterArmour($cxn, $characterId, $armourId, $quantity, $magic, $equipmentStatusId)
+function updateCharacterArmour($cxn, $characterArmourId, $quantity, $magic, $equipmentStatusId)
 {
-    $query = "UPDATE character_armour SET Quantity = '{$quantity}',ArmourMagic = '{$magic}', EquipmentStatusId = '{$equipmentStatusId}' WHERE character_armour.CharacterId = {$characterId} AND character_armour.ArmourId = {$armourId}";
+    $query = "UPDATE character_armour SET Quantity = '{$quantity}',ArmourMagic = '{$magic}', EquipmentStatusId = '{$equipmentStatusId}' WHERE character_armour.CharacterArmourId = {$characterArmourId}";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute updateArmourInventory query.");
     
     return $result;
 }
 
-function updateCharacterWeapons($cxn, $characterId, $weaponId, $quantity, $magic)
+function updateCharacterWeapons($cxn, $characterWeaponId, $quantity, $magic, $equipmentStatusId)
 {
-    $query = "UPDATE character_weapons SET Quantity = '{$quantity}',WeaponMagic = '{$magic}' WHERE character_weapons.CharacterId = {$characterId} AND character_weapons.WeaponId = {$weaponId}";
+    $query = "UPDATE character_weapons SET Quantity = '{$quantity}',WeaponMagic = '{$magic}', EquipmentStatusId = '{$equipmentStatusId}' WHERE character_weapons.CharacterWeaponId = {$characterWeaponId}";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute updateWeaponsInventory query.");
     
     return $result;

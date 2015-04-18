@@ -75,7 +75,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td>{$row['ArmourEncumbrance']}</td>";
     echo "<td>{$row['ArmourMovementRate']}</td>";
 	echo "<td>{$row['ArmourCost']}</td>";
-    $armourId = $row['ArmourId'];
+    $characterArmourId = $row['CharacterArmourId'];
 	if($row['Quantity']){
 		$armourQuantity = $row['Quantity'];
 	}
@@ -88,7 +88,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td>";
     html_listbox("armour[{$i}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
     echo "</td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][armourId]' value='{$armourId}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
     echo "</tr>\n";
 }
 echo "</table>\n";
@@ -101,7 +101,7 @@ echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new wea
 echo "<br/>";
 echo "<div><input type='submit' value='submit weapons list'/></div>";
 echo "<table id='osric_character_weapons'>";
-echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td></tr>";
+echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>";
 $character_weapons = getCharacterWeapons($cxn,$characterId);
 $num_rows = count($character_weapons);
 for($i=0;$i<$num_rows;$i++)
@@ -111,7 +111,7 @@ for($i=0;$i<$num_rows;$i++)
 	echo "<td>{$row['WeaponType']}</td>";
 	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
     echo "<td>{$row['WeaponCost']}</td>";
-    $weaponId = $row['WeaponId'];
+    $characterWeaponId = $row['CharacterWeaponId'];
 	if($row['Quantity']){
 		$weaponQuantity = $row['Quantity'];
 	}
@@ -121,7 +121,10 @@ for($i=0;$i<$num_rows;$i++)
     $weaponMagic = $row['WeaponMagic'];
 	echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='{$weaponQuantity}'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
-    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";    
+    echo "<td>";
+    html_listbox("weapon[{$i}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";      
+    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][characterWeaponId]' value='{$characterWeaponId}'></input></td>";    
     echo "</tr>\n";
 }
 echo "</table>\n";
