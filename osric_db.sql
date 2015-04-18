@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2015 at 10:06 AM
+-- Generation Time: Apr 18, 2015 at 01:59 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -229,6 +229,30 @@ INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `character_armour_storage`
+--
+
+CREATE TABLE IF NOT EXISTS `character_armour_storage` (
+  `CharacterId` bigint(20) NOT NULL,
+  `ArmourId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_armour_worn`
+--
+
+CREATE TABLE IF NOT EXISTS `character_armour_worn` (
+  `CharacterId` bigint(20) NOT NULL,
+  `ArmourId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `character_classes`
 --
 
@@ -336,6 +360,18 @@ INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `character_items_storage`
+--
+
+CREATE TABLE IF NOT EXISTS `character_items_storage` (
+  `CharacterId` bigint(20) NOT NULL,
+  `ItemId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `character_status`
 --
 
@@ -393,6 +429,30 @@ INSERT INTO `character_weapons` (`CharacterId`, `WeaponId`, `Quantity`, `WeaponM
 (54, 4, 3, 2, 0),
 (54, 6, 1, 2, 0),
 (54, 11, 1, 3, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_weapons_hefted`
+--
+
+CREATE TABLE IF NOT EXISTS `character_weapons_hefted` (
+  `CharacterId` bigint(20) NOT NULL,
+  `WeaponId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_weapons_storage`
+--
+
+CREATE TABLE IF NOT EXISTS `character_weapons_storage` (
+  `CharacterId` bigint(20) NOT NULL,
+  `WeaponId` bigint(20) NOT NULL,
+  `Quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
