@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2015 at 10:06 AM
+-- Generation Time: Apr 18, 2015 at 02:42 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -199,32 +199,36 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `character_armour` (
+  `CharacterArmourId` bigint(20) NOT NULL AUTO_INCREMENT,
   `CharacterId` bigint(20) NOT NULL,
   `ArmourId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `ArmourMagic` int(11) NOT NULL DEFAULT '0',
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `character_armour`
 --
 
-INSERT INTO `character_armour` (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES
-(45, 1, 4, 4, 1),
-(45, 2, 4, 1, 1),
-(45, 4, 5, 9, 1),
-(45, 7, 6, 2, 1),
-(45, 9, 6, 8, 1),
-(51, 1, 2, 4, 1),
-(50, 3, 1, 0, 1),
-(51, 2, 3, 5, 1),
-(52, 1, 2, 3, 1),
-(52, 2, 1, 4, 1),
-(53, 1, 1, 0, 1),
-(54, 4, 7, 0, 1),
-(54, 5, 2, 0, 2);
+INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES
+(1, 45, 1, 4, 4, 1),
+(2, 45, 2, 4, 1, 1),
+(3, 45, 4, 5, 9, 1),
+(4, 45, 7, 6, 2, 1),
+(5, 45, 9, 6, 8, 1),
+(6, 51, 1, 2, 4, 1),
+(7, 50, 3, 1, 0, 1),
+(8, 51, 2, 3, 5, 1),
+(9, 52, 1, 2, 3, 1),
+(10, 52, 2, 1, 4, 1),
+(11, 53, 1, 1, 0, 1),
+(12, 54, 4, 7, 2, 1),
+(13, 54, 5, 2, 4, 2),
+(14, 54, 1, 1, 1, 1),
+(15, 54, 2, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -307,31 +311,32 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `character_items` (
+  `CharacterItemId` bigint(20) NOT NULL AUTO_INCREMENT,
   `CharacterId` bigint(20) NOT NULL,
   `ItemId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
-  PRIMARY KEY (`CharacterId`,`ItemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`CharacterItemId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `character_items`
 --
 
-INSERT INTO `character_items` (`CharacterId`, `ItemId`, `Quantity`) VALUES
-(45, 1, 6),
-(45, 7, 5),
-(45, 9, 4),
-(46, 1, 1),
-(46, 9, 1),
-(46, 12, 1),
-(50, 2, 1),
-(51, 1, 4),
-(51, 2, 3),
-(52, 1, 1),
-(52, 4, 1),
-(54, 3, 3),
-(54, 4, 3),
-(54, 5, 4);
+INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quantity`) VALUES
+(1, 45, 1, 6),
+(2, 45, 7, 5),
+(3, 45, 9, 4),
+(4, 46, 1, 1),
+(5, 46, 9, 1),
+(6, 46, 12, 1),
+(7, 50, 2, 1),
+(8, 51, 1, 4),
+(9, 51, 2, 3),
+(10, 52, 1, 1),
+(11, 52, 4, 1),
+(12, 54, 3, 3),
+(13, 54, 4, 3),
+(14, 54, 5, 4);
 
 -- --------------------------------------------------------
 
@@ -367,32 +372,32 @@ INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `Cha
 --
 
 CREATE TABLE IF NOT EXISTS `character_weapons` (
+  `CharacterWeaponId` bigint(20) NOT NULL,
   `CharacterId` bigint(20) NOT NULL,
   `WeaponId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `WeaponMagic` int(11) NOT NULL,
-  `EquipmentStatusId` int(11) NOT NULL,
-  PRIMARY KEY (`CharacterId`,`WeaponId`)
+  `EquipmentStatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `character_weapons`
 --
 
-INSERT INTO `character_weapons` (`CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES
-(52, 1, 2, 4, 0),
-(52, 2, 1, 5, 0),
-(52, 6, 7, 6, 0),
-(52, 7, 5, 4, 0),
-(52, 8, 3, 0, 0),
-(53, 1, 1, 0, 0),
-(53, 5, 2, 0, 0),
-(53, 27, 1, 0, 0),
-(53, 28, 1, 0, 0),
-(54, 2, 3, 2, 0),
-(54, 4, 3, 2, 0),
-(54, 6, 1, 2, 0),
-(54, 11, 1, 3, 0);
+INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES
+(0, 52, 1, 2, 4, 0),
+(0, 52, 2, 1, 5, 0),
+(0, 52, 6, 7, 6, 0),
+(0, 52, 7, 5, 4, 0),
+(0, 52, 8, 3, 0, 0),
+(0, 53, 1, 1, 0, 0),
+(0, 53, 5, 2, 0, 0),
+(0, 53, 27, 1, 0, 0),
+(0, 53, 28, 1, 0, 0),
+(0, 54, 2, 3, 2, 0),
+(0, 54, 4, 3, 2, 0),
+(0, 54, 6, 1, 2, 0),
+(0, 54, 11, 1, 3, 0);
 
 -- --------------------------------------------------------
 
