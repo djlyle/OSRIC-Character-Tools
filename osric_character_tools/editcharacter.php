@@ -7,6 +7,8 @@ echo "Character with CharacterId={$CharacterId}";
 
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");
+include("./inc/functions.inc");
+include("./inc/db_funcs.inc");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
@@ -19,14 +21,14 @@ $inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","Charact
 $selectOptions['CharacterGender'][0] = "Unknown";
 $selectOptions['CharacterGender'][1] = "Male";
 $selectOptions['CharacterGender'][2] = "Female";
-$k=0;
-$query = "SELECT * FROM races";
+$selectOptions['RaceId'] = osricdb_getRaceOptions($cxn);
+/*$query = "SELECT * FROM races";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute races query.");
 while($row = mysqli_fetch_assoc($result))
 {
+    $k = $row['RaceId']
     $selectOptions['RaceId'][$k] = $row['RaceName'];
-    $k = $k + 1;
-}
+}*/
 ?>
 
 /*Character form*/
@@ -62,23 +64,11 @@ foreach($labels as $field => $label)
 			echo "<input type='text' name='$field' value='$value'/>";
 		break;
 		case "select":
-			echo "<select name='$field'>";
-			foreach($selectOptions[$field] as $val=>$label)
-			{
-				echo "<option value='{$val}'";
-				if($val == $value)
-				{
-					echo "selected";
-				}
-				echo ">{$label}</option>";
-				
-			}
-			echo "</select>";
+            html_listbox($field, $selectOptions[$field], $value);
 		break;
 		case "float":
 			echo "<input type='number' name='$field' min='0' step='any' value='$value'/>";
 		break;
-		
 	}
 	echo "</td>";
 	echo "</tr>";

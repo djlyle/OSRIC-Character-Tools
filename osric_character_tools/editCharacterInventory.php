@@ -13,7 +13,7 @@ $characterName = $character['CharacterName'];
 $armourRows = $_POST['armour'];
 foreach($armourRows as $armourRow)
 {
-    $result = updateCharacterArmour($cxn, $characterId, $armourRow['armourId'], $armourRow['quantity'], $armourRow['armourMagic']);
+    $result = updateCharacterArmour($cxn, $characterId, $armourRow['armourId'], $armourRow['quantity'], $armourRow['armourMagic'], $armourRow['equipmentStatusId']);
 }
 
 $weaponRows = $_POST['weapon'];

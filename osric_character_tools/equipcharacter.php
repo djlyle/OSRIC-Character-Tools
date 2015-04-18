@@ -2,6 +2,8 @@
 include("./inc/misc.inc");
 include("./inc/characterInventory.inc");
 include("./inc/charactertblfuncs.inc");
+include("./inc/db_funcs.inc");
+include("./inc/functions.inc");
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $character = getCharacter($cxn,$characterId);
@@ -10,6 +12,7 @@ $totalItemEncumbrance = getTotalItemEncumbrance($cxn,$characterId);
 $totalCoinEncumbrance = getTotalCoinEncumbrance($cxn,$characterId);
 $totalEncumbrance = $totalItemEncumbrance + $totalCoinEncumbrance;
 $totalValue = getTotalCost($cxn,$characterId);
+$equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
 ?>
 
 <html>
@@ -49,7 +52,6 @@ for($i=0;$i<$num_rows;$i++)
 	}
 	echo "<td><input type='number' min='0' max='9999999' name='coin[{$i}][quantity]' value='{$coinQuantity}'></input></td>";    
     echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$i}][coinId]' value='{$coinId}'></input></td>";    
-        
     echo "</tr>\n";
 }
 echo "</table>\n";
@@ -61,7 +63,7 @@ echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armo
 echo "<br/>\n";
 echo "<div><input type='submit' value='submit armour'/></div>\n";
 echo "<table id='osric_character_armour'>\n";
-echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td></tr>\n";
+echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>\n";
 $character_armour = getCharacterArmour($cxn,$characterId);
 $num_rows = count($character_armour);
 for($i=0;$i<$num_rows;$i++)
@@ -83,6 +85,9 @@ for($i=0;$i<$num_rows;$i++)
     $armourMagic = $row['ArmourMagic'];
 	echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][quantity]' value='{$armourQuantity}'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][armourMagic]' value='{$armourMagic}'></input></td>";	
+    echo "<td>";
+    html_listbox("armour[{$i}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";    
     echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][armourId]' value='{$armourId}'></input></td>";    
     echo "</tr>\n";
 }
