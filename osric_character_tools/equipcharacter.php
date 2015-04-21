@@ -62,13 +62,16 @@ echo "<p>To edit existing armour amounts, goto the row in question in the charac
 echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
 echo "<br/>\n";
 echo "<div><input type='submit' value='submit armour'/></div>\n";
-echo "<table id='osric_character_armour'>\n";
+
+$offset = 0;
+echo "<h3>Armour in Use:</h3>";
+echo "<table id='osric_character_armour_in_use'>\n";
 echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>\n";
-$character_armour = getCharacterArmour($cxn,$characterId);
-$num_rows = count($character_armour);
+$character_armour_in_use = osricdb_getCharacterArmourInUse($cxn,$characterId);
+$num_rows = count($character_armour_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_armour[$i];
+    $row = $character_armour_in_use[$i];
     echo "<tr>";
 	echo "<td>{$row['ArmourType']}</td>";
 	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
@@ -83,12 +86,81 @@ for($i=0;$i<$num_rows;$i++)
 		$armourQuantity = 0;
 	}
     $armourMagic = $row['ArmourMagic'];
-	echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][quantity]' value='{$armourQuantity}'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='armour[{$i}][armourMagic]' value='{$armourMagic}'></input></td>";	
+    $armourIndex = $offset + $i;
+	echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][quantity]' value='{$armourQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][armourMagic]' value='{$armourMagic}'></input></td>";	
     echo "<td>";
-    html_listbox("armour[{$i}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    html_listbox("armour[{$armourIndex}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
     echo "</td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$i}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$armourIndex}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+
+$offset = $offset + $num_rows;
+
+echo "<h3>Armour Carried:</h3>";
+echo "<table id='osric_character_armour_carried'>\n";
+echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>\n";
+$character_armour_carried = osricdb_getCharacterArmourCarried($cxn,$characterId);
+$num_rows = count($character_armour_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_armour_carried[$i];
+    echo "<tr>";
+	echo "<td>{$row['ArmourType']}</td>";
+	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
+    echo "<td>{$row['ArmourEncumbrance']}</td>";
+    echo "<td>{$row['ArmourMovementRate']}</td>";
+	echo "<td>{$row['ArmourCost']}</td>";
+    $characterArmourId = $row['CharacterArmourId'];
+	if($row['Quantity']){
+		$armourQuantity = $row['Quantity'];
+	}
+	else {
+		$armourQuantity = 0;
+	}
+    $armourMagic = $row['ArmourMagic'];
+    $armourIndex = $offset + $i;
+	echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][quantity]' value='{$armourQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][armourMagic]' value='{$armourMagic}'></input></td>";	
+    echo "<td>";
+    html_listbox("armour[{$armourIndex}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$armourIndex}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+$offset = $offset + $num_rows;
+echo "<h3>Armour In Storage: </h3>";
+$character_armour_in_storage = osricdb_getCharacterArmourInStorage($cxn,$characterId);
+$num_rows = count($character_armour_in_storage);
+echo "<table id='osric_character_armour_in_storage'>";
+echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>\n";
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_armour_in_storage[$i];
+    echo "<tr>";
+	echo "<td>{$row['ArmourType']}</td>";
+	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
+    echo "<td>{$row['ArmourEncumbrance']}</td>";
+    echo "<td>{$row['ArmourMovementRate']}</td>";
+	echo "<td>{$row['ArmourCost']}</td>";
+    $characterArmourId = $row['CharacterArmourId'];
+	if($row['Quantity']){
+		$armourQuantity = $row['Quantity'];
+	}
+	else {
+		$armourQuantity = 0;
+	}
+    $armourMagic = $row['ArmourMagic'];
+    $armourIndex = $offset + $i;
+	echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][quantity]' value='{$armourQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='armour[{$armourIndex}][armourMagic]' value='{$armourMagic}'></input></td>";	
+    echo "<td>";
+    html_listbox("armour[{$armourIndex}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$armourIndex}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
     echo "</tr>\n";
 }
 echo "</table>\n";

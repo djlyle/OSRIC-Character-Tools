@@ -1,0 +1,9 @@
+<?php
+
+define('EQUIPMENT_STATUS_ID_IN_STORAGE', '1');
+define('EQUIPMENT_STATUS_ID_CARRIED', '2');
+define('EQUIPMENT_STATUS_ID_HEFTED_OR_WORN', '3');
+
+
+
+?>
