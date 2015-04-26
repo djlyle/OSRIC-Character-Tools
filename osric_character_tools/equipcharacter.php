@@ -172,13 +172,16 @@ echo "<p>To edit existing inventory amounts, goto the row in question in the cha
 echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new weapons</a></div>";
 echo "<br/>";
 echo "<div><input type='submit' value='submit weapons list'/></div>";
-echo "<table id='osric_character_weapons'>";
+
+echo "<h3>Weapons in Use:</h3>";
+echo "<table id='osric_character_weapons_in_use'>\n";
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>";
-$character_weapons = getCharacterWeapons($cxn,$characterId);
-$num_rows = count($character_weapons);
+$character_weapons_in_use = osricdb_getCharacterWeaponsInUse($cxn,$characterId);
+$num_rows = count($character_weapons_in_use);
+$offset = 0;
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_weapons[$i];
+    $row = $character_weapons_in_use[$i];
     echo "<tr>";
 	echo "<td>{$row['WeaponType']}</td>";
 	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
@@ -191,12 +194,78 @@ for($i=0;$i<$num_rows;$i++)
 		$weaponQuantity = 0;
 	}
     $weaponMagic = $row['WeaponMagic'];
-	echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='{$weaponQuantity}'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    $index = $offset + $i;
+		
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
     echo "<td>";
-    html_listbox("weapon[{$i}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    html_listbox("weapon[{$index}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
     echo "</td>";      
-    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$i}][characterWeaponId]' value='{$characterWeaponId}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][characterWeaponId]' value='{$characterWeaponId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+$offset = $offset + $num_rows;
+echo "<h3>Weapons Carried:</h3>\n";
+echo "<table id='osric_character_weapons_carried'>\n";
+echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>";
+$character_weapons_carried = osricdb_getCharacterWeaponsCarried($cxn,$characterId);
+$num_rows = count($character_weapons_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_weapons_carried[$i];
+    echo "<tr>";
+	echo "<td>{$row['WeaponType']}</td>";
+	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
+    echo "<td>{$row['WeaponCost']}</td>";
+    $characterWeaponId = $row['CharacterWeaponId'];
+	if($row['Quantity']){
+		$weaponQuantity = $row['Quantity'];
+	}
+	else {
+		$weaponQuantity = 0;
+	}
+    $weaponMagic = $row['WeaponMagic'];
+    $index = $offset + $i;
+		
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td>";
+    html_listbox("weapon[{$index}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";      
+    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][characterWeaponId]' value='{$characterWeaponId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+$offset = $offset + $num_rows;
+echo "<h3>Weapons in Storage:</h3>\n";
+echo "<table id='osric_character_weapons_in_storage'>\n";
+echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Equipment Status</td></tr>";
+$character_weapons_in_storage = osricdb_getCharacterWeaponsInStorage($cxn,$characterId);
+$num_rows = count($character_weapons_in_storage);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_weapons_in_storage[$i];
+    echo "<tr>";
+	echo "<td>{$row['WeaponType']}</td>";
+	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
+    echo "<td>{$row['WeaponCost']}</td>";
+    $characterWeaponId = $row['CharacterWeaponId'];
+	if($row['Quantity']){
+		$weaponQuantity = $row['Quantity'];
+	}
+	else {
+		$weaponQuantity = 0;
+	}
+    $weaponMagic = $row['WeaponMagic'];
+    $index = $offset + $i;
+		
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}'></input></td>";
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td>";
+    html_listbox("weapon[{$index}][equipmentStatusId]", $equipmentStatusOptions, $row['EquipmentStatusId']);        
+    echo "</td>";      
+    echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][characterWeaponId]' value='{$characterWeaponId}'></input></td>";    
     echo "</tr>\n";
 }
 echo "</table>\n";

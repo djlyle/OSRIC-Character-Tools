@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 21, 2015 at 12:31 AM
+-- Generation Time: Apr 25, 2015 at 11:04 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `character_armour`
@@ -222,24 +222,25 @@ INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, 
 (6, 51, 1, 2, 4, 1),
 (7, 50, 3, 1, 0, 1),
 (8, 51, 2, 3, 5, 1),
-(9, 52, 1, 2, 3, 1),
-(10, 52, 2, 1, 4, 1),
+(9, 52, 1, 5, 3, 1),
+(10, 52, 2, 1, 4, 2),
 (11, 53, 1, 1, 0, 1),
 (12, 54, 4, 7, 2, 2),
-(13, 54, 5, 2, 4, 3),
-(14, 54, 1, 1, 1, 3),
+(13, 54, 5, 2, 4, 1),
+(14, 54, 1, 1, 1, 1),
 (15, 54, 2, 1, 1, 1),
 (16, 55, 1, 4, 1, 3),
 (17, 55, 2, 1, 2, 2),
 (18, 55, 3, 1, 0, 1),
-(19, 54, 3, 2, 4, 2),
-(20, 54, 7, 4, 3, 3),
+(19, 54, 3, 2, 4, 3),
+(20, 54, 7, 4, 3, 1),
 (21, 55, 11, 2, 0, 1),
 (22, 55, 12, 2, 0, 1),
 (23, 56, 6, 1, 0, 3),
 (24, 56, 7, 1, 0, 1),
 (25, 56, 8, 1, 0, 2),
-(26, 54, 13, 1, 3, 2);
+(26, 54, 13, 1, 3, 2),
+(27, 52, 10, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -388,32 +389,20 @@ CREATE TABLE IF NOT EXISTS `character_weapons` (
   `WeaponId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `WeaponMagic` int(11) NOT NULL,
-  `EquipmentStatusId` int(11) NOT NULL,
+  `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterWeaponId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `character_weapons`
 --
 
 INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES
-(1, 52, 1, 2, 4, 0),
-(2, 52, 2, 1, 5, 0),
-(3, 52, 6, 7, 6, 0),
-(4, 52, 7, 5, 4, 0),
-(5, 52, 8, 3, 0, 0),
-(6, 53, 1, 1, 0, 0),
-(7, 53, 5, 2, 0, 0),
-(8, 53, 27, 1, 0, 0),
-(9, 53, 28, 1, 0, 0),
-(10, 54, 2, 3, 2, 1),
-(11, 54, 4, 3, 2, 1),
-(12, 54, 6, 1, 2, 1),
-(13, 54, 11, 1, 3, 1),
-(14, 55, 1, 3, 1, 2),
-(15, 55, 2, 1, 0, 1),
-(16, 55, 6, 1, 2, 2),
-(17, 55, 8, 1, 3, 1);
+(19, 52, 7, 1, 0, 3),
+(20, 52, 8, 1, 0, 1),
+(21, 52, 13, 3, 0, 2),
+(22, 52, 14, 1, 0, 3),
+(23, 52, 15, 1, 0, 2);
 
 -- --------------------------------------------------------
 

@@ -44,7 +44,6 @@ function updateCharacterCoins($cxn, $characterId, $coinId, $coinQuantity)
 function updateCharacterArmour($cxn, $characterArmourId, $quantity, $magic, $equipmentStatusId)
 {
     $query = "UPDATE character_armour SET Quantity = '{$quantity}',ArmourMagic = '{$magic}', EquipmentStatusId = '{$equipmentStatusId}' WHERE character_armour.CharacterArmourId = {$characterArmourId}";
-    echo "query: ".$query;    
     $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterArmour query.");
     
     return $result;
@@ -90,12 +89,27 @@ function getCharacterWeapons($cxn, $characterId)
     return $result_set;
 }
 
-function osricdb_getCharacterWeaponsInStorage($cxn, $characterId)
+function osricdb_getCharacterWeaponsByStatus($cxn, $characterId, $equipmentStatus)
 {
-    $query = sprintf("SELECT * FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = $characterId AND cw.EquipmentStatusId = '%s'","1");
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterWeaponsInStorage query.");
+    $query = sprintf("SELECT * FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = $characterId AND cw.EquipmentStatusId = '%s'",$equipmentStatus);
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterWeaponsByStatus query.");
     for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
     return $result_set;
+}
+
+function osricdb_getCharacterWeaponsInStorage($cxn, $characterId)
+{
+    return osricdb_getCharacterWeaponsByStatus($cxn, $characterId, "1");
+}
+
+function osricdb_getCharacterWeaponsCarried($cxn, $characterId)
+{
+    return osricdb_getCharacterWeaponsByStatus($cxn, $characterId, "2");
+}
+
+function osricdb_getCharacterWeaponsInUse($cxn, $characterId)
+{
+    return osricdb_getCharacterWeaponsByStatus($cxn, $characterId, "3");
 }
 
 function osricdb_getCharacterArmourInStorage($cxn, $characterId)
