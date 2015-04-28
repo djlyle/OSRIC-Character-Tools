@@ -19,7 +19,11 @@ foreach($armourRows as $armourRow)
 $weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)
 {
-    $result = updateCharacterWeapons($cxn, $weaponRow['characterWeaponId'], $weaponRow['quantity'], $weaponRow['weaponMagic'], $weaponRow['equipmentStatusId']);
+    /*$result = updateCharacterWeapons($cxn, $weaponRow['characterWeaponId'], $weaponRow['quantity'], $weaponRow['weaponMagic'], $weaponRow['equipmentStatusId']);*/
+    if($weaponRow['transferQuantity'] > 0)
+    {
+        $result = osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow);
+    }
 }
 
 $coinRows = $_POST['coin'];

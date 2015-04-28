@@ -136,6 +136,43 @@ function osricdb_getCharacterArmourInUse($cxn, $characterId)
     return $result_set;
 }
 
+function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
+{
+    $transferQuantity = min($weaponRow['transferQuantity'],$weaponRow['quantity']);
+    $transferDestination = $weaponRow['transferDestination'];
+    $weaponId = $weaponRow['weaponId'];
+    $magic = $weaponRow['weaponMagic'];
+        
+    $query = "SELECT * FROM character_weapons cw WHERE cw.CharacterId = $characterId AND cw.WeaponId = $weaponId AND cw.EquipmentStatusId = $transferDestination";     
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute select character_weapons query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+	if($row)
+	{
+			/*row found  Update it's count to be its existing count plus the count just added.*/
+			$count = $row['Quantity'] + $transferQuantity;
+			if($count > 0)
+			{
+				$query = "UPDATE character_weapons SET Quantity = $count, WeaponMagic = '{$magic}' WHERE CharacterId = $characterId AND WeaponId = $weaponId AND EquipmentStatusId = $transferDestination";
+				$result = mysqli_query($cxn,$query) or die("Couldn't execute update character_weapons query.");
+			}
+	}
+	else
+	{
+		/*row not found in existing character's weapons inventory.  Insert it as a new row in the character's weapons inventory.*/
+		$count = $transferQuantity;
+		if($count > 0)
+		{
+			$query = "INSERT INTO character_weapons (`CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES ('{$characterId}', '{$weaponId}', '{$count}', '{$magic}', '{$transferDestination}')"; 
+			$result = mysqli_query($cxn,$query) or die("Couldn't execute insert into character_weapons query: ".$query);	
+		}
+	}    
+    $characterWeaponId = $weaponRow['characterWeaponId'];
+    $updatedSourceQuantity = max(0,$weaponRow['quantity'] - $weaponRow['transferQuantity']);
+    $query = "UPDATE character_weapons SET Quantity = $updatedSourceQuantity, WeaponMagic = $magic WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterWeapons query: ".$query);
+        
+}
+
 /*
 <summary>Get id portion of a field given a prefix of the field name.
 </summary>
