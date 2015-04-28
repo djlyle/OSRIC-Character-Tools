@@ -140,10 +140,15 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
 {
     $transferQuantity = min($weaponRow['transferQuantity'],$weaponRow['quantity']);
     $transferDestination = $weaponRow['transferDestination'];
+    $transferSource = $weaponRow['transferSource'];
+    if($transferDestination == $transferSource)
+    {
+        return;/*Don't transfer weapons if source and destination are the same*/
+    }
     $weaponId = $weaponRow['weaponId'];
     $magic = $weaponRow['weaponMagic'];
         
-    $query = "SELECT * FROM character_weapons cw WHERE cw.CharacterId = $characterId AND cw.WeaponId = $weaponId AND cw.EquipmentStatusId = $transferDestination";     
+    $query = "SELECT * FROM character_weapons cw WHERE cw.CharacterId = $characterId AND cw.WeaponId = $weaponId AND cw.WeaponMagic = $magic AND cw.EquipmentStatusId = $transferDestination";     
     $result = mysqli_query($cxn,$query) or die("Couldn't execute select character_weapons query: ".$query);
     $row = mysqli_fetch_assoc($result);
 	if($row)
@@ -165,9 +170,11 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
 			$query = "INSERT INTO character_weapons (`CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES ('{$characterId}', '{$weaponId}', '{$count}', '{$magic}', '{$transferDestination}')"; 
 			$result = mysqli_query($cxn,$query) or die("Couldn't execute insert into character_weapons query: ".$query);	
 		}
-	}    
+	}   
+    /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterWeaponId = $weaponRow['characterWeaponId'];
     $updatedSourceQuantity = max(0,$weaponRow['quantity'] - $weaponRow['transferQuantity']);
+    /*TODO: if $updatedSourceQuantity is zero, then remove the row from the table*/
     $query = "UPDATE character_weapons SET Quantity = $updatedSourceQuantity, WeaponMagic = $magic WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterWeapons query: ".$query);
         
