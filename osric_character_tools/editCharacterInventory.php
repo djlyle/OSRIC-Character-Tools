@@ -13,8 +13,17 @@ $characterName = $character['CharacterName'];
 $armourRows = $_POST['armour'];
 foreach($armourRows as $armourRow)
 {
-    $result = updateCharacterArmour($cxn, $armourRow['characterArmourId'], $armourRow['quantity'], $armourRow['armourMagic'], $armourRow['equipmentStatusId']);
+    /*$result = updateCharacterArmour($cxn, $armourRow['characterArmourId'], $armourRow['quantity'], $armourRow['armourMagic'], $armourRow['equipmentStatusId']);*/
+    if($armourRow['transferQuantity'] > 0)
+    {
+        $result = osricdb_transferCharacterArmour($cxn, $characterId, $armourRow);
+    }
 }
+/*Delete any armour rows whose quantity is now zero*/
+osricdb_removeZeroQuantityArmourRows($cxn);
+/*Delete any armour rows whose equipment status is now discarded*/
+osricdb_removeDiscardedArmourRows($cxn);
+
 
 $weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)

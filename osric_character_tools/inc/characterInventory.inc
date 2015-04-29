@@ -136,6 +136,59 @@ function osricdb_getCharacterArmourInUse($cxn, $characterId)
     return $result_set;
 }
 
+function osricdb_transferCharacterArmour($cxn, $characterId, $armourRow)
+{
+    $transferQuantity = min($armourRow['transferQuantity'],$armourRow['quantity']);
+    $transferDestination = $armourRow['transferDestination'];
+    $transferSource = $armourRow['transferSource'];
+    
+    if($transferDestination == $transferSource)
+    {/*Don't transfer weapons if source and destination are the same*/
+        return;
+    }
+
+    $armourId = $armourRow['armourId'];
+    $magic = $armourRow['armourMagic'];
+    $query = "START TRANSACTION";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query:".$query);    
+    
+    $query = "SELECT * FROM character_armour WHERE CharacterId = $characterId AND ArmourId = $armourId AND ArmourMagic = $magic AND EquipmentStatusId = $transferDestination";     
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+	if($row)
+	{
+			/*row found  Update it's count to be its existing count plus the count just added.*/
+			$count = $row['Quantity'] + $transferQuantity;
+			if($count > 0)
+			{
+				$query = "UPDATE character_armour SET Quantity = $count, ArmourMagic = $magic WHERE CharacterId = $characterId AND ArmourId = $armourId AND ArmourMagic = $magic AND EquipmentStatusId = $transferDestination";
+				$result = mysqli_query($cxn,$query) or die("Couldn't execute update character_weapons query.");
+			}
+	}
+	else
+	{
+		/*row not found in existing character's armour inventory.  Insert it as a new row in the character's armour inventory.*/
+		$count = $transferQuantity;
+		if($count > 0)
+		{
+			$query = "INSERT INTO character_armour (`CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES ('{$characterId}', '{$armourId}', '{$count}', '{$magic}', '{$transferDestination}')"; 
+			$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);	
+		}
+	}
+   
+    /*Subtract quantity transferred to destination from the transfer source*/ 
+    $characterArmourId = $armourRow['characterArmourId'];
+    $updatedSourceQuantity = max(0,$armourRow['quantity'] - $armourRow['transferQuantity']);
+    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
+    
+    $query = "UPDATE character_armour SET Quantity = $updatedSourceQuantity, ArmourMagic = $magic WHERE CharacterArmourId = $characterArmourId";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    
+    /*End transaction*/
+    $query = "COMMIT";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+}
+
 function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
 {
     $transferQuantity = min($weaponRow['transferQuantity'],$weaponRow['quantity']);
@@ -199,6 +252,18 @@ function osricdb_removeZeroQuantityWeaponRows($cxn)
 function osricdb_removeDiscardedWeaponRows($cxn)
 {
     $query = "DELETE FROM character_weapons WHERE EquipmentStatusId = 4";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+}
+
+function osricdb_removeZeroQuantityArmourRows($cxn)
+{
+    $query = "DELETE FROM character_armour WHERE Quantity = 0";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);        
+}
+
+function osricdb_removeDiscardedArmourRows($cxn)
+{
+    $query = "DELETE FROM character_armour WHERE EquipmentStatusId = 4";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
 
