@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 25, 2015 at 11:04 PM
+-- Generation Time: Apr 28, 2015 at 07:57 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `characters`
@@ -136,7 +136,8 @@ INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `C
 ('R3', 1, 2, 3, 1, 50, 0, 6),
 ('R4', 0, 1, 3, 2, 51, 0, 2),
 ('R5', 1, 3, 1, 1, 52, 0, 0),
-('R7', 1, 37, 66, 140, 54, 0, 5);
+('R7', 1, 37, 66, 140, 54, 0, 5),
+('R8', 1, 32, 65, 145, 55, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -190,7 +191,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (54, 3, 3),
 (54, 4, 3),
 (54, 5, 2),
-(54, 6, 3);
+(54, 6, 3),
+(55, 1, 12),
+(55, 2, 14),
+(55, 3, 13),
+(55, 4, 14),
+(55, 5, 15),
+(55, 6, 18);
 
 -- --------------------------------------------------------
 
@@ -207,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `character_armour`
@@ -240,7 +247,9 @@ INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, 
 (24, 56, 7, 1, 0, 1),
 (25, 56, 8, 1, 0, 2),
 (26, 54, 13, 1, 3, 2),
-(27, 52, 10, 1, 0, 1);
+(27, 52, 10, 1, 0, 1),
+(28, 55, 9, 1, 0, 1),
+(29, 55, 13, 3, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -265,7 +274,8 @@ INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (45, 3),
 (45, 7),
 (51, 3),
-(54, 4);
+(54, 4),
+(55, 2);
 
 -- --------------------------------------------------------
 
@@ -314,7 +324,12 @@ INSERT INTO `character_coins` (`CharacterId`, `CoinId`, `Quantity`) VALUES
 (54, 2, 9),
 (54, 3, 9),
 (54, 4, 8),
-(54, 5, 2);
+(54, 5, 2),
+(55, 1, 100),
+(55, 2, 200),
+(55, 3, 300),
+(55, 4, 400),
+(55, 5, 503);
 
 -- --------------------------------------------------------
 
@@ -375,7 +390,8 @@ INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmorClass`, `Cha
 (50, 1, 1, 1, 1, 1),
 (51, 1, 1, 1, 1, 1),
 (52, 0, 0, 0, 0, 0),
-(54, 1, 6000, 2, 9, 6);
+(54, 1, 6000, 2, 9, 6),
+(55, 1, 2222, 1, 10, 3);
 
 -- --------------------------------------------------------
 
@@ -391,7 +407,7 @@ CREATE TABLE IF NOT EXISTS `character_weapons` (
   `WeaponMagic` int(11) NOT NULL,
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterWeaponId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `character_weapons`
@@ -399,10 +415,24 @@ CREATE TABLE IF NOT EXISTS `character_weapons` (
 
 INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`, `Quantity`, `WeaponMagic`, `EquipmentStatusId`) VALUES
 (19, 52, 7, 1, 0, 3),
-(20, 52, 8, 1, 0, 1),
-(21, 52, 13, 3, 0, 2),
+(20, 52, 8, 0, 0, 1),
+(21, 52, 13, 2, 2, 2),
 (22, 52, 14, 1, 0, 3),
-(23, 52, 15, 1, 0, 2);
+(23, 52, 15, 1, 0, 2),
+(24, 52, 13, 0, 2, 3),
+(25, 52, 13, 1, 0, 1),
+(26, 52, 8, 1, 0, 2),
+(27, 54, 2, 2, 0, 1),
+(28, 54, 8, 1, 0, 1),
+(29, 54, 13, 1, 0, 1),
+(30, 54, 15, 0, 0, 1),
+(31, 54, 13, 1, 0, 2),
+(32, 54, 15, 1, 2, 3),
+(33, 54, 15, 1, 1, 2),
+(34, 54, 15, 0, 2, 1),
+(35, 55, 8, 4, 0, 1),
+(36, 55, 13, 1, 0, 1),
+(39, 55, 8, 4, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -467,7 +497,7 @@ CREATE TABLE IF NOT EXISTS `equipment_status` (
   `EquipmentStatusId` int(11) NOT NULL AUTO_INCREMENT,
   `EquipmentStatus` varchar(32) NOT NULL,
   PRIMARY KEY (`EquipmentStatusId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `equipment_status`
@@ -476,7 +506,8 @@ CREATE TABLE IF NOT EXISTS `equipment_status` (
 INSERT INTO `equipment_status` (`EquipmentStatusId`, `EquipmentStatus`) VALUES
 (1, 'In storage'),
 (2, 'Carried'),
-(3, 'In Use (worn\\wielded)');
+(3, 'In Use (worn\\wielded)'),
+(4, 'Discard');
 
 -- --------------------------------------------------------
 
