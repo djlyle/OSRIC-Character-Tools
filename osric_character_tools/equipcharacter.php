@@ -200,7 +200,7 @@ for($i=0;$i<$num_rows;$i++)
     $index = $offset + $i;
 		
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
     html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";      
@@ -237,7 +237,7 @@ for($i=0;$i<$num_rows;$i++)
     $index = $offset + $i;
 		
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
     html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";      
@@ -274,7 +274,7 @@ for($i=0;$i<$num_rows;$i++)
     $index = $offset + $i;
 		
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}'></input></td>";	
+    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
     html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";

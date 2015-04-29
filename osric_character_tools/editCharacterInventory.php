@@ -25,6 +25,10 @@ foreach($weaponRows as $weaponRow)
         $result = osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow);
     }
 }
+/*Delete any weapon rows whose quantity is now zero*/
+osricdb_removeZeroQuantityWeaponRows($cxn);
+/*Delete any weapon rows whose equipment status is now discarded*/
+osricdb_removeDiscardedWeaponRows($cxn);
 
 $coinRows = $_POST['coin'];
 foreach($coinRows as $coinRow)

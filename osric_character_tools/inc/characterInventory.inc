@@ -179,21 +179,27 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
     /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterWeaponId = $weaponRow['characterWeaponId'];
     $updatedSourceQuantity = max(0,$weaponRow['quantity'] - $weaponRow['transferQuantity']);
+    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
     
-    /*If $updatedSourceQuantity is zero, then remove the row from the table*/
-    if($updatedSourceQuantity == 0){
-        $query = "DELETE FROM character_weapons WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
-        $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);    
-    }
-    else
-    {
-        $query = "UPDATE character_weapons SET Quantity = $updatedSourceQuantity, WeaponMagic = $magic WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
-        $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterWeapons query: ".$query);
-    }
+    $query = "UPDATE character_weapons SET Quantity = $updatedSourceQuantity, WeaponMagic = $magic WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterWeapons query: ".$query);
+    
     /*End transaction*/
     $query = "COMMIT";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);    
              
+}
+
+function osricdb_removeZeroQuantityWeaponRows($cxn)
+{
+    $query = "DELETE FROM character_weapons WHERE Quantity = 0";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);        
+}
+
+function osricdb_removeDiscardedWeaponRows($cxn)
+{
+    $query = "DELETE FROM character_weapons WHERE EquipmentStatusId = 4";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
 
 /*
