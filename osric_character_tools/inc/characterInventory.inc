@@ -264,8 +264,11 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
 function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
 {
     $transferQuantity = min($coinRow['transferQuantity'],$coinRow['quantity']);
+    echo "transferQuantity: ".$transferQuantity;
     $transferDestination = $coinRow['transferDestination'];
+    echo "\ntransferDestination: ".$transferDestination;
     $transferSource = $coinRow['transferSource'];
+    echo "\ntransferSource: ".$transferSource;
     
     if($transferDestination == $transferSource)
     {/*Don't transfer coins if source and destination are the same*/
@@ -281,16 +284,20 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
     $row = mysqli_fetch_assoc($result);
 	if($row)
 	{
+            echo "coin row found - updating existing row";
 			/*row found  Update it's count to be its existing count plus the count just added.*/
 			$count = $row['Quantity'] + $transferQuantity;
+            echo "count: ".$count;
 			if($count > 0)
 			{
 				$query = "UPDATE character_coins SET Quantity = $count WHERE CharacterId = $characterId AND CoinId = $coinId AND ItemStatusId = $transferDestination";
-				$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+                echo "query: ".$query;				
+                $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 			}
 	}
 	else
 	{
+        echo "coin row not found - inserting new row";
 		/*row not found in existing character's coins inventory.  Insert it as a new row in the character's coins inventory.*/
 		$count = $transferQuantity;
 		if($count > 0)

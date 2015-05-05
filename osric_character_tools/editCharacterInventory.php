@@ -40,10 +40,15 @@ osricdb_removeZeroQuantityWeaponRows($cxn);
 osricdb_removeDiscardedWeaponRows($cxn);
 
 $coinRows = $_POST['coin'];
+/*First update quantities for all rows before transferring quantities between storage, carried or discarded.  Otherwise the updated quantity
+  will override any amounts that have been transferred*/
 foreach($coinRows as $coinRow)
 {
     $result = osricdb_updateCharacterCoins($cxn, $coinRow['characterCoinId'], $coinRow['quantity']);
-        
+}
+
+foreach($coinRows as $coinRow)
+{        
     if($coinRow['transferQuantity'] > 0)
     {
         $result = osricdb_transferCharacterCoins($cxn, $characterId, $coinRow);
