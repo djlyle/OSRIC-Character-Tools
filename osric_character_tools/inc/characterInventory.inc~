@@ -268,7 +268,7 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
     $transferSource = $coinRow['transferSource'];
     
     if($transferDestination == $transferSource)
-    {/*Don't transfer coins if source and destination are the same*/
+    {/*Don't transfer weapons if source and destination are the same*/
         return;
     }
 

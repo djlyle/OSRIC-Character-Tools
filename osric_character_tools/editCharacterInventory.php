@@ -42,8 +42,17 @@ osricdb_removeDiscardedWeaponRows($cxn);
 $coinRows = $_POST['coin'];
 foreach($coinRows as $coinRow)
 {
-    $result = updateCharacterCoins($cxn, $characterId, $coinRow['coinId'], $coinRow['quantity']);
+    $result = osricdb_updateCharacterCoins($cxn, $coinRow['characterCoinId'], $coinRow['quantity']);
+        
+    if($coinRow['transferQuantity'] > 0)
+    {
+        $result = osricdb_transferCharacterCoins($cxn, $characterId, $coinRow);
+    }
 }
+/*Delete any coin rows whose quantity is now zero*/
+osricdb_removeZeroQuantityCoinRows($cxn);
+/*Delete any coin rows whose equipment status is now discarded*/
+osricdb_removeDiscardedCoinRows($cxn);
 
 $itemRows = $_POST['item'];
 foreach($itemRows as $itemRow)

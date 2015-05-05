@@ -32,30 +32,83 @@ echo "{$totalValueStr} (gp in value)";
 echo "<br/>\n<br/>\n";
 echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<hr/>\n";
-echo "<h3>Coins:</h3>\n";
+
+$itemStatusOptions = osricdb_getItemStatusOptions($cxn);
+echo "<h3>Coins in storage:</h3>\n";
 echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
 echo "<table id='osric_character_coins'>\n";
-echo "<tr><td>Coin Name</td><td>Quantity</td></tr>\n";
-$character_coins = getCharacterCoins($cxn,$characterId);
-$num_rows = count($character_coins);
+echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
+$character_coins_in_storage = osricdb_getCharacterCoinsInStorage($cxn,$characterId);
+$num_rows = count($character_coins_in_storage);
+$offset = 0;
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_coins[$i];
+    $row = $character_coins_in_storage[$i];
+    $transferSource = $row['ItemStatusId'];
+    $index = $offset + $i;
+	
     echo "<tr>";
     echo "<td>{$row['CoinName']}</td>";
     $coinId = $row['CoinId'];
-	if($row['Quantity']){
+    $characterCoinId = $row['CharacterCoinId'];	
+    	
+    if($row['Quantity']){
 		$coinQuantity = $row['Quantity'];
 	}
 	else {
 		$coinQuantity = 0;
 	}
-	echo "<td><input type='number' min='0' max='9999999' name='coin[{$i}][quantity]' value='{$coinQuantity}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$i}][coinId]' value='{$coinId}'></input></td>";    
+    echo "<td>";
+    echo "<input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input>";        
+    echo "</td>";    
+    echo "<td>";
+    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
+    echo "</td>";
+    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+
+$offset = $offset + $num_rows;
+
+echo "<h3>Coins carried:</h3>\n";
+echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
+echo "<table id='osric_character_coins'>\n";
+echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
+$character_coins_carried = osricdb_getCharacterCoinsCarried($cxn,$characterId);
+$num_rows = count($character_coins_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_coins_carried[$i];
+    $transferSource = $row['ItemStatusId'];
+    $index = $offset + $i;
+	
+    echo "<tr>";
+    echo "<td>{$row['CoinName']}</td>";
+    $coinId = $row['CoinId'];
+    $characterCoinId = $row['CharacterCoinId'];	
+    if($row['Quantity']){
+		$coinQuantity = $row['Quantity'];
+	}
+	else {
+		$coinQuantity = 0;
+	}
+    echo "<td><input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input></td>";    
+    echo "<td>";
+    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
+    echo "</td>";
+    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
     echo "</tr>\n";
 }
 echo "</table>\n";
 echo "<hr/>\n";
+
 echo "<h3>Armour:</h3>\n";
 echo "<p>To add armour not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new armour\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>\n";
 echo "<p>To edit existing armour amounts, goto the row in question in the character's armour inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit armour\" button to submit the edited quantities and save them in the database.</p>\n";
