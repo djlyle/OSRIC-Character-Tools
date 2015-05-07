@@ -146,6 +146,25 @@ function osricdb_getCharacterCoinsCarried($cxn,$characterId)
     return osricdb_getCharacterCoinsByStatus($cxn,$characterId,"2");
 }
 
+function osricdb_getCharacterItemsCarried($cxn,$characterId)
+{
+    return osricdb_getCharacterItemsByStatus($cxn,$characterId,"2");
+}
+
+function osricdb_getCharacterItemsInStorage($cxn,$characterId)
+{
+    return osricdb_getCharacterItemsByStatus($cxn,$characterId,"1");
+}
+
+function osricdb_getCharacterItemsByStatus($cxn,$characterId,$itemStatusId)
+{
+    $query = sprintf("SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatusId);
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+    return $result_set;
+}
+
+
 function osricdb_getCharacterCoinsByStatus($cxn,$characterId,$itemStatusId)
 {
     $query = sprintf("SELECT * FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId AND cc.ItemStatusId = '%s'",$itemStatusId);
@@ -319,6 +338,78 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
     $query = "COMMIT";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
+
+function osricdb_transferCharacterItems($cxn, $characterId, $itemRow)
+{
+    $transferQuantity = min($itemRow['transferQuantity'],$itemRow['quantity']);
+    echo "transferQuantity: ".$transferQuantity;
+    $transferDestination = $itemRow['transferDestination'];
+    echo "\ntransferDestination: ".$transferDestination;
+    $transferSource = $itemRow['transferSource'];
+    echo "\ntransferSource: ".$transferSource;
+    
+    if($transferDestination == $transferSource)
+    {/*Don't transfer coins if source and destination are the same*/
+        return;
+    }
+
+    $itemId = $itemRow['itemId'];
+    $query = "START TRANSACTION";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query:".$query);    
+    
+    $query = "SELECT * FROM character_items WHERE CharacterId = $characterId AND ItemId = $itemId AND ItemStatusId = $transferDestination";     
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+	if($row)
+	{
+            echo "item row found - updating existing row";
+			/*row found  Update it's count to be its existing count plus the count just added.*/
+			$count = $row['Quantity'] + $transferQuantity;
+            echo "count: ".$count;
+			if($count > 0)
+			{
+				$query = "UPDATE character_items SET Quantity = $count WHERE CharacterId = $characterId AND ItemId = $itemId AND ItemStatusId = $transferDestination";
+                echo "query: ".$query;				
+                $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+			}
+	}
+	else
+	{
+        echo "coin row not found - inserting new row";
+		/*row not found in existing character's items inventory.  Insert it as a new row in the character's items inventory.*/
+		$count = $transferQuantity;
+		if($count > 0)
+		{
+			$query = "INSERT INTO character_items (`CharacterId`, `ItemId`, `Quantity`, `ItemStatusId`) VALUES ('{$characterId}', '{$itemId}', '{$count}', '{$transferDestination}')"; 
+			$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);	
+		}
+	}
+   
+    /*Subtract quantity transferred to destination from the transfer source*/ 
+    $characterItemId = $itemRow['characterItemId'];
+    $updatedSourceQuantity = max(0,$itemRow['quantity'] - $itemRow['transferQuantity']);
+    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
+    
+    $query = "UPDATE character_items SET Quantity = $updatedSourceQuantity WHERE CharacterItemId = $characterItemId";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    
+    /*End transaction*/
+    $query = "COMMIT";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+}
+
+function osricdb_removeZeroQuantityItemRows($cxn)
+{
+    $query = "DELETE FROM character_items WHERE Quantity = 0";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);        
+}
+
+function osricdb_removeDiscardedItemRows($cxn)
+{
+    $query = "DELETE FROM character_items WHERE ItemStatusId = 3";
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+}
+
 
 function osricdb_removeZeroQuantityWeaponRows($cxn)
 {

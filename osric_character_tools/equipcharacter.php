@@ -34,45 +34,7 @@ echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<hr/>\n";
 
 $itemStatusOptions = osricdb_getItemStatusOptions($cxn);
-echo "<h3>Coins in storage:</h3>\n";
-echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
-echo "<table id='osric_character_coins'>\n";
-echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
-$character_coins_in_storage = osricdb_getCharacterCoinsInStorage($cxn,$characterId);
-$num_rows = count($character_coins_in_storage);
 $offset = 0;
-for($i=0;$i<$num_rows;$i++)
-{
-    $row = $character_coins_in_storage[$i];
-    $transferSource = $row['ItemStatusId'];
-    $index = $offset + $i;
-	
-    echo "<tr>";
-    echo "<td>{$row['CoinName']}</td>";
-    $coinId = $row['CoinId'];
-    $characterCoinId = $row['CharacterCoinId'];	
-    	
-    if($row['Quantity']){
-		$coinQuantity = $row['Quantity'];
-	}
-	else {
-		$coinQuantity = 0;
-	}
-    echo "<td>";
-    echo "<input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input>";        
-    echo "</td>";    
-    echo "<td>";
-    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
-    echo "</td>";
-    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
-    echo "</tr>\n";
-}
-echo "</table>\n";
-
-$offset = $offset + $num_rows;
 
 echo "<h3>Coins carried:</h3>\n";
 echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
@@ -103,6 +65,45 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
     echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
     echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
+    echo "</tr>\n";
+}
+echo "</table>\n";
+
+$offset = $offset + $num_rows;
+
+echo "<h3>Coins in storage:</h3>\n";
+echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
+echo "<table id='osric_character_coins_in_storage'>\n";
+echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
+$character_coins_in_storage = osricdb_getCharacterCoinsInStorage($cxn,$characterId);
+$num_rows = count($character_coins_in_storage);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_coins_in_storage[$i];
+    $transferSource = $row['ItemStatusId'];
+    $index = $offset + $i;
+	
+    echo "<tr>";
+    echo "<td>{$row['CoinName']}</td>";
+    $coinId = $row['CoinId'];
+    $characterCoinId = $row['CharacterCoinId'];	
+    	
+    if($row['Quantity']){
+		$coinQuantity = $row['Quantity'];
+	}
+	else {
+		$coinQuantity = 0;
+	}
+    echo "<td>";
+    echo "<input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input>";        
+    echo "</td>";    
+    echo "<td>";
+    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
+    echo "</td>";
+    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";    
     echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
     echo "</tr>\n";
 }
@@ -364,30 +365,82 @@ echo "<p>To edit existing inventory amounts, goto the row in question in the cha
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
 echo "<div><input type='submit' value='submit equipment list'/></div>";
-echo "<table id='osric_character_equipment'>";
-echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td></tr>";
+$offset = 0;
+echo "<h3>Equipment Carried:</h3>\n";
+echo "<table id='osric_character_equipment_carried'>";
+echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
 $itemQuantity = 0;
-$character_items = getCharacterItems($cxn,$characterId);
-$num_rows = count($character_items);
+$character_items_carried = osricdb_getCharacterItemsCarried($cxn,$characterId);
+$num_rows = count($character_items_carried);
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_items[$i];
+    $row = $character_items_carried[$i];
 	echo "<tr>";
 	echo "<td>{$row['ItemName']}</td>";
 	echo "<td>{$row['ItemEncumbrance']}</td>";
 	echo "<td>{$row['ItemCost']}</td>";
+    $transferSource = $row['ItemStatusId'];
+    $characterItemId = $row['CharacterItemId'];
 	$itemId = $row['ItemId'];
-	if($row['Quantity']){
+    $index = $offset + $i;
+		
+    if($row['Quantity']){
 		$itemQuantity = $row['Quantity'];
 	}
 	else {
 		$itemQuantity = 0;
 	}
-	echo "<td><input type='number' min='0' max='9999999' name='item[{$i}][quantity]' value='{$itemQuantity}'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$i}][itemId]' value='{$itemId}'></input></td>";    
-    echo "</tr>";
+	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
+    echo "<td>";
+    html_listbox("item[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    echo "</td>";
+    echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
+    
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][characterItemId]' value='{$characterItemId}'></input></td>";     
+    echo "</tr>\n";
 }
-echo "</table>";
+echo "</table>\n";
+
+$offset = $offset + $num_rows;
+
+echo "<h3>Equipment in Storage:</h3>\n";
+echo "<table id='osric_character_equipment_in_storage'>";
+echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
+$character_items_in_storage = osricdb_getCharacterItemsInStorage($cxn,$characterId);
+$num_rows = count($character_items_in_storage);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_items_in_storage[$i];
+	echo "<tr>";
+	echo "<td>{$row['ItemName']}</td>";
+	echo "<td>{$row['ItemEncumbrance']}</td>";
+	echo "<td>{$row['ItemCost']}</td>";
+    $transferSource = $row['ItemStatusId'];
+    $characterItemId = $row['CharacterItemId'];
+	$itemId = $row['ItemId'];
+    $index = $offset + $i;
+		
+    if($row['Quantity']){
+		$itemQuantity = $row['Quantity'];
+	}
+	else {
+		$itemQuantity = 0;
+	}
+	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
+    echo "<td>";
+    html_listbox("item[{$index}][transferDestination]", $itemStatusOptions, $transferSource);        
+    echo "</td>";
+    echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
+    
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
+    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][characterItemId]' value='{$characterItemId}'></input></td>";     
+    echo "</tr>\n";
+}
+echo "</table>\n";
+echo "<hr/>\n";
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
 
 ?>

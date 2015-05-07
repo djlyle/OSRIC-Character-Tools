@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 04, 2015 at 09:08 PM
+-- Generation Time: May 06, 2015 at 08:29 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `character_armour`
@@ -248,9 +248,9 @@ INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, 
 (26, 54, 13, 1, 3, 2),
 (27, 52, 10, 1, 0, 1),
 (29, 55, 13, 3, 0, 1),
-(30, 55, 12, 1, 0, 3),
 (31, 55, 1, 1, 1, 1),
-(34, 55, 1, 1, 1, 2);
+(34, 55, 1, 1, 1, 2),
+(35, 55, 12, 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -291,7 +291,7 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
   `Quantity` int(11) NOT NULL,
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterCoinId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `character_coins`
@@ -328,11 +328,15 @@ INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quan
 (28, 54, 3, 9, 1),
 (29, 54, 4, 8, 1),
 (30, 54, 5, 2, 1),
-(31, 55, 1, 100, 1),
-(32, 55, 2, 200, 1),
+(31, 55, 1, 40, 1),
+(32, 55, 2, 210, 1),
 (33, 55, 3, 300, 1),
-(34, 55, 4, 400, 1),
-(35, 55, 5, 503, 1);
+(34, 55, 4, 300, 1),
+(35, 55, 5, 377, 1),
+(36, 55, 1, 17, 2),
+(38, 55, 5, 34, 2),
+(39, 55, 4, 31, 2),
+(40, 55, 2, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -345,6 +349,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `CharacterId` bigint(20) NOT NULL,
   `ItemId` bigint(20) NOT NULL,
   `Quantity` int(11) NOT NULL,
+  `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterItemId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
@@ -352,21 +357,21 @@ CREATE TABLE IF NOT EXISTS `character_items` (
 -- Dumping data for table `character_items`
 --
 
-INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quantity`) VALUES
-(1, 45, 1, 6),
-(2, 45, 7, 5),
-(3, 45, 9, 4),
-(4, 46, 1, 1),
-(5, 46, 9, 1),
-(6, 46, 12, 1),
-(7, 50, 2, 1),
-(8, 51, 1, 4),
-(9, 51, 2, 3),
-(10, 52, 1, 1),
-(11, 52, 4, 1),
-(12, 54, 3, 3),
-(13, 54, 4, 3),
-(14, 54, 5, 4);
+INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quantity`, `ItemStatusId`) VALUES
+(1, 45, 1, 6, 1),
+(2, 45, 7, 5, 1),
+(3, 45, 9, 4, 1),
+(4, 46, 1, 1, 1),
+(5, 46, 9, 1, 1),
+(6, 46, 12, 1, 1),
+(7, 50, 2, 1, 1),
+(8, 51, 1, 4, 1),
+(9, 51, 2, 3, 1),
+(10, 52, 1, 1, 1),
+(11, 52, 4, 1, 1),
+(12, 54, 3, 3, 1),
+(13, 54, 4, 3, 1),
+(14, 54, 5, 4, 1);
 
 -- --------------------------------------------------------
 

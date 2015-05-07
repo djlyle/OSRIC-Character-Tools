@@ -62,8 +62,16 @@ osricdb_removeDiscardedCoinRows($cxn);
 $itemRows = $_POST['item'];
 foreach($itemRows as $itemRow)
 {
-    $result = updateCharacterItems($cxn, $characterId, $itemRow['itemId'], $itemRow['quantity']);
+    if($itemRow['transferQuantity'] > 0)
+    {
+        $result = osricdb_transferCharacterItems($cxn, $characterId, $itemRow);
+    }
 }
+/*Delete any item rows whose quantity is now zero*/
+osricdb_removeZeroQuantityItemRows($cxn);
+/*Delete any item rows whose item status is now discarded*/
+osricdb_removeDiscardedItemRows($cxn);
+
 
 ?>
 <html>
