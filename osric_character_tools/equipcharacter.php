@@ -111,8 +111,8 @@ echo "</table>\n";
 echo "<hr/>\n";
 
 echo "<h3>Armour:</h3>\n";
-echo "<p>To add armour not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new armour\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>\n";
-echo "<p>To edit existing armour amounts, goto the row in question in the character's armour inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit armour\" button to submit the edited quantities and save them in the database.</p>\n";
+echo "<p>Click on the \"Select new armour\" link to supplement this character's existing in storage inventory.  The quantities selected from that list will be added to the character's in storage inventory.</p>\n";
+echo "<p>To transfer a quantity of armour in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit armour\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
 echo "<br/>\n";
 echo "<div><input type='submit' value='submit armour'/></div>\n";
@@ -239,11 +239,11 @@ echo "</table>\n";
 echo "<hr/>\n";
 
 echo "<h3>Weapons:</h3>";
-echo "<p>To add weapons not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new weapons\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>\n";
-echo "<p>To edit existing inventory amounts, goto the row in question in the character's weapon inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit weapon list\" button to submit the edited quantities and save them in the database.</p>";
+echo "<p>Click on the \"Select new weapons\" link to supplement this character's existing in storage inventory.  The quantities selected from that list will be added to the character's in storage inventory.</p>\n";
+echo "<p>To transfer a quantity of weapons in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit weapons\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new weapons</a></div>";
 echo "<br/>";
-echo "<div><input type='submit' value='submit weapons list'/></div>";
+echo "<div><input type='submit' value='submit weapons'/></div>";
 
 echo "<h3>Weapons in Use:</h3>";
 echo "<table id='osric_character_weapons_in_use'>\n";
@@ -360,11 +360,11 @@ echo "</table>\n";
 echo "<hr/>\n";
 
 echo "<h3>Equipment:</h3>";
-echo "<p>To add equipment not yet in this character's inventory or to supplement this character's existing inventory click on the \"Select new equipment\" link.  The quantities selected from that list will be added to the character's existing inventory.</p>";
-echo "<p>To edit existing inventory amounts, goto the row in question in the character's equipment inventory table below and edit the quantity of items possessed by the character to whatever is desired.  Then click the \"submit equipment list\" button to submit the edited quantities and save them in the database.</p>";
+echo "<p>Click on the \"Select new equipment\" link to supplement this character's existing in storage inventory.  The quantities selected from that list will be added to the character's in storage inventory.</p>\n";
+echo "<p>To transfer a quantity of equipment items in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit equipment\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
-echo "<div><input type='submit' value='submit equipment list'/></div>";
+echo "<div><input type='submit' value='submit equipment'/></div>";
 $offset = 0;
 echo "<h3>Equipment Carried:</h3>\n";
 echo "<table id='osric_character_equipment_carried'>";
