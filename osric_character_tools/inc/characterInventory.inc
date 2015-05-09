@@ -1,7 +1,7 @@
 <?php
 include("./osricdb_constants.inc");
 
-function getTotalItemEncumbrance($cxn, $characterId)
+function osricdb_getTotalItemEncumbrance($cxn, $characterId)
 {
 	$query = "SELECT SUM(e.TotalItemEncumbrance) AS TotalEncumbrance FROM (SELECT (i.ItemEncumbrance * ci.Quantity) AS TotalItemEncumbrance FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}') AS e";
 	$result = mysqli_query($cxn,$query) or die("Couldn't execute getTotalEncumbrance query.");
@@ -9,13 +9,56 @@ function getTotalItemEncumbrance($cxn, $characterId)
 	return $row['TotalEncumbrance'];
 }
 
-function getTotalCoinEncumbrance($cxn, $characterId)
+function osricdb_getTotalCoinEncumbrance($cxn, $characterId)
 {
     $query = "SELECT SUM(e.TotalCoinEncumbrance) AS TotalEncumbrance FROM (SELECT (c.CoinEncumbranceInLbs * cc.Quantity) AS TotalCoinEncumbrance FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = '{$characterId}') AS e"; 
     $result = mysqli_query($cxn,$query) or die("Couldn't execute getTotalCoinEncumbrance.");
     $row = mysqli_fetch_assoc($result);
     return $row['TotalEncumbrance'];
 }
+
+function osricdb_getTotalEncumbranceCoinsCarried($cxn, $characterId)
+{
+    $query = "SELECT SUM(e.TotalCoinEncumbrance) AS TotalEncumbrance FROM (SELECT (c.CoinEncumbranceInLbs * cc.Quantity) AS TotalCoinEncumbrance FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = '{$characterId}' AND cc.ItemStatusId = '2') AS e"; 
+    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['TotalEncumbrance'];
+}
+
+function osricdb_getTotalEncumbranceItemsCarried($cxn, $characterId)
+{
+	$query = "SELECT SUM(e.TotalItemEncumbrance) AS TotalEncumbrance FROM (SELECT (i.ItemEncumbrance * ci.Quantity) AS TotalItemEncumbrance FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}' AND ci.ItemStatusId = '2') AS e";
+	$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+	$row = mysqli_fetch_assoc($result);
+	return $row['TotalEncumbrance'];
+}
+
+function osricdb_getTotalEncumbranceWeaponsOnPerson($cxn, $characterId)
+{
+    $query = "SELECT SUM(e.TotalWeaponEncumbrance) AS TotalEncumbrance FROM (SELECT (w.WeaponEncumbranceInLbs * cw.Quantity) AS TotalWeaponEncumbrance FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = '{$characterId}' AND (cw.EquipmentStatusId = '2' OR cw.EquipmentStatusId = '3')) AS e";
+	$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+	$row = mysqli_fetch_assoc($result);
+	return $row['TotalEncumbrance'];
+}
+
+function osricdb_getTotalEncumbranceArmourOnPerson($cxn, $characterId)
+{
+    $query = "SELECT SUM(e.TotalArmourEncumbrance) AS TotalEncumbrance FROM (SELECT (a.ArmourEncumbrance * ca.Quantity) AS TotalArmourEncumbrance FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = '{$characterId}' AND (ca.EquipmentStatusId = '2' OR ca.EquipmentStatusId = '3')) AS e";
+	$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+	$row = mysqli_fetch_assoc($result);
+	return $row['TotalEncumbrance'];
+}
+
+function osricdb_getTotalEncumbranceOnPerson($cxn, $characterId)
+{
+    $totalEncumbranceItemsCarried = osricdb_getTotalEncumbranceItemsCarried($cxn,$characterId);
+    $totalEncumbranceCoinsCarried = osricdb_getTotalEncumbranceCoinsCarried($cxn,$characterId);
+    $totalEncumbranceWeaponsOnPerson = osricdb_getTotalEncumbranceWeaponsOnPerson($cxn,$characterId);
+    $totalEncumbranceArmourOnPerson = osricdb_getTotalEncumbranceArmourOnPerson($cxn,$characterId);
+    $totalEncumbranceOnPerson = $totalEncumbranceItemsCarried + $totalEncumbranceCoinsCarried + $totalEncumbranceWeaponsOnPerson + $totalEncumbranceArmourOnPerson;
+    return $totalEncumbranceOnPerson;
+}
+
 
 function getTotalCost($cxn, $characterId)
 {

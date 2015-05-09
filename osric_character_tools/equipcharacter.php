@@ -8,9 +8,7 @@ $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
-$totalItemEncumbrance = getTotalItemEncumbrance($cxn,$characterId);
-$totalCoinEncumbrance = getTotalCoinEncumbrance($cxn,$characterId);
-$totalEncumbrance = $totalItemEncumbrance + $totalCoinEncumbrance;
+$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
 $totalValue = getTotalCost($cxn,$characterId);
 $equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
 ?>
@@ -24,7 +22,7 @@ $equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
 <?php
 echo "<h3>{$characterName}</h3>\n";
 echo "Total Encumbrance: \n";
-echo "{$totalEncumbrance} (gp in weight)";
+echo "{$totalEncumbranceOnPerson} (lbs)";
 echo "<br/>\n";
 echo "Total Value: \n";
 $totalValueStr = sprintf("%01.2f",$totalValue);

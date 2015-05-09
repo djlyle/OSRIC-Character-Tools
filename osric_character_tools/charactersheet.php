@@ -12,7 +12,7 @@ $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to s
 
 $character = getCharacter($cxn,$CharacterId);
 $characterStatus = getCharacterStatus($cxn,$CharacterId);
-
+$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $CharacterId);
 $labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
 
 ?>
@@ -39,7 +39,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "{$result_set[$i]['ClassName']}";
     
 }
-echo "</td><td>Full HP: {$characterStatus['CharacterStatusFullHitPoints']}</td><td>Remaining HP: {$characterStatus['CharacterStatusRemainingHitPoints']}</td></tr>\n";
+echo "</td><td>Full HP: {$characterStatus['CharacterStatusFullHitPoints']}</td><td>Remaining HP: {$characterStatus['CharacterStatusRemainingHitPoints']}</td><td>Total Encumbrance (lbs): {$totalEncumbranceOnPerson}</td></tr>\n";
 $character_abilities = getCharacterAbilities($cxn,$CharacterId);
 $num_abilities = count($character_abilities);
 for($i=0;$i<$num_abilities;$i++)
