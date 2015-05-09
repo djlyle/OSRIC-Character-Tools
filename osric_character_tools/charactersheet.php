@@ -7,6 +7,7 @@ echo "Character with CharacterId={$CharacterId}";
 
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");
+include("./inc/characterInventory.inc");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
