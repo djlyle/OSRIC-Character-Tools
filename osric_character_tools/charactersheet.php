@@ -2,7 +2,7 @@
 /*Program: charactersheet.php
    Desc: Displays an existing character's attributes,abilities, equipment etc. in one sheet*/
 
-$CharacterId = $_GET['CharacterId'];
+$characterId = $_GET['CharacterId'];
 echo "Character with CharacterId={$CharacterId}";
 
 include("./inc/misc.inc");
@@ -11,9 +11,9 @@ include("./inc/characterInventory.inc");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
-$character = getCharacter($cxn,$CharacterId);
-$characterStatus = getCharacterStatus($cxn,$CharacterId);
-$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $CharacterId);
+$character = getCharacter($cxn,$characterId);
+$characterStatus = getCharacterStatus($cxn,$characterId);
+$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
 $labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
 
 ?>
@@ -30,7 +30,7 @@ echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
 echo "<tr><td>Name: {$character['CharacterName']}</td><td>XP: {$characterStatus['CharacterStatusExperiencePoints']}</td><td>Age: {$character['CharacterAge']}</td><td>Height: {$character['CharacterHeight']}</td></tr>\n";
 echo "<tr><td>Class(es*): ";
-$result_set = getCharacterClasses($cxn,$CharacterId);
+$result_set = getCharacterClasses($cxn,$characterId);
 $num_rows = count($result_set);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -46,7 +46,7 @@ echo "</table>\n";
 
 echo "<hr/>\n";
 
-$character_abilities = getCharacterAbilities($cxn,$CharacterId);
+$character_abilities = getCharacterAbilities($cxn,$characterId);
 
 echo "<h3 class='cs_section_title'>ABILITIES:</h3>\n";
 $num_abilities = count($character_abilities);
@@ -89,8 +89,25 @@ echo "</div>\n";
 
 echo "<hr/>\n";
 
-echo "<h3>Equipment:</h3>\n";
-echo "<div id='CharacterEquipment'>\n";
+echo "<h3>Equipment</h3>\n";
+echo "<h4>Equipment Carried:</h4>";
+
+echo "<div id='CharacterEquipmentCarried'>\n";
+$character_items_carried = osricdb_getCharacterItemsCarried($cxn,$characterId);
+$num_rows = count($character_items_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_items_carried[$i];
+    if($i > 0)
+    {
+        echo "|";
+    }
+    echo"{$row['ItemName']}";
+    echo"({$row['Quantity']})";	
+}
+echo "</div>\n";
+echo "<h4>Equipment In Storage:</h4>";
+echo "<div id='CharacterEquipmentInStorage'>\n";
 echo "</div>\n";
 
 ?>
