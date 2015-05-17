@@ -108,6 +108,19 @@ for($i=0;$i<$num_rows;$i++)
 echo "</div>\n";
 echo "<h4>Equipment In Storage:</h4>";
 echo "<div id='CharacterEquipmentInStorage'>\n";
+$character_items_in_storage = osricdb_getCharacterItemsInStorage($cxn,$characterId);
+$num_rows = count($character_items_in_storage);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_items_in_storage[$i];
+    if($i > 0)
+    {
+        echo "|";
+    }	
+    echo "{$row['ItemName']}";
+	echo "({$row['Quantity']})";
+}	
+
 echo "</div>\n";
 
 ?>
