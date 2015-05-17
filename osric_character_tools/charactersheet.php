@@ -68,6 +68,18 @@ echo "</table>\n";
 
 echo "<h4>Weapons Carried:</h4>\n";
 echo "<div id='CharacterWeaponsCarried'>\n";
+$character_weapons_carried = osricdb_getCharacterWeaponsCarried($cxn,$characterId);
+$num_rows = count($character_weapons_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_weapons_carried[$i];
+    if($i > 0)
+    {
+        echo "|";
+    }
+    echo "{$row['WeaponType']}";
+    echo "({$row['Quantity']})";
+}
 echo "</div>\n";
 
 echo "<h4>Weapons In Storage:</h4>\n";
