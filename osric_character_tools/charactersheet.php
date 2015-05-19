@@ -28,8 +28,8 @@ $labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAg
 echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
 
 echo "<table id='CharacterAttributes'>\n";
-echo "<tr><td>Name: {$character['CharacterName']}</td><td>XP: {$characterStatus['CharacterStatusExperiencePoints']}</td><td>Age: {$character['CharacterAge']}</td><td>Height: {$character['CharacterHeight']}</td></tr>\n";
-echo "<tr><td>Class(es*): ";
+echo "<tr><td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td><td><div class='clsCellLabel'>Age:</div><div class='clsCellValue'>{$character['CharacterAge']}</div></td><td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td></tr>\n";
+echo "<tr><td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
 $result_set = getCharacterClasses($cxn,$characterId);
 $num_rows = count($result_set);
 for($i=0;$i<$num_rows;$i++)
@@ -41,7 +41,9 @@ for($i=0;$i<$num_rows;$i++)
     echo "{$result_set[$i]['ClassName']}";
     
 }
-echo "</td><td>Full HP: {$characterStatus['CharacterStatusFullHitPoints']}</td><td>Remaining HP: {$characterStatus['CharacterStatusRemainingHitPoints']}</td></tr>\n";
+echo "</span>";
+echo "</td><td><div class='clsCellLabel'>Height:</div><div class='clsCellValue'>{$character['CharacterHeight']}</div></td><td><div class='clsCellLabel'>Remaining HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td></tr>\n";
+echo "<tr><td><div class='clsCellLabel'>XP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td></tr>";
 echo "</table>\n";
 
 echo "<hr/>\n";

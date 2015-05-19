@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 06, 2015 at 08:29 PM
+-- Generation Time: May 19, 2015 at 12:00 AM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -214,15 +214,15 @@ CREATE TABLE IF NOT EXISTS `character_armour` (
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterArmourId`),
   KEY `CharacterId` (`CharacterId`,`ArmourId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `character_armour`
 --
 
 INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, `Quantity`, `ArmourMagic`, `EquipmentStatusId`) VALUES
-(1, 45, 1, 4, 4, 1),
-(2, 45, 2, 4, 1, 1),
+(1, 45, 1, 1, 4, 1),
+(2, 45, 2, 7, 1, 1),
 (3, 45, 4, 5, 9, 1),
 (4, 45, 7, 6, 2, 1),
 (5, 45, 9, 6, 8, 1),
@@ -250,7 +250,10 @@ INSERT INTO `character_armour` (`CharacterArmourId`, `CharacterId`, `ArmourId`, 
 (29, 55, 13, 3, 0, 1),
 (31, 55, 1, 1, 1, 1),
 (34, 55, 1, 1, 1, 2),
-(35, 55, 12, 1, 0, 2);
+(35, 55, 12, 1, 0, 2),
+(37, 45, 3, 3, 0, 1),
+(38, 45, 1, 1, 4, 3),
+(39, 45, 13, 22, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -291,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
   `Quantity` int(11) NOT NULL,
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterCoinId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `character_coins`
@@ -323,20 +326,21 @@ INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quan
 (23, 52, 3, 4, 1),
 (24, 52, 4, 5, 1),
 (25, 52, 5, 6, 1),
-(26, 54, 1, 8, 1),
+(26, 54, 1, 3, 1),
 (27, 54, 2, 9, 1),
 (28, 54, 3, 9, 1),
 (29, 54, 4, 8, 1),
 (30, 54, 5, 2, 1),
-(31, 55, 1, 40, 1),
+(31, 55, 1, 60, 1),
 (32, 55, 2, 210, 1),
 (33, 55, 3, 300, 1),
 (34, 55, 4, 300, 1),
 (35, 55, 5, 377, 1),
-(36, 55, 1, 17, 2),
 (38, 55, 5, 34, 2),
 (39, 55, 4, 31, 2),
-(40, 55, 2, 6, 2);
+(40, 55, 2, 6, 2),
+(41, 54, 1, 5, 2),
+(42, 55, 1, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -351,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `Quantity` int(11) NOT NULL,
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `character_items`
@@ -369,9 +373,17 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (9, 51, 2, 3, 1),
 (10, 52, 1, 1, 1),
 (11, 52, 4, 1, 1),
-(12, 54, 3, 3, 1),
+(12, 54, 3, 1, 1),
 (13, 54, 4, 3, 1),
-(14, 54, 5, 4, 1);
+(14, 54, 5, 4, 1),
+(15, 54, 3, 1, 2),
+(18, 55, 2, 1, 1),
+(19, 55, 3, 1, 1),
+(20, 55, 12, 5, 1),
+(21, 55, 1, 2, 2),
+(22, 55, 2, 1, 2),
+(23, 55, 5, 1, 1),
+(24, 55, 6, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -762,8 +774,44 @@ CREATE TABLE IF NOT EXISTS `weapon_as_melee` (
   `DamageVsLarge` int(11) NOT NULL,
   `DamageModifierVsSmallOrMedium` int(11) NOT NULL,
   `DamageModifierVsLarge` int(11) NOT NULL,
-  KEY `WeaponId` (`WeaponId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `DamageVsSmallOrMediumMultiples` int(11) NOT NULL DEFAULT '1',
+  `DamageVsLargeMultiples` int(11) NOT NULL DEFAULT '1',
+  `MeleeWeaponIndex` bigint(20) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`MeleeWeaponIndex`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+
+--
+-- Dumping data for table `weapon_as_melee`
+--
+
+INSERT INTO `weapon_as_melee` (`WeaponId`, `DamageVsSmallOrMedium`, `DamageVsLarge`, `DamageModifierVsSmallOrMedium`, `DamageModifierVsLarge`, `DamageVsSmallOrMediumMultiples`, `DamageVsLargeMultiples`, `MeleeWeaponIndex`) VALUES
+(2, 8, 8, 0, 0, 1, 1, 2),
+(3, 6, 4, 0, 0, 1, 1, 3),
+(8, 4, 3, 0, 0, 1, 1, 4),
+(13, 4, 3, 0, 0, 1, 1, 5),
+(14, 3, 2, 0, 0, 1, 1, 6),
+(15, 6, 4, 1, 0, 1, 2, 7),
+(16, 4, 4, 1, 1, 1, 1, 8),
+(17, 10, 6, 0, 0, 1, 2, 9),
+(18, 6, 6, 1, 0, 1, 1, 10),
+(19, 4, 4, 1, 0, 1, 1, 11),
+(20, 6, 4, 0, 0, 1, 1, 12),
+(21, 4, 6, 1, 0, 2, 3, 13),
+(22, 6, 6, 1, 0, 1, 1, 14),
+(23, 4, 4, 1, 1, 1, 1, 15),
+(24, 4, 6, 0, 1, 2, 1, 16),
+(25, 6, 4, 1, 0, 1, 2, 17),
+(26, 4, 4, 1, 0, 1, 1, 18),
+(27, 6, 10, 1, 0, 1, 1, 19),
+(31, 6, 8, 0, 0, 1, 1, 20),
+(34, 6, 6, 0, 0, 1, 1, 21),
+(35, 4, 8, 0, 0, 2, 2, 22),
+(36, 4, 6, 0, 1, 2, 1, 23),
+(37, 8, 12, 0, 0, 1, 1, 24),
+(38, 8, 8, 0, 0, 1, 1, 25),
+(39, 6, 8, 0, 0, 1, 1, 26),
+(40, 10, 6, 0, 0, 1, 3, 27),
+(41, 6, 4, 1, 0, 1, 3, 28);
 
 -- --------------------------------------------------------
 
