@@ -75,8 +75,6 @@ function updateCharacterItems($cxn, $characterId, $itemId, $itemQuantity)
 	return $result;
 }
 
-
-
 function osricdb_updateCharacterCoins($cxn, $characterCoinId, $coinQuantity)
 {
     $query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterCoinId = {$characterCoinId}";
@@ -259,7 +257,7 @@ function osricdb_transferCharacterArmour($cxn, $characterId, $armourRow)
     /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterArmourId = $armourRow['characterArmourId'];
     $updatedSourceQuantity = max(0,$armourRow['quantity'] - $armourRow['transferQuantity']);
-    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
+    /*echo "updatedSourceQuantity: ".$updatedSourceQuantity;*/
     
     $query = "UPDATE character_armour SET Quantity = $updatedSourceQuantity, ArmourMagic = $magic WHERE CharacterArmourId = $characterArmourId";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
@@ -312,7 +310,7 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
     /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterWeaponId = $weaponRow['characterWeaponId'];
     $updatedSourceQuantity = max(0,$weaponRow['quantity'] - $weaponRow['transferQuantity']);
-    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
+    /*echo "updatedSourceQuantity: ".$updatedSourceQuantity;*/
     
     $query = "UPDATE character_weapons SET Quantity = $updatedSourceQuantity, WeaponMagic = $magic WHERE character_weapons.CharacterWeaponId = $characterWeaponId";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute updateCharacterWeapons query: ".$query);
@@ -326,11 +324,8 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
 function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
 {
     $transferQuantity = min($coinRow['transferQuantity'],$coinRow['quantity']);
-    echo "transferQuantity: ".$transferQuantity;
     $transferDestination = $coinRow['transferDestination'];
-    echo "\ntransferDestination: ".$transferDestination;
     $transferSource = $coinRow['transferSource'];
-    echo "\ntransferSource: ".$transferSource;
     
     if($transferDestination == $transferSource)
     {/*Don't transfer coins if source and destination are the same*/
@@ -346,21 +341,18 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
     $row = mysqli_fetch_assoc($result);
 	if($row)
 	{
-            echo "coin row found - updating existing row";
-			/*row found  Update it's count to be its existing count plus the count just added.*/
+    		/*row found  Update it's count to be its existing count plus the count just added.*/
 			$count = $row['Quantity'] + $transferQuantity;
-            echo "count: ".$count;
+            /*echo "count: ".$count;*/
 			if($count > 0)
 			{
 				$query = "UPDATE character_coins SET Quantity = $count WHERE CharacterId = $characterId AND CoinId = $coinId AND ItemStatusId = $transferDestination";
-                echo "query: ".$query;				
                 $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 			}
 	}
 	else
 	{
-        echo "coin row not found - inserting new row";
-		/*row not found in existing character's coins inventory.  Insert it as a new row in the character's coins inventory.*/
+    	/*row not found in existing character's coins inventory.  Insert it as a new row in the character's coins inventory.*/
 		$count = $transferQuantity;
 		if($count > 0)
 		{
@@ -372,7 +364,6 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
     /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterCoinId = $coinRow['characterCoinId'];
     $updatedSourceQuantity = max(0,$coinRow['quantity'] - $coinRow['transferQuantity']);
-    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
     
     $query = "UPDATE character_coins SET Quantity = $updatedSourceQuantity WHERE CharacterCoinId = $characterCoinId";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
@@ -385,11 +376,8 @@ function osricdb_transferCharacterCoins($cxn, $characterId, $coinRow)
 function osricdb_transferCharacterItems($cxn, $characterId, $itemRow)
 {
     $transferQuantity = min($itemRow['transferQuantity'],$itemRow['quantity']);
-    echo "transferQuantity: ".$transferQuantity;
     $transferDestination = $itemRow['transferDestination'];
-    echo "\ntransferDestination: ".$transferDestination;
     $transferSource = $itemRow['transferSource'];
-    echo "\ntransferSource: ".$transferSource;
     
     if($transferDestination == $transferSource)
     {/*Don't transfer coins if source and destination are the same*/
@@ -405,21 +393,17 @@ function osricdb_transferCharacterItems($cxn, $characterId, $itemRow)
     $row = mysqli_fetch_assoc($result);
 	if($row)
 	{
-            echo "item row found - updating existing row";
-			/*row found  Update it's count to be its existing count plus the count just added.*/
+            /*row found  Update it's count to be its existing count plus the count just added.*/
 			$count = $row['Quantity'] + $transferQuantity;
-            echo "count: ".$count;
-			if($count > 0)
+            if($count > 0)
 			{
 				$query = "UPDATE character_items SET Quantity = $count WHERE CharacterId = $characterId AND ItemId = $itemId AND ItemStatusId = $transferDestination";
-                echo "query: ".$query;				
                 $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 			}
 	}
 	else
 	{
-        echo "coin row not found - inserting new row";
-		/*row not found in existing character's items inventory.  Insert it as a new row in the character's items inventory.*/
+        /*row not found in existing character's items inventory.  Insert it as a new row in the character's items inventory.*/
 		$count = $transferQuantity;
 		if($count > 0)
 		{
@@ -431,7 +415,6 @@ function osricdb_transferCharacterItems($cxn, $characterId, $itemRow)
     /*Subtract quantity transferred to destination from the transfer source*/ 
     $characterItemId = $itemRow['characterItemId'];
     $updatedSourceQuantity = max(0,$itemRow['quantity'] - $itemRow['transferQuantity']);
-    echo "updatedSourceQuantity: ".$updatedSourceQuantity;
     
     $query = "UPDATE character_items SET Quantity = $updatedSourceQuantity WHERE CharacterItemId = $characterItemId";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
@@ -488,6 +471,39 @@ function osricdb_removeDiscardedCoinRows($cxn)
 {
     $query = "DELETE FROM character_coins WHERE ItemStatusId = 3";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+}
+
+function osricdb_getWeaponAsMelee($cxn, $weaponId)
+{
+    $query = "SELECT * FROM weapon_as_melee WHERE WeaponId = $weaponId";
+    $result = mysqli_query($cxn, $query) or die("Couldn't execute query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+    return $row;   
+}
+
+function osric_getWeaponAsMeleeDmgVsSmallToMedium($weaponAsMelee)
+{
+    if($weaponAsMelee == null) return "N\A";
+        
+    $modifier = $weaponAsMelee['DamageModifierVsSmallOrMedium'];
+    $modifierStr = "";    
+    if($modifier > 0)
+    {
+        $modifierStr = "+".$modifier;
+    }
+    return "".$weaponAsMelee['DamageVsSmallOrMediumMultiples']."d".$weaponAsMelee['DamageVsSmallOrMedium'].$modifierStr;
+}
+
+function osric_getWeaponAsMeleeDmgVsLarge($weaponAsMelee)
+{
+    if($weaponAsMelee == null) return "N\A";
+    $modifier = $weaponAsMelee['DamageModifierVsLarge'];
+    $modifierStr = "";    
+    if($modifier > 0)
+    {
+        $modifierStr = "+".$modifier;
+    }
+    return "".$weaponAsMelee['DamageVsLargeMultiples']."d".$weaponAsMelee['DamageVsLarge'].$modifierStr;
 }
 
 /*

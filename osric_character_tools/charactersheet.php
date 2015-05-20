@@ -3,7 +3,6 @@
    Desc: Displays an existing character's attributes,abilities, equipment etc. in one sheet*/
 
 $characterId = $_GET['CharacterId'];
-echo "Character with CharacterId={$CharacterId}";
 
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");
@@ -65,7 +64,20 @@ echo "<h3>Weapons & Armour</h3>\n";
 echo "<div id='TotalEncumbrance'>Total Encumbrance (lbs): {$totalEncumbranceOnPerson}</div>\n";
 echo "<h4>Weapon(s) in Hand:</h4>\n";
 echo "<table id='CharacterWeaponsInHand'>\n";
-echo "<tr><td>Weapons</td><td>Damage vs S-M</td><td>Damage vs L</td><td>Rate of Fire</td><td>Range</td></tr>\n";
+echo "<tr><td>Weapons</td><td>Melee Damage vs S-M</td><td>Melee Damage vs L</td><td>Missile Damage vs S-M</td><td>Missile Damage vs L</td><td>Missile Rate of Fire</td><td>Missile Range</td></tr>\n";
+$character_weapons_in_use = osricdb_getCharacterWeaponsInUse($cxn, $characterId);
+$num_rows = count($character_weapons_in_use);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_weapons_in_use[$i];
+    $weaponAsMelee = osricdb_getWeaponAsMelee($cxn, $row['WeaponId']);
+    $weaponAsMeleeDmgVsSmallToMedium = osric_getWeaponAsMeleeDmgVsSmallToMedium($weaponAsMelee);
+    $weaponAsMeleeDmgVsLarge = osric_getWeaponAsMeleeDmgVsLarge($weaponAsMelee);
+    /*$weaponAsMissile = osric_getWeaponAsMissile($cxn, $row['WeaponId']);
+    $weaponAsMissileDmgVsSmallToMedium = osric_getWeaponAsMissileDmgVsSmallToMedium($weaponAsMissile);
+    $weaponAsMissileDmgVsLarge = osric_getWeaponAsMissileDmgVsLarge($weaponAsMissile);*/
+    echo "<tr><td>{$row['WeaponType']}</td><td>{$weaponAsMeleeDmgVsSmallToMedium}</td><td>{$weaponAsMeleeDmgVsLarge}</td></tr>";
+}
 echo "</table>\n";
 
 echo "<h4>Weapons Carried:</h4>\n";
