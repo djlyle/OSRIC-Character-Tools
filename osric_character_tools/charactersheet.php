@@ -107,10 +107,34 @@ echo "</table>\n";
 
 echo "<h4>Armour Carried:</h4>\n";
 echo "<div id='CharacterArmourCarried'>\n";
+$character_armour_carried = osricdb_getCharacterArmourCarried($cxn,$characterId);
+$num_rows = count($character_armour_carried);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_armour_carried[$i];
+    if($i > 0)
+    {
+        echo "|";
+    }    
+	echo "{$row['ArmourType']}";
+	echo "({$row['Quantity']})";
+}	
 echo "</div>\n";
 
 echo "<h4>Armour In Storage:</h4>\n";
 echo "<div id='CharacterArmourInStorage'>\n";
+$character_armour_in_storage = osricdb_getCharacterArmourInStorage($cxn,$characterId);
+$num_rows = count($character_armour_in_storage);
+for($i=0;$i<$num_rows;$i++)
+{
+    $row = $character_armour_in_storage[$i];
+    if($i > 0)
+    {
+        echo "|";
+    }    
+	echo "{$row['ArmourType']}";
+	echo "({$row['Quantity']})";
+}
 echo "</div>\n";
 
 echo "<hr/>\n";
