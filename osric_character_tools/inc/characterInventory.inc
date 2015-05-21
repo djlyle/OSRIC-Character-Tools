@@ -481,29 +481,37 @@ function osricdb_getWeaponAsMelee($cxn, $weaponId)
     return $row;   
 }
 
-function osric_getWeaponAsMeleeDmgVsSmallToMedium($weaponAsMelee)
+function osricdb_getWeaponAsMissile($cxn, $weaponId)
 {
-    if($weaponAsMelee == null) return "N\A";
-        
-    $modifier = $weaponAsMelee['DamageModifierVsSmallOrMedium'];
-    $modifierStr = "";    
-    if($modifier > 0)
-    {
-        $modifierStr = "+".$modifier;
-    }
-    return "".$weaponAsMelee['DamageVsSmallOrMediumMultiples']."d".$weaponAsMelee['DamageVsSmallOrMedium'].$modifierStr;
+    $query = "SELECT * FROM weapon_as_missile WHERE WeaponId = $weaponId";
+    $result = mysqli_query($cxn, $query) or die("Couldn't execute query: ".$query);
+    $row = mysqli_fetch_assoc($result);
+    return $row;
 }
 
-function osric_getWeaponAsMeleeDmgVsLarge($weaponAsMelee)
+function osric_getWeaponDmgVsSmallToMedium($weapon)
 {
-    if($weaponAsMelee == null) return "N\A";
-    $modifier = $weaponAsMelee['DamageModifierVsLarge'];
+    if($weapon == null) return "N\A";
+        
+    $modifier = $weapon['DamageModifierVsSmallOrMedium'];
     $modifierStr = "";    
     if($modifier > 0)
     {
         $modifierStr = "+".$modifier;
     }
-    return "".$weaponAsMelee['DamageVsLargeMultiples']."d".$weaponAsMelee['DamageVsLarge'].$modifierStr;
+    return "".$weapon['DamageVsSmallOrMediumMultiples']."d".$weapon['DamageVsSmallOrMedium'].$modifierStr;
+}
+
+function osric_getWeaponDmgVsLarge($weapon)
+{
+    if($weapon == null) return "N\A";
+    $modifier = $weapon['DamageModifierVsLarge'];
+    $modifierStr = "";    
+    if($modifier > 0)
+    {
+        $modifierStr = "+".$modifier;
+    }
+    return "".$weapon['DamageVsLargeMultiples']."d".$weapon['DamageVsLarge'].$modifierStr;
 }
 
 /*

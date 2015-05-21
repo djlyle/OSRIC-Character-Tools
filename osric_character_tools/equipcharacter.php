@@ -4,8 +4,14 @@ include("./inc/characterInventory.inc");
 include("./inc/charactertblfuncs.inc");
 include("./inc/db_funcs.inc");
 include("./inc/functions.inc");
+/*include("./inc/OsricDb.inc");*/
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+/*echo "calling new OsricDb";
+$myOsricDb = new OsricDb;
+$myOsricDb->doInit();
+echo "calling myOsricDb->getCharacter";
+$character = $myOsricDb->getCharacter($characterId);*/
 $character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
 $totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);

@@ -71,12 +71,21 @@ for($i=0;$i<$num_rows;$i++)
 {
     $row = $character_weapons_in_use[$i];
     $weaponAsMelee = osricdb_getWeaponAsMelee($cxn, $row['WeaponId']);
-    $weaponAsMeleeDmgVsSmallToMedium = osric_getWeaponAsMeleeDmgVsSmallToMedium($weaponAsMelee);
-    $weaponAsMeleeDmgVsLarge = osric_getWeaponAsMeleeDmgVsLarge($weaponAsMelee);
-    /*$weaponAsMissile = osric_getWeaponAsMissile($cxn, $row['WeaponId']);
-    $weaponAsMissileDmgVsSmallToMedium = osric_getWeaponAsMissileDmgVsSmallToMedium($weaponAsMissile);
-    $weaponAsMissileDmgVsLarge = osric_getWeaponAsMissileDmgVsLarge($weaponAsMissile);*/
-    echo "<tr><td>{$row['WeaponType']}</td><td>{$weaponAsMeleeDmgVsSmallToMedium}</td><td>{$weaponAsMeleeDmgVsLarge}</td></tr>";
+    $weaponAsMeleeDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMelee);
+    $weaponAsMeleeDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMelee);
+    $weaponAsMissile = osricdb_getWeaponAsMissile($cxn, $row['WeaponId']);
+    $weaponAsMissileDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMissile);
+    $weaponAsMissileDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMissile);
+    if($weaponAsMissile == null){
+        $rateOfFire = "N\A";
+        $rangeInFt = "N\A";
+    }
+    else{
+        $rateOfFire = $weaponAsMissile['RateOfFire'];
+        $rangeInFt = $weaponAsMissile['RangeInFt'];
+    }    
+    
+    echo "<tr><td>{$row['WeaponType']}({$row['Quantity']})</td><td>{$weaponAsMeleeDmgVsSmallToMedium}</td><td>{$weaponAsMeleeDmgVsLarge}</td><td>{$weaponAsMissileDmgVsSmallToMedium}</td><td>{$weaponAsMissileDmgVsLarge}</td><td>{$rateOfFire}</td><td>{$rangeInFt}</td></tr>";
 }
 echo "</table>\n";
 

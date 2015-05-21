@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2015 at 12:00 AM
+-- Generation Time: May 20, 2015 at 11:41 PM
 -- Server version: 5.5.41
 -- PHP Version: 5.3.10-1ubuntu3.16
 
@@ -340,7 +340,7 @@ INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quan
 (39, 55, 4, 31, 2),
 (40, 55, 2, 6, 2),
 (41, 54, 1, 5, 2),
-(42, 55, 1, 5, 2);
+(42, 55, 1, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -427,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `character_weapons` (
   `WeaponMagic` int(11) NOT NULL,
   `EquipmentStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterWeaponId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
 
 --
 -- Dumping data for table `character_weapons`
@@ -442,7 +442,7 @@ INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`,
 (26, 52, 8, 1, 0, 2),
 (35, 55, 8, 2, 0, 1),
 (36, 55, 13, 1, 0, 1),
-(39, 55, 8, 1, 0, 3),
+(39, 55, 8, 2, 0, 3),
 (44, 54, 13, 2, 0, 3),
 (46, 54, 8, 1, 0, 3),
 (48, 54, 2, 1, 1, 3),
@@ -451,9 +451,18 @@ INSERT INTO `character_weapons` (`CharacterWeaponId`, `CharacterId`, `WeaponId`,
 (54, 55, 2, 4, 0, 1),
 (55, 55, 2, 4, 0, 2),
 (58, 55, 1, 5, 0, 1),
-(60, 55, 1, 6, 0, 2),
+(60, 55, 1, 5, 0, 2),
 (62, 55, 10, 1, 0, 2),
-(63, 55, 8, 1, 0, 2);
+(63, 55, 8, 2, 0, 2),
+(64, 55, 15, 1, 0, 1),
+(65, 55, 16, 1, 0, 1),
+(68, 51, 25, 1, 0, 1),
+(69, 51, 22, 1, 0, 3),
+(70, 51, 24, 1, 0, 2),
+(71, 54, 1, 5, 0, 1),
+(74, 54, 1, 5, 0, 3),
+(75, 54, 3, 1, 0, 3),
+(76, 54, 6, 1, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -825,10 +834,34 @@ CREATE TABLE IF NOT EXISTS `weapon_as_missile` (
   `DamageVsLarge` int(11) NOT NULL,
   `DamageModifierVsSmallOrMedium` int(11) NOT NULL,
   `DamageModifierVsLarge` int(11) NOT NULL,
-  `RateOfFire` int(11) NOT NULL,
+  `RateOfFire` float NOT NULL,
   `RangeInFt` int(11) NOT NULL,
-  KEY `WeaponId` (`WeaponId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `MissileWeaponIndex` bigint(20) NOT NULL AUTO_INCREMENT,
+  `DamageVsSmallOrMediumMultiples` int(11) NOT NULL DEFAULT '1',
+  `DamageVsLargeMultiples` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`MissileWeaponIndex`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Dumping data for table `weapon_as_missile`
+--
+
+INSERT INTO `weapon_as_missile` (`WeaponId`, `DamageVsSmallOrMedium`, `DamageVsLarge`, `DamageModifierVsSmallOrMedium`, `DamageModifierVsLarge`, `RateOfFire`, `RangeInFt`, `MissileWeaponIndex`, `DamageVsSmallOrMediumMultiples`, `DamageVsLargeMultiples`) VALUES
+(3, 6, 4, 0, 0, 1, 10, 1, 1, 1),
+(6, 6, 6, 0, 0, 2, 70, 2, 1, 1),
+(7, 6, 6, 0, 0, 2, 50, 3, 1, 1),
+(8, 4, 3, 0, 0, 1, 10, 4, 1, 1),
+(9, 6, 6, 0, 0, 2, 60, 5, 1, 1),
+(10, 6, 6, 0, 0, 2, 50, 6, 1, 1),
+(11, 6, 6, 1, 1, 0.5, 60, 7, 1, 1),
+(12, 4, 4, 1, 1, 1, 60, 8, 1, 1),
+(13, 4, 4, 0, 0, 2, 10, 9, 1, 1),
+(14, 3, 2, 0, 0, 3, 15, 10, 1, 1),
+(19, 4, 4, 1, 0, 1, 10, 11, 1, 1),
+(20, 6, 4, 0, 0, 1, 20, 12, 1, 1),
+(31, 6, 8, 0, 0, 1, 15, 14, 1, 1),
+(29, 4, 6, 1, 1, 1, 35, 15, 1, 1),
+(30, 4, 4, 0, 0, 1, 35, 16, 1, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
