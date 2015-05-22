@@ -1,21 +1,20 @@
 <?php
-include("./inc/misc.inc");
-include("./inc/characterInventory.inc");
-include("./inc/charactertblfuncs.inc");
-include("./inc/db_funcs.inc");
-include("./inc/functions.inc");
-/*include("./inc/OsricDb.inc");*/
+include_once("./inc/misc.inc");
+include_once("./inc/characterInventory.inc");
+include_once("./inc/charactertblfuncs.inc");
+include_once("./inc/db_funcs.inc");
+include_once("./inc/functions.inc");
+require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-/*echo "calling new OsricDb";
-$myOsricDb = new OsricDb;
+echo "calling new OsricDb";
+/*$myOsricDb = new OsricDb();
 $myOsricDb->doInit();
 echo "calling myOsricDb->getCharacter";
 $character = $myOsricDb->getCharacter($characterId);*/
-$character = getCharacter($cxn,$characterId);
+//$character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
 $totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
-$totalValue = getTotalCost($cxn,$characterId);
 $equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
 ?>
 
@@ -30,10 +29,7 @@ echo "<h3>{$characterName}</h3>\n";
 echo "Total Encumbrance: \n";
 echo "{$totalEncumbranceOnPerson} (lbs)";
 echo "<br/>\n";
-echo "Total Value: \n";
-$totalValueStr = sprintf("%01.2f",$totalValue);
-echo "{$totalValueStr} (gp in value)";
-echo "<br/>\n<br/>\n";
+echo "<br/>\n";
 echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<hr/>\n";
 
