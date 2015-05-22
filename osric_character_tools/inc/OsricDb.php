@@ -3,13 +3,13 @@ include_once("./misc.inc");
 
 class OsricDb
 {
-  /*
+  
   protected $cxn;
-  public function init()
+  public function doInit()
   {
-    this->$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+    //this->$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
   }
-
+/*
   public function getCharacter($characterId)
   {
 	if($characterId == -1)
@@ -26,8 +26,8 @@ class OsricDb
 		$row = mysqli_fetch_assoc($result);
 	}
 	return $row; 
-  }
-*/
+  }*/
+
 }
 
 ?>
