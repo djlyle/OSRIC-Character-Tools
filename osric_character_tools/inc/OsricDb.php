@@ -5,11 +5,13 @@ class OsricDb
 {
   
   protected $cxn;
-  public function doInit()
+  public function doInit($aHost,$aUser,$aPasswd)
   {
-    //this->$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+  	 $aDbname = "osric_db";
+  	 echo "aHost=$aHost,aUser=$aUser,aPasswd=$aPasswd";
+    $this->$cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
   }
-/*
+
   public function getCharacter($characterId)
   {
 	if($characterId == -1)
@@ -26,7 +28,7 @@ class OsricDb
 		$row = mysqli_fetch_assoc($result);
 	}
 	return $row; 
-  }*/
+  }
 
 }
 
