@@ -8,8 +8,7 @@ class OsricDb
   public function doInit($aHost,$aUser,$aPasswd)
   {
   	 $aDbname = "osric_db";
-  	 echo "aHost=$aHost,aUser=$aUser,aPasswd=$aPasswd";
-    $this->$cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
+  	 $this->cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
   }
 
   public function getCharacter($characterId)
@@ -24,7 +23,7 @@ class OsricDb
 	else
 	{
 		$query = sprintf("SELECT * FROM characters WHERE CharacterId='%s'",$characterId);
-		$result = mysqli_query($this->$cxn,$query) or die("Couldn't execute query.");
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
 		$row = mysqli_fetch_assoc($result);
 	}
 	return $row; 

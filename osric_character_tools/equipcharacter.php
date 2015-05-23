@@ -6,15 +6,11 @@ include_once("./inc/db_funcs.inc");
 include_once("./inc/functions.inc");
 require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-echo "calling new OsricDb";
 $myOsricDb = new OsricDb();
-//echo "calling myOsricDb->doInit()";
-//$myOsricDb->doInit($host,$user,$passwd);
-//echo "calling myOsricDb->getCharacter";
-//$character = $myOsricDb->getCharacter($characterId);
-//$character = getCharacter($cxn,$characterId);
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
+$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
 $equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
 ?>
