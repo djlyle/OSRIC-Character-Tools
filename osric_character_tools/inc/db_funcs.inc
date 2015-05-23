@@ -1,17 +1,5 @@
 <?php
 
-function osricdb_getEquipmentStatusOptions($cxn)
-{
-    $query = "SELECT * FROM equipment_status";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getEquipmentStatusOptions query.");
-    $options = array();
-    while($row = mysqli_fetch_assoc($result))
-    {
-        $options[$row['EquipmentStatusId']] = $row['EquipmentStatus'];
-    }
-    return $options;
-}
-
 function osricdb_getItemStatusOptions($cxn)
 {
     $query = "SELECT * FROM item_status";

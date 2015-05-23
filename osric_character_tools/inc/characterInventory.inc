@@ -49,17 +49,6 @@ function osricdb_getTotalEncumbranceArmourOnPerson($cxn, $characterId)
 	return $row['TotalEncumbrance'];
 }
 
-function osricdb_getTotalEncumbranceOnPerson($cxn, $characterId)
-{
-    $totalEncumbranceItemsCarried = osricdb_getTotalEncumbranceItemsCarried($cxn,$characterId);
-    $totalEncumbranceCoinsCarried = osricdb_getTotalEncumbranceCoinsCarried($cxn,$characterId);
-    $totalEncumbranceWeaponsOnPerson = osricdb_getTotalEncumbranceWeaponsOnPerson($cxn,$characterId);
-    $totalEncumbranceArmourOnPerson = osricdb_getTotalEncumbranceArmourOnPerson($cxn,$characterId);
-    $totalEncumbranceOnPerson = $totalEncumbranceItemsCarried + $totalEncumbranceCoinsCarried + $totalEncumbranceWeaponsOnPerson + $totalEncumbranceArmourOnPerson;
-    return $totalEncumbranceOnPerson;
-}
-
-
 function getTotalCost($cxn, $characterId)
 {
 	$query = "SELECT SUM(e.TotalItemCost) AS TotalCost FROM (SELECT (ci.Quantity * i.ItemCost) AS TotalItemCost FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}') AS e";

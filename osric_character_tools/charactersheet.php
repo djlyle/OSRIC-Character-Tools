@@ -4,15 +4,18 @@
 
 $characterId = $_GET['CharacterId'];
 
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-include("./inc/characterInventory.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+include_once("./inc/characterInventory.inc");
+require_once("./inc/OsricDb.php");
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
+$totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId);
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-
-$character = getCharacter($cxn,$characterId);
 $characterStatus = getCharacterStatus($cxn,$characterId);
-$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
+
 $labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
 
 ?>

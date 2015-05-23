@@ -10,9 +10,8 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$totalEncumbranceOnPerson = osricdb_getTotalEncumbranceOnPerson($cxn, $characterId);
-$equipmentStatusOptions = osricdb_getEquipmentStatusOptions($cxn);
+$totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId);
+$equipmentStatusOptions = $myOsricDb->getEquipmentStatusOptions();
 ?>
 
 <html>
@@ -30,6 +29,7 @@ echo "<br/>\n";
 echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<hr/>\n";
 
+$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $itemStatusOptions = osricdb_getItemStatusOptions($cxn);
 $offset = 0;
 
