@@ -29,7 +29,48 @@ class OsricDb
 		}
 		return $row; 
 	}
-  
+	
+	public function deleteCharacter($characterId)
+	{
+		if($characterId != -1)
+		{
+			/*TODO: make this a transaction.  Ideally this should all be one transaction that fails or succeeds as one atomic unit*/
+			$query = sprintf("DELETE FROM `character_items` WHERE CharacterId='%s'",$characterId);
+			$result = mysqli_query($this->cxn,$query) or die("Error in trying to delete a row in the character_items table.");
+			$query = sprintf("DELETE FROM `characters` WHERE CharacterId='%s'",$characterId);
+			$result = mysqli_query($this->cxn,$query) or die("Error in trying to delete a row in the characters table.");
+			$query = sprintf("DELETE FROM `character_status` WHERE CharacterId='%s'",$characterId);
+			$result = mysqli_query($this->cxn,$query) or die("Error in trying to delete a row in the character_status table.");
+			$query = sprintf("DELETE FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
+			$result = mysqli_query($this->cxn,$query) or die("Error in trying to delete a row in the character_abilities table.");
+			$query = sprintf("DELETE FROM `character_coins` WHERE CharacterId='%s'",$characterId);
+			$result = mysqli_query($this->cxn,$query) or die("Error in trying to delete rows in the character_coins table.");
+			$this->deleteAllClassesForCharacter($characterId);
+		}
+	}
+	
+	public function deleteAllClassesForCharacter($characterId)
+	{
+		$query = sprintf("DELETE FROM character_classes WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute deleteCharacterClasses query.");
+		return $result;
+	}
+	
+	public function addClassesForCharacter($characterId,$selectedCharacterClasses)
+	{
+		foreach($selectedCharacterClasses as $classId)
+		{
+			$query = "INSERT INTO character_classes (CharacterId,ClassId) VALUES ('{$characterId}','{$classId}')";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute addClassesForCharacter query.");
+		}
+	}
+	
+	public function editCharacterClasses($characterId,$selectedCharacterClasses)
+	{
+		$this->deleteAllClassesForCharacter($characterId);
+		$this->addClassesForCharacter($characterId,$selectedCharacterClasses);
+	}
+	
 	public function getTotalEncumbranceOnPerson($characterId)
 	{
     $totalEncumbranceItemsCarried = osricdb_getTotalEncumbranceItemsCarried($this->cxn,$characterId);

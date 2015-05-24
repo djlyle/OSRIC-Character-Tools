@@ -11,13 +11,12 @@ echo "Deleting Character with CharacterId={$characterId}";
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
 if($characterId != -1)
 {
 	$character = $myOsricDb->getCharacter($characterId);
 
-	deleteCharacter($cxn,$characterId);
+	$myOsricDb->deleteCharacter($characterId);
 }
 
 ?>

@@ -1,23 +1,6 @@
 <?php
 
-function deleteCharacter($cxn,$characterId)
-{
-	if($characterId != -1)
-	{
-		/*TODO: make this a transaction.  Ideally this should all be one transaction that fails or succeeds as one atomic unit*/
-		$query = sprintf("DELETE FROM `character_items` WHERE CharacterId='%s'",$characterId);
-		$result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_items table.");
-		$query = sprintf("DELETE FROM `characters` WHERE CharacterId='%s'",$characterId);
-		$result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the characters table.");
-        $query = sprintf("DELETE FROM `character_status` WHERE CharacterId='%s'",$characterId);
-        $result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_status table.");
-        $query = sprintf("DELETE FROM `character_abilities` WHERE CharacterId='%s'",$characterId);
-        $result = mysqli_query($cxn,$query) or die("Error in trying to delete a row in the character_abilities table.");
-        $query = sprintf("DELETE FROM `character_coins` WHERE CharacterId='%s'",$characterId);
-        $result = mysqli_query($cxn,$query) or die("Error in trying to delete rows in the character_coins table.");
-        deleteAllClassesForCharacter($cxn,$characterId);
-	}
-}
+
 
 function getCharacterStatus($cxn,$characterId)
 {
@@ -25,12 +8,6 @@ function getCharacterStatus($cxn,$characterId)
     $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterStatus query.");
     $row = mysqli_fetch_assoc($result);
     return $row;
-}
-
-function editCharacterClasses($cxn,$characterId,$selectedCharacterClasses)
-{
-    deleteAllClassesForCharacter($cxn,$characterId);
-    addClassesForCharacter($cxn,$characterId,$selectedCharacterClasses);
 }
 
 function getCharacterAbilities($cxn,$characterId)
@@ -47,22 +24,6 @@ function getCharacterClasses($cxn,$characterId)
     $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterClasses query.");
     for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
     return $result_set;    
-}
-
-function addClassesForCharacter($cxn,$characterId,$selectedCharacterClasses)
-{
-    foreach($selectedCharacterClasses as $classId)
-    {
-        $query = "INSERT INTO character_classes (CharacterId,ClassId) VALUES ('{$characterId}','{$classId}')";
-        $result = mysqli_query($cxn,$query) or die("Couldn't execute addClassesForCharacter query.");
-    }
-}
-
-function deleteAllClassesForCharacter($cxn,$characterId)
-{
-    $query = sprintf("DELETE FROM character_classes WHERE CharacterId='%s'",$characterId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute deleteCharacterClasses query.");
-    return $result;
 }
 
 function editCharacter($cxn,$character)
