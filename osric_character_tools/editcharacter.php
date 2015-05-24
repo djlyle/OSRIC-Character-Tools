@@ -2,19 +2,21 @@
 /*Program: editcharacter.php
    Desc: Edits an existing character or adds a new character to the Characters table in the osric_db*/
 
-$CharacterId = $_GET['CharacterId'];
-echo "Character with CharacterId={$CharacterId}";
+$characterId = $_GET['CharacterId'];
+echo "Character with CharacterId={$characterId}";
 
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-include("./inc/functions.inc");
-include("./inc/db_funcs.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+include_once("./inc/functions.inc");
+include_once("./inc/db_funcs.inc");
+require_once("./inc/OsricDb.php");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-
-if($CharacterId != -1)
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+if($characterId != -1)
 {
-	$character = getCharacter($cxn,$CharacterId);
+	$character = $myOsricDb->getCharacter($characterId);
 }
 $labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
 $inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","CharacterAge"=>"float","CharacterWeight"=>"float","CharacterHeight"=>"float","RaceId"=>"select");
@@ -22,13 +24,7 @@ $selectOptions['CharacterGender'][0] = "Unknown";
 $selectOptions['CharacterGender'][1] = "Male";
 $selectOptions['CharacterGender'][2] = "Female";
 $selectOptions['RaceId'] = osricdb_getRaceOptions($cxn);
-/*$query = "SELECT * FROM races";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute races query.");
-while($row = mysqli_fetch_assoc($result))
-{
-    $k = $row['RaceId']
-    $selectOptions['RaceId'][$k] = $row['RaceName'];
-}*/
+
 ?>
 
 /*Character form*/
@@ -40,7 +36,7 @@ while($row = mysqli_fetch_assoc($result))
 <body>
 <form action='submitcharacter.php' method='post'>
 <?php
-echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
+echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 echo "<table>";
 foreach($labels as $field => $label)
 {
@@ -48,7 +44,7 @@ foreach($labels as $field => $label)
 	echo "<td>";
 	echo "<label for='$field'>$label</label>";
 	echo "</td>";
-	if($CharacterId != -1)
+	if($characterId != -1)
 	{
 		$value = $character[$field];	
 	}

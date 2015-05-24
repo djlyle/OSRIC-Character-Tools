@@ -2,18 +2,22 @@
 /*Program: deletecharacter.php
    Desc: Deletes an existing character in the Characters table and related tables in the osric_db*/
 
-$CharacterId = $_GET['CharacterId'];
-echo "Deleting Character with CharacterId={$CharacterId}";
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+require_once("./inc/OsricDb.php");
 
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+$characterId = $_GET['CharacterId'];
+echo "Deleting Character with CharacterId={$characterId}";
 
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
-if($CharacterId != -1)
+if($characterId != -1)
 {
-	$character = getCharacter($cxn,$CharacterId);
-	deleteCharacter($cxn,$CharacterId);
+	$character = $myOsricDb->getCharacter($characterId);
+
+	deleteCharacter($cxn,$characterId);
 }
 
 ?>

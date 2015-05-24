@@ -1,9 +1,12 @@
 <?php
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$character = getCharacter($cxn,$characterId);
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 ?>
 <html>

@@ -2,16 +2,18 @@
 /*Program: editcharacterstatus.php
    Desc: Edits an existing character's status in the osric_db*/
 
-$CharacterId = $_GET['CharacterId'];
+$characterId = $_GET['CharacterId'];
 
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");
+require_once("./inc/OsricDb.php");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-
-$character = getCharacter($cxn,$CharacterId);
-$characterStatus = getCharacterStatus($cxn,$CharacterId);
-echo "Status for {$character['CharacterName']} (CharacterId={$CharacterId}):";
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
+$characterStatus = getCharacterStatus($cxn,$characterId);
+echo "Status for {$character['CharacterName']} (CharacterId={$characterId}):";
 $labels = array("CharacterStatusArmorClass"=>"Armor Class","CharacterStatusExperiencePoints"=>"Experience Points","CharacterStatusLevel"=>"Level","CharacterStatusFullHitPoints"=>"Full Hit Points","CharacterStatusRemainingHitPoints"=>"Remaining Hit Points");
 $inputTypes = array("CharacterStatusArmorClass"=>"integer","CharacterStatusExperiencePoints"=>"integer","CharacterStatusLevel"=>"integer","CharacterStatusFullHitPoints"=>"integer","CharacterStatusRemainingHitPoints"=>"integer");
 ?>
@@ -25,7 +27,7 @@ $inputTypes = array("CharacterStatusArmorClass"=>"integer","CharacterStatusExper
 <body>
 <form action='submitcharacterstatus.php' method='post'>
 <?php
-echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
+echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 echo "<table>";
 foreach($labels as $field => $label)
 {

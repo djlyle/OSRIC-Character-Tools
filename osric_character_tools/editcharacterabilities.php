@@ -2,16 +2,18 @@
 /*Program: editcharacterabilities.php
    Desc: Edits an existing character's abilities in the osric_db*/
 
-$CharacterId = $_GET['CharacterId'];
+$characterId = $_GET['CharacterId'];
 
 include("./inc/misc.inc");
 include("./inc/charactertblfuncs.inc");
-
+require_once("./inc/OsricDb.php");
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 
-$character = getCharacter($cxn,$CharacterId);
+$character = $myOsricDb->getCharacter($characterId);
 
-echo "Character Abilities for {$character['CharacterName']} (CharacterId={$CharacterId}):";
+echo "Character Abilities for {$character['CharacterName']} (CharacterId={$characterId}):";
 ?>
 
 <!-- Character form -->
@@ -23,9 +25,9 @@ echo "Character Abilities for {$character['CharacterName']} (CharacterId={$Chara
 <body>
 <form action='submitcharacterabilities.php' method='post'>
 <?php
-echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
+echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 echo "<table>";
-$character_abilities = getCharacterAbilities($cxn,$CharacterId);
+$character_abilities = getCharacterAbilities($cxn,$characterId);
 $num_abilities = count($character_abilities);
 for($i=0;$i<$num_abilities;$i++)
 {

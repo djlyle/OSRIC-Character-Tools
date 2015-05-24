@@ -2,17 +2,17 @@
 /*Program: editcharacterclasses.php
    Desc: Edits an existing character's classes in the osric_db*/
 
-$CharacterId = $_GET['CharacterId'];
+$characterId = $_GET['CharacterId'];
 
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+require_once("./inc/OsricDb.php");
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
 
-echo "Getting character...";
-$character = getCharacter($cxn,$CharacterId);
-
-echo "Character Classes for {$character['CharacterName']} (CharacterId={$CharacterId}):";
+echo "Character Classes for {$character['CharacterName']} (CharacterId={$characterId}):";
 ?>
 
 <!-- Character Classes form -->
@@ -24,9 +24,9 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$Charact
 <body>
 <form action='submitcharacterclasses.php' method='post'>
 <?php
-echo "<input type='hidden' name='CharacterId' value='$CharacterId'/>";
+echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 
-$query = "SELECT * FROM character_classes WHERE CharacterId = $CharacterId";
+$query = "SELECT * FROM character_classes WHERE CharacterId = $characterId";
 $result = mysqli_query($cxn,$query) or die("Couldn't execute character_classes query.");
 while($row = mysqli_fetch_assoc($result))
 {

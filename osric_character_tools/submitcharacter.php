@@ -1,6 +1,6 @@
 <?php
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
 $characterId = $_POST['CharacterId'];
 /*If the cancel button was pressed in the form from editcharacter.php
   then return to characters.php */

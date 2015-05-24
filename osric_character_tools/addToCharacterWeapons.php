@@ -2,11 +2,14 @@
 /*Program: addToCharacterWeapons.php
    Desc: Adds weapons to character's inventory
 */
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$character = getCharacter($cxn,$characterId);
 $characterName = $character['CharacterName'];
 $weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)

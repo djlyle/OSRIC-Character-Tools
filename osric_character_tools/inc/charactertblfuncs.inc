@@ -19,24 +19,6 @@ function deleteCharacter($cxn,$characterId)
 	}
 }
 
-function getCharacter($cxn,$characterId)
-{
-	if($characterId == -1)
-	{
-		$row['CharacterName'] = "Dummy";
-		$row['CharacterGender'] = "1";
-		$row['CharacterAge'] = "42";
-		$row['CharacterHeight'] = "65";
-	}
-	else
-	{
-		$query = sprintf("SELECT * FROM `characters` WHERE CharacterId='%s'",$characterId);
-		$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
-		$row = mysqli_fetch_assoc($result);
-	}
-	return $row; 
-}
-
 function getCharacterStatus($cxn,$characterId)
 {
     $query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);

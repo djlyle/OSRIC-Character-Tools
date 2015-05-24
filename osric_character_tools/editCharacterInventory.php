@@ -2,18 +2,20 @@
 /*Program:editCharacterInventory.php
  *Desc: Edits character's existing inventory
  */
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-include("./inc/characterInventory.inc");
+include_once("./inc/misc.inc");
+include_once("./inc/charactertblfuncs.inc");
+include_once("./inc/characterInventory.inc");
+require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$character = getCharacter($cxn,$characterId);
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 
 $armourRows = $_POST['armour'];
 foreach($armourRows as $armourRow)
 {
-    /*$result = updateCharacterArmour($cxn, $armourRow['characterArmourId'], $armourRow['quantity'], $armourRow['armourMagic'], $armourRow['equipmentStatusId']);*/
     if($armourRow['transferQuantity'] > 0)
     {
         $result = osricdb_transferCharacterArmour($cxn, $characterId, $armourRow);
@@ -28,7 +30,6 @@ osricdb_removeDiscardedArmourRows($cxn);
 $weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)
 {
-    /*$result = updateCharacterWeapons($cxn, $weaponRow['characterWeaponId'], $weaponRow['quantity'], $weaponRow['weaponMagic'], $weaponRow['equipmentStatusId']);*/
     if($weaponRow['transferQuantity'] > 0)
     {
         $result = osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow);
