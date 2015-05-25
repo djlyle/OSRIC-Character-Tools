@@ -93,6 +93,100 @@ class OsricDb
 		return $options;
 	}
 	
+	public function getItemStatusOptions()
+	{
+		$query = "SELECT * FROM item_status";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute getItemStatusOptions query.");
+		$options = array();
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$options[$row['ItemStatusId']] = $row['ItemStatus'];
+		}
+		return $options;
+	}
+	
+	public function getCharacterCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsByStatus($characterId,"1");
+	}
+	
+	public function getCharacterCoinsCarried($characterId)
+	{
+		return $this->getCharacterCoinsByStatus($characterId,"2");
+	}
+	
+	private function getCharacterCoinsByStatus($characterId,$itemStatusId)
+	{
+		$query = sprintf("SELECT * FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId AND cc.ItemStatusId = '%s'",$itemStatusId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
+	public function getCharacterWeaponsInStorage($characterId)
+	{
+		return $this->getCharacterWeaponsByStatus($characterId, "1");
+	}
+
+	public function getCharacterWeaponsCarried($characterId)
+	{
+		return $this->getCharacterWeaponsByStatus($characterId, "2");
+	}
+
+	public function getCharacterWeaponsInUse($characterId)
+	{
+		return $this->getCharacterWeaponsByStatus($characterId, "3");
+	}
+
+	private function getCharacterWeaponsByStatus($characterId, $equipmentStatus)
+	{
+		$query = sprintf("SELECT * FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = $characterId AND cw.EquipmentStatusId = '%s'",$equipmentStatus);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute getCharacterWeaponsByStatus query.");
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+
+	public function getCharacterArmourInStorage($characterId)
+	{
+		return $this->getCharacterArmourByStatus($characterId, "1");	
+	}
+
+	public function getCharacterArmourCarried($characterId)
+	{
+		return $this->getCharacterArmourByStatus($characterId, "2");
+	}
+
+	public function getCharacterArmourInUse($characterId)
+	{
+		return $this->getCharacterArmourByStatus($characterId, "3");
+	}
+	
+	private function getCharacterArmourByStatus($characterId, $equipmentStatus)
+	{
+		$query = sprintf("SELECT * FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = $characterId AND ca.EquipmentStatusId = '%s'",$equipmentStatus);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute getCharacterArmourInStorage query.");
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
+	public function getCharacterItemsCarried($characterId)
+	{
+		return $this->getCharacterItemsByStatus($characterId,"2");
+	}
+
+	public function getCharacterItemsInStorage($characterId)
+	{
+		return $this->getCharacterItemsByStatus($characterId,"1");
+	}
+
+	private function getCharacterItemsByStatus($characterId,$itemStatusId)
+	{
+		$query = sprintf("SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatusId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+
 }
 
 ?>

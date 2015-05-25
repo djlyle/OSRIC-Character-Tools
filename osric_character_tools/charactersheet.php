@@ -68,7 +68,7 @@ echo "<div id='TotalEncumbrance'>Total Encumbrance (lbs): {$totalEncumbranceOnPe
 echo "<h4>Weapon(s) in Hand:</h4>\n";
 echo "<table id='CharacterWeaponsInHand'>\n";
 echo "<tr><td>Weapons</td><td>Melee Damage vs S-M</td><td>Melee Damage vs L</td><td>Missile Damage vs S-M</td><td>Missile Damage vs L</td><td>Missile Rate of Fire</td><td>Missile Range</td></tr>\n";
-$character_weapons_in_use = osricdb_getCharacterWeaponsInUse($cxn, $characterId);
+$character_weapons_in_use = $myOsricDb->getCharacterWeaponsInUse($characterId);
 $num_rows = count($character_weapons_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -94,7 +94,7 @@ echo "</table>\n";
 
 echo "<h4>Weapons Carried:</h4>\n";
 echo "<div id='CharacterWeaponsCarried'>\n";
-$character_weapons_carried = osricdb_getCharacterWeaponsCarried($cxn,$characterId);
+$character_weapons_carried = $myOsricDb->getCharacterWeaponsCarried($characterId);
 $num_rows = count($character_weapons_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -110,7 +110,7 @@ echo "</div>\n";
 
 echo "<h4>Weapons In Storage:</h4>\n";
 echo "<div id='CharacterWeaponsInStorage'>\n";
-$character_weapons_in_storage = osricdb_getCharacterWeaponsInStorage($cxn,$characterId);
+$character_weapons_in_storage = $myOsricDb->getCharacterWeaponsInStorage($characterId);
 $num_rows = count($character_weapons_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -131,7 +131,7 @@ echo "</table>\n";
 
 echo "<h4>Armour Carried:</h4>\n";
 echo "<div id='CharacterArmourCarried'>\n";
-$character_armour_carried = osricdb_getCharacterArmourCarried($cxn,$characterId);
+$character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -147,7 +147,7 @@ echo "</div>\n";
 
 echo "<h4>Armour In Storage:</h4>\n";
 echo "<div id='CharacterArmourInStorage'>\n";
-$character_armour_in_storage = osricdb_getCharacterArmourInStorage($cxn,$characterId);
+$character_armour_in_storage = $myOsricDb->getCharacterArmourInStorage($characterId);
 $num_rows = count($character_armour_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -167,7 +167,7 @@ echo "<h3>Equipment</h3>\n";
 echo "<h4>Equipment Carried:</h4>";
 
 echo "<div id='CharacterEquipmentCarried'>\n";
-$character_items_carried = osricdb_getCharacterItemsCarried($cxn,$characterId);
+$character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
 $num_rows = count($character_items_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -182,7 +182,7 @@ for($i=0;$i<$num_rows;$i++)
 echo "</div>\n";
 echo "<h4>Equipment In Storage:</h4>";
 echo "<div id='CharacterEquipmentInStorage'>\n";
-$character_items_in_storage = osricdb_getCharacterItemsInStorage($cxn,$characterId);
+$character_items_in_storage = $myOsricDb->getCharacterItemsInStorage($characterId);
 $num_rows = count($character_items_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {

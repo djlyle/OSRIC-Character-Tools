@@ -30,14 +30,14 @@ echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<hr/>\n";
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$itemStatusOptions = osricdb_getItemStatusOptions($cxn);
+$itemStatusOptions = $myOsricDb->getItemStatusOptions();
 $offset = 0;
 
 echo "<h3>Coins carried:</h3>\n";
 echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
 echo "<table id='osric_character_coins'>\n";
 echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
-$character_coins_carried = osricdb_getCharacterCoinsCarried($cxn,$characterId);
+$character_coins_carried = $myOsricDb->getCharacterCoinsCarried($characterId);
 $num_rows = count($character_coins_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -73,7 +73,7 @@ echo "<h3>Coins in storage:</h3>\n";
 echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
 echo "<table id='osric_character_coins_in_storage'>\n";
 echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
-$character_coins_in_storage = osricdb_getCharacterCoinsInStorage($cxn,$characterId);
+$character_coins_in_storage = $myOsricDb->getCharacterCoinsInStorage($characterId);
 $num_rows = count($character_coins_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -118,7 +118,7 @@ $offset = 0;
 echo "<h3>Armour in Use:</h3>";
 echo "<table id='osric_character_armour_in_use'>\n";
 echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
-$character_armour_in_use = osricdb_getCharacterArmourInUse($cxn,$characterId);
+$character_armour_in_use = $myOsricDb->getCharacterArmourInUse($characterId);
 $num_rows = count($character_armour_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -159,7 +159,7 @@ $offset = $offset + $num_rows;
 echo "<h3>Armour Carried:</h3>";
 echo "<table id='osric_character_armour_carried'>\n";
 echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
-$character_armour_carried = osricdb_getCharacterArmourCarried($cxn,$characterId);
+$character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -196,7 +196,7 @@ for($i=0;$i<$num_rows;$i++)
 echo "</table>\n";
 $offset = $offset + $num_rows;
 echo "<h3>Armour In Storage: </h3>";
-$character_armour_in_storage = osricdb_getCharacterArmourInStorage($cxn,$characterId);
+$character_armour_in_storage = $myOsricDb->getCharacterArmourInStorage($characterId);
 $num_rows = count($character_armour_in_storage);
 echo "<table id='osric_character_armour_in_storage'>";
 echo "<tr><td>Armour Type</td><td>Effect on Armour Class</td><td>Encumbrance</td><td>Movement Rate</td><td>Cost</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
@@ -245,7 +245,7 @@ echo "<div><input type='submit' value='submit weapons'/></div>";
 echo "<h3>Weapons in Use:</h3>";
 echo "<table id='osric_character_weapons_in_use'>\n";
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-$character_weapons_in_use = osricdb_getCharacterWeaponsInUse($cxn,$characterId);
+$character_weapons_in_use = $myOsricDb->getCharacterWeaponsInUse($characterId);
 $num_rows = count($character_weapons_in_use);
 $offset = 0;
 for($i=0;$i<$num_rows;$i++)
@@ -284,7 +284,7 @@ $offset = $offset + $num_rows;
 echo "<h3>Weapons Carried:</h3>\n";
 echo "<table id='osric_character_weapons_carried'>\n";
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-$character_weapons_carried = osricdb_getCharacterWeaponsCarried($cxn,$characterId);
+$character_weapons_carried = $myOsricDb->getCharacterWeaponsCarried($characterId);
 $num_rows = count($character_weapons_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -321,7 +321,7 @@ $offset = $offset + $num_rows;
 echo "<h3>Weapons in Storage:</h3>\n";
 echo "<table id='osric_character_weapons_in_storage'>\n";
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-$character_weapons_in_storage = osricdb_getCharacterWeaponsInStorage($cxn,$characterId);
+$character_weapons_in_storage = $myOsricDb->getCharacterWeaponsInStorage($characterId);
 $num_rows = count($character_weapons_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -367,7 +367,7 @@ echo "<h3>Equipment Carried:</h3>\n";
 echo "<table id='osric_character_equipment_carried'>";
 echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
 $itemQuantity = 0;
-$character_items_carried = osricdb_getCharacterItemsCarried($cxn,$characterId);
+$character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
 $num_rows = count($character_items_carried);
 for($i=0;$i<$num_rows;$i++)
 {
@@ -405,7 +405,7 @@ $offset = $offset + $num_rows;
 echo "<h3>Equipment in Storage:</h3>\n";
 echo "<table id='osric_character_equipment_in_storage'>";
 echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-$character_items_in_storage = osricdb_getCharacterItemsInStorage($cxn,$characterId);
+$character_items_in_storage = $myOsricDb->getCharacterItemsInStorage($characterId);
 $num_rows = count($character_items_in_storage);
 for($i=0;$i<$num_rows;$i++)
 {
