@@ -1,24 +1,34 @@
 table
 {
 	border: 1px solid black;
-    border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 td
 {
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.clsDisplayNone
+{
+	display: none;
+}
+
+.clsScrollable
+{
+	overflow:scroll;
+	height: 400px;
 }
 
 .clsCellValue
 {
-    text-align: center;
+	text-align: center;
 }
 
 .clsCellLabel
 {
-    text-align: center;
-    font-weight: bold;
-    text-decoration: underline;
-    
+	text-align: center;
+	font-weight: bold;
+	text-decoration: underline; 
 }

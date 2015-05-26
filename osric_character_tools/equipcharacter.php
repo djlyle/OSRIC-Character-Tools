@@ -5,6 +5,8 @@ include_once("./inc/charactertblfuncs.inc");
 include_once("./inc/db_funcs.inc");
 include_once("./inc/functions.inc");
 require_once("./inc/OsricDb.php");
+require_once("./inc/OsricHtmlHelper.php");
+
 $characterId = $_REQUEST['CharacterId'];
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
@@ -27,84 +29,31 @@ echo "{$totalEncumbranceOnPerson} (lbs)";
 echo "<br/>\n";
 echo "<br/>\n";
 echo "<a href='characters.php'>Return to list of characters</a>\n";
+echo "<p>View and/or modify the character inventory below.</p>";
+echo "<p>Press the submit button below when ready to finalize any changes.</p>";
+echo "<div><input type='submit' value='submit inventory changes'/></div>\n";
 echo "<hr/>\n";
-
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+echo "<div id='CharacterInventoryContent' class='clsScrollable'>\n";
 $itemStatusOptions = $myOsricDb->getItemStatusOptions();
-$offset = 0;
 
+//Html form will POST row data via an array.  Each row will be POSTED with a given index.
+//If same array name is used in multiple tables then the starting index for that array will
+//differ. The variable postArrayIndexOffset is the index to start with for the array used in POSTing the input elements 
+//in the rows of the html table in question.
+$postArrayIndexOffset = 0;
+$myOsricHtmlHelper = new OsricHtmlHelper();
 echo "<h3>Coins carried:</h3>\n";
-echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
-echo "<table id='osric_character_coins'>\n";
-echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
 $character_coins_carried = $myOsricDb->getCharacterCoinsCarried($characterId);
 $num_rows = count($character_coins_carried);
-for($i=0;$i<$num_rows;$i++)
-{
-    $row = $character_coins_carried[$i];
-    $transferSource = $row['ItemStatusId'];
-    $index = $offset + $i;
-	
-    echo "<tr>";
-    echo "<td>{$row['CoinName']}</td>";
-    $coinId = $row['CoinId'];
-    $characterCoinId = $row['CharacterCoinId'];	
-    if($row['Quantity']){
-		$coinQuantity = $row['Quantity'];
-	}
-	else {
-		$coinQuantity = 0;
-	}
-    echo "<td><input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input></td>";    
-    echo "<td>";
-    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
-    echo "</td>";
-    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
-    echo "</tr>\n";
-}
-echo "</table>\n";
-
-$offset = $offset + $num_rows;
+$myOsricHtmlHelper->makeHtmlTableCharacterCoins($character_coins_carried, $itemStatusOptions, "osric_character_coins_carried", $postArrayIndexOffset);
+$postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
 
 echo "<h3>Coins in storage:</h3>\n";
-echo "<div><input type='submit' value='submit coin inventory'/></div>\n";
-echo "<table id='osric_character_coins_in_storage'>\n";
-echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
 $character_coins_in_storage = $myOsricDb->getCharacterCoinsInStorage($characterId);
 $num_rows = count($character_coins_in_storage);
-for($i=0;$i<$num_rows;$i++)
-{
-    $row = $character_coins_in_storage[$i];
-    $transferSource = $row['ItemStatusId'];
-    $index = $offset + $i;
-	
-    echo "<tr>";
-    echo "<td>{$row['CoinName']}</td>";
-    $coinId = $row['CoinId'];
-    $characterCoinId = $row['CharacterCoinId'];	
-    	
-    if($row['Quantity']){
-		$coinQuantity = $row['Quantity'];
-	}
-	else {
-		$coinQuantity = 0;
-	}
-    echo "<td>";
-    echo "<input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input>";        
-    echo "</td>";    
-    echo "<td>";
-    html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
-    echo "</td>";
-    echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='coin[{$index}][characterCoinId]' value='{$characterCoinId}'></input></td>";    
-    echo "</tr>\n";
-}
-echo "</table>\n";
+$myOsricHtmlHelper->makeHtmlTableCharacterCoins($character_coins_in_storage, $itemStatusOptions, "osric_character_coins_in_storage", $postArrayIndexOffset);
+$postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
+
 echo "<hr/>\n";
 
 echo "<h3>Armour:</h3>\n";
@@ -112,7 +61,6 @@ echo "<p>Click on the \"Select new armour\" link to supplement this character's 
 echo "<p>To transfer a quantity of armour in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit armour\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
 echo "<br/>\n";
-echo "<div><input type='submit' value='submit armour'/></div>\n";
 
 $offset = 0;
 echo "<h3>Armour in Use:</h3>";
@@ -240,7 +188,6 @@ echo "<p>Click on the \"Select new weapons\" link to supplement this character's
 echo "<p>To transfer a quantity of weapons in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit weapons\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new weapons</a></div>";
 echo "<br/>";
-echo "<div><input type='submit' value='submit weapons'/></div>";
 
 echo "<h3>Weapons in Use:</h3>";
 echo "<table id='osric_character_weapons_in_use'>\n";
@@ -361,7 +308,6 @@ echo "<p>Click on the \"Select new equipment\" link to supplement this character
 echo "<p>To transfer a quantity of equipment items in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit equipment\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
-echo "<div><input type='submit' value='submit equipment'/></div>";
 $offset = 0;
 echo "<h3>Equipment Carried:</h3>\n";
 echo "<table id='osric_character_equipment_carried'>";
@@ -439,6 +385,9 @@ for($i=0;$i<$num_rows;$i++)
 echo "</table>\n";
 echo "<hr/>\n";
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
+
+//end tag for scrollable div
+echo "</div>\n";
 
 ?>
 
