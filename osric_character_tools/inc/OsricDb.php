@@ -186,6 +186,41 @@ class OsricDb
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
 	}
+	
+	public function addToCharacterWeapons($characterId, $weaponId, $quantityToAdd)    
+	{    
+    	if($weaponId != -1)
+    	{
+			/*Check if weapon is already in character's inventory.  If it is
+			then get the count of that weapon in the character's inventory and
+			update it to be the sum of the value submitted to the existing
+			number.  If it isn't yet in the character's inventory then
+			insert it as a new row in the character's inventory.*/ 
+			$query = "SELECT * FROM character_weapons cw WHERE cw.CharacterId = '{$characterId}' AND cw.WeaponId = '{$weaponId}'";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: " . $query);
+			$row = mysqli_fetch_assoc($result);
+			if($row)
+			{
+				/*weapon found in existing inventory.  Update it's count to be its existing count plus the count just added.*/
+				$count = $row['Quantity'] + $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "UPDATE character_weapons SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND WeaponId = '{$weaponId}'";
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: " . $query);
+				}
+			}
+			else
+			{
+				/*weapon not found in existing inventory.  Insert it as a new row in the character's inventory.*/
+				$count = $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "INSERT INTO character_weapons (`CharacterId`, `WeaponId`, `Quantity`) VALUES ('{$characterId}', '{$weaponId}', '{$count}')"; 
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute insert into character_weapons query.");	
+				}
+			}
+		}
+	}
 
 }
 
