@@ -187,6 +187,41 @@ class OsricDb
 		return $result_set;
 	}
 	
+	public function addToCharacterArmour($characterId, $armourId, $quantityToAdd)
+	{
+		if($armourId != -1)
+		{
+			/*Check if armour is already in character's inventory.  If it is
+			then get the count of that item in the character's inventory and
+			update it to be the sum of the value submitted to the existing
+			number.  If it isn't yet in the character's inventory then
+			insert it as a new row in the character's inventory.*/ 
+			$query = "SELECT * FROM character_armour ca WHERE ca.CharacterId = '{$characterId}' AND ca.ArmourId = '{$armourId}'";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+			$row = mysqli_fetch_assoc($result);
+			if($row)
+			{
+				/*item found in existing inventory.  Update it's count to be its existing count plus the count just added.*/
+				$count = $row['Quantity'] + $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "UPDATE character_armour SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ArmourId = '{$armourId}'";
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+				}
+			}
+			else
+			{
+				/*item not found in existing inventory.  Insert it as a new row in the character's inventory.*/
+				$count = $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "INSERT INTO character_armour (`CharacterId`, `ArmourId`, `Quantity`) VALUES ('{$characterId}', '{$armourId}', '{$count}')"; 
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);	
+				}
+			}
+		}
+	}
+	
 	public function addToCharacterWeapons($characterId, $weaponId, $quantityToAdd)    
 	{    
     	if($weaponId != -1)
@@ -217,6 +252,41 @@ class OsricDb
 				{
 					$query = "INSERT INTO character_weapons (`CharacterId`, `WeaponId`, `Quantity`) VALUES ('{$characterId}', '{$weaponId}', '{$count}')"; 
 					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute insert into character_weapons query.");	
+				}
+			}
+		}
+	}
+	
+	function addToCharacterItems($characterId,$itemId,$quantityToAdd)
+	{
+		if($itemId != -1)
+		{
+		/*Check if item is already in character's inventory.  If it is
+			then get the count of that item in the character's inventory and
+			update it to be the sum of the value submitted to the existing
+			number.  If it isn't yet in the character's inventory then
+			insert it as a new row in the character's inventory.*/ 
+			$query = "SELECT * FROM character_items ci WHERE ci.CharacterId = '{$characterId}' AND ci.ItemId = '{$itemId}'";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+			$row = mysqli_fetch_assoc($result);
+			if($row)
+			{
+				/*item found in existing inventory.  Update it's count to be its existing count plus the count just added.*/
+				$count = $row['Quantity'] + $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "UPDATE character_items SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ItemId = '{$itemId}'";
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+				}
+			}
+			else
+			{
+				/*item not found in existing inventory.  Insert it as a new row in the character's inventory.*/
+				$count = $quantityToAdd;
+				if($count > 0)
+				{
+					$query = "INSERT INTO character_items (`CharacterId`, `ItemId`, `Quantity`) VALUES ('{$characterId}', '{$itemId}', '{$count}')"; 
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");	
 				}
 			}
 		}

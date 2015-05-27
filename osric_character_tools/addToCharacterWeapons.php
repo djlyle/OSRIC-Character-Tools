@@ -5,20 +5,19 @@
 include_once("./inc/misc.inc");
 include_once("./inc/charactertblfuncs.inc");
 require_once("./inc/OsricDb.php");
+
 $characterId = $_REQUEST['CharacterId'];
+$weaponRows = $_POST['weapon'];
+
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $characterName = $character['CharacterName'];
-$weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)
 {
     $weaponId = $weaponRow['weaponId'];
 	 $quantityToAdd = $weaponRow['quantity'];
-	 
-	 $myOsricDb->addToCharacterWeapons($characterId, $weaponId, $quantityToAdd);
-	 
+	 $myOsricDb->addToCharacterWeapons($characterId, $weaponId, $quantityToAdd);	 
 }
 ?>
 
