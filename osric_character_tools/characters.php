@@ -11,28 +11,30 @@
 <body>
 <?php
 include("./inc/misc.inc");
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$query = "SELECT * from characters";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
+require_once("./inc/OsricDb.php");
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
 $genderArray = array("Unknown","Male","Female");
 ?>
 <h3>Characters</h3>
 <?php
 /*Display results in table*/
+$characters = $myOsricDb->getCharacters();
 echo "<table id='osric_characters'>";
 echo "<tr><td>Name</td><td>Traits</td><td>Classes</td><td>Status</td><td>Abilities</td><td>Equip</td><td>Character Sheet</td><td>Delete</td></tr>";
-while($row = mysqli_fetch_assoc($result))
+foreach($characters as $character)
 {
-echo "<tr>";
-echo "<td>{$row['CharacterName']}</td>";
-echo "<td><a href='editcharacter.php?CharacterId={$row['CharacterId']}'>Edit Traits</a></td>";
-echo "<td><a href='editcharacterclasses.php?CharacterId={$row['CharacterId']}'>Edit Classes</a></td>";
-echo "<td><a href='editcharacterstatus.php?CharacterId={$row['CharacterId']}'>Edit Status</a></td>";
-echo "<td><a href='editcharacterabilities.php?CharacterId={$row['CharacterId']}'>Edit Abilities</a></td>";
-echo "<td><a href='equipcharacter.php?CharacterId={$row['CharacterId']}'>Equip Character</a></td>";
-echo "<td><a href='charactersheet.php?CharacterId={$row['CharacterId']}'>Character Sheet</td>";
-echo "<td><a href='deletecharacter.php?CharacterId={$row['CharacterId']}'>Delete Character</a></td>";
-echo "</tr>";
+	$characterId = $character['CharacterId'];
+	echo "<tr>";
+	echo "<td>{$character['CharacterName']}</td>";
+	echo "<td><a href='editcharacter.php?CharacterId={$characterId}'>Edit Traits</a></td>";
+	echo "<td><a href='editcharacterclasses.php?CharacterId={$characterId}'>Edit Classes</a></td>";
+	echo "<td><a href='editcharacterstatus.php?CharacterId={$characterId}'>Edit Status</a></td>";
+	echo "<td><a href='editcharacterabilities.php?CharacterId={$characterId}'>Edit Abilities</a></td>";
+	echo "<td><a href='equipcharacter.php?CharacterId={$characterId}'>Equip Character</a></td>";
+	echo "<td><a href='charactersheet.php?CharacterId={$characterId}'>Character Sheet</td>";
+	echo "<td><a href='deletecharacter.php?CharacterId={$characterId}'>Delete Character</a></td>";
+	echo "</tr>";
 }
 echo "</table>";
 echo "<a href='editcharacter.php?CharacterId=-1'>Add New Character</a></td>";

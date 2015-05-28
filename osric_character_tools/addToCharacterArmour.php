@@ -18,7 +18,7 @@ foreach($armourRows as $armourRow)
 {
     $armourId = $armourRow['armourId'];
     $quantityToAdd = $armourRow['quantity'];
-    $myOsricDb->addToCharacterArmour($characterId, $armourId, $quantityToAdd)
+    $myOsricDb->addToCharacterArmour($characterId, $armourId, $quantityToAdd);
 }
 ?>
 

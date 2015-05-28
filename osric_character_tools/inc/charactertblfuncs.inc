@@ -1,31 +1,5 @@
 <?php
 
-
-
-function getCharacterStatus($cxn,$characterId)
-{
-    $query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterStatus query.");
-    $row = mysqli_fetch_assoc($result);
-    return $row;
-}
-
-function getCharacterAbilities($cxn,$characterId)
-{
-    $query = sprintf("SELECT * FROM character_abilities ca INNER JOIN abilities a on ca.AbilityId = a.AbilityId WHERE ca.CharacterId = '%s'",$characterId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterAbilities query.");
-    for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
-    return $result_set;
-}
-
-function getCharacterClasses($cxn,$characterId)
-{
-    $query = sprintf("SELECT * FROM character_classes cc INNER JOIN classes c ON cc.ClassId = c.ClassId WHERE CharacterId='%s'",$characterId);
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute getCharacterClasses query.");
-    for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
-    return $result_set;    
-}
-
 function editCharacter($cxn,$character)
 {
 	$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");

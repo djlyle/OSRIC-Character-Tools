@@ -378,22 +378,6 @@ function osricdb_removeDiscardedCoinRows($cxn)
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
 
-function osricdb_getWeaponAsMelee($cxn, $weaponId)
-{
-    $query = "SELECT * FROM weapon_as_melee WHERE WeaponId = $weaponId";
-    $result = mysqli_query($cxn, $query) or die("Couldn't execute query: ".$query);
-    $row = mysqli_fetch_assoc($result);
-    return $row;   
-}
-
-function osricdb_getWeaponAsMissile($cxn, $weaponId)
-{
-    $query = "SELECT * FROM weapon_as_missile WHERE WeaponId = $weaponId";
-    $result = mysqli_query($cxn, $query) or die("Couldn't execute query: ".$query);
-    $row = mysqli_fetch_assoc($result);
-    return $row;
-}
-
 function osric_getWeaponDmgVsSmallToMedium($weapon)
 {
     if($weapon == null) return "N\A";

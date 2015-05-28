@@ -11,6 +11,14 @@ class OsricDb
 		$aDbname = "osric_db";
 		$this->cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
 	}
+	
+	public function getCharacters()
+	{
+		$query = "SELECT * from characters";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
 
 	public function getCharacter($characterId)
 	{
@@ -49,6 +57,14 @@ class OsricDb
 		}
 	}
 	
+	public function getCharacterClasses($characterId)
+	{
+		$query = sprintf("SELECT * FROM character_classes cc INNER JOIN classes c ON cc.ClassId = c.ClassId WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;    
+	}
+	
 	public function deleteAllClassesForCharacter($characterId)
 	{
 		$query = sprintf("DELETE FROM character_classes WHERE CharacterId='%s'",$characterId);
@@ -69,6 +85,22 @@ class OsricDb
 	{
 		$this->deleteAllClassesForCharacter($characterId);
 		$this->addClassesForCharacter($characterId,$selectedCharacterClasses);
+	}
+	
+	public function getCharacterAbilities($characterId)
+	{
+		$query = sprintf("SELECT * FROM character_abilities ca INNER JOIN abilities a on ca.AbilityId = a.AbilityId WHERE ca.CharacterId = '%s'",$characterId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
+	public function getCharacterStatus($characterId)
+	{
+		$query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row;
 	}
 	
 	public function getTotalEncumbranceOnPerson($characterId)
@@ -291,7 +323,22 @@ class OsricDb
 			}
 		}
 	}
+	
+	public function getWeaponAsMelee($weaponId)
+	{
+		$query = "SELECT * FROM weapon_as_melee WHERE WeaponId = $weaponId";
+		$result = mysqli_query($this->cxn, $query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row;   
+	}
 
+	public function getWeaponAsMissile($weaponId)
+	{
+		$query = "SELECT * FROM weapon_as_missile WHERE WeaponId = $weaponId";
+		$result = mysqli_query($this->cxn, $query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row;
+	}
 }
 
 ?>

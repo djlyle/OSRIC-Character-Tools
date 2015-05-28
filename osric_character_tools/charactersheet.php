@@ -12,11 +12,7 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId);
-
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-$characterStatus = getCharacterStatus($cxn,$characterId);
-
-$labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
+$characterStatus = $myOsricDb->getCharacterStatus($characterId);
 
 ?>
 
@@ -32,25 +28,25 @@ echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
 echo "<tr><td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td><td><div class='clsCellLabel'>Age:</div><div class='clsCellValue'>{$character['CharacterAge']}</div></td><td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td></tr>\n";
 echo "<tr><td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
-$result_set = getCharacterClasses($cxn,$characterId);
-$num_rows = count($result_set);
+$characterClasses = $myOsricDb->getCharacterClasses($characterId);
+$num_rows = count($characterClasses);
 for($i=0;$i<$num_rows;$i++)
 {
     if($i > 0)
     {
         echo ",";
     }     
-    echo "{$result_set[$i]['ClassName']}";
+    echo "{$characterClasses[$i]['ClassName']}";
     
 }
-echo "</span>";
+echo "</div>";
 echo "</td><td><div class='clsCellLabel'>Height:</div><div class='clsCellValue'>{$character['CharacterHeight']}</div></td><td><div class='clsCellLabel'>Remaining HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td></tr>\n";
 echo "<tr><td><div class='clsCellLabel'>XP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td></tr>";
 echo "</table>\n";
 
 echo "<hr/>\n";
 
-$character_abilities = getCharacterAbilities($cxn,$characterId);
+$character_abilities = $myOsricDb->getCharacterAbilities($characterId);
 
 echo "<h3 class='cs_section_title'>ABILITIES:</h3>\n";
 $num_abilities = count($character_abilities);
@@ -73,10 +69,11 @@ $num_rows = count($character_weapons_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
     $row = $character_weapons_in_use[$i];
-    $weaponAsMelee = osricdb_getWeaponAsMelee($cxn, $row['WeaponId']);
+    $weaponId = $row['WeaponId'];
+    $weaponAsMelee = $myOsricDb->getWeaponAsMelee($weaponId);
     $weaponAsMeleeDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMelee);
     $weaponAsMeleeDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMelee);
-    $weaponAsMissile = osricdb_getWeaponAsMissile($cxn, $row['WeaponId']);
+    $weaponAsMissile = $myOsricDb->getWeaponAsMissile($weaponId);
     $weaponAsMissileDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMissile);
     $weaponAsMissileDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMissile);
     if($weaponAsMissile == null){

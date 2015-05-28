@@ -5,14 +5,12 @@
 $characterId = $_GET['CharacterId'];
 
 include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
 require_once("./inc/OsricDb.php");
 
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
-$characterStatus = getCharacterStatus($cxn,$characterId);
+$characterStatus = $myOsricDb->getCharacterStatus($characterId);
 echo "Status for {$character['CharacterName']} (CharacterId={$characterId}):";
 $labels = array("CharacterStatusArmorClass"=>"Armor Class","CharacterStatusExperiencePoints"=>"Experience Points","CharacterStatusLevel"=>"Level","CharacterStatusFullHitPoints"=>"Full Hit Points","CharacterStatusRemainingHitPoints"=>"Remaining Hit Points");
 $inputTypes = array("CharacterStatusArmorClass"=>"integer","CharacterStatusExperiencePoints"=>"integer","CharacterStatusLevel"=>"integer","CharacterStatusFullHitPoints"=>"integer","CharacterStatusRemainingHitPoints"=>"integer");
