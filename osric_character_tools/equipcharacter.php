@@ -3,7 +3,6 @@ include_once("./inc/misc.inc");
 include_once("./inc/characterInventory.inc");
 include_once("./inc/charactertblfuncs.inc");
 include_once("./inc/db_funcs.inc");
-include_once("./inc/functions.inc");
 require_once("./inc/OsricDb.php");
 require_once("./inc/OsricHtmlHelper.php");
 
@@ -41,17 +40,17 @@ $itemStatusOptions = $myOsricDb->getItemStatusOptions();
 //differ. The variable postArrayIndexOffset is the index to start with for the array used in POSTing the input elements 
 //in the rows of the html table in question.
 $postArrayIndexOffset = 0;
-$myOsricHtmlHelper = new OsricHtmlHelper();
+
 echo "<h3>Coins carried:</h3>\n";
 $character_coins_carried = $myOsricDb->getCharacterCoinsCarried($characterId);
 $num_rows = count($character_coins_carried);
-$myOsricHtmlHelper->makeHtmlTableCharacterCoins($character_coins_carried, $itemStatusOptions, "osric_character_coins_carried", $postArrayIndexOffset);
+OsricHtmlHelper::makeHtmlTableCharacterCoins($character_coins_carried, $itemStatusOptions, "osric_character_coins_carried", $postArrayIndexOffset);
 $postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
 
 echo "<h3>Coins in storage:</h3>\n";
 $character_coins_in_storage = $myOsricDb->getCharacterCoinsInStorage($characterId);
 $num_rows = count($character_coins_in_storage);
-$myOsricHtmlHelper->makeHtmlTableCharacterCoins($character_coins_in_storage, $itemStatusOptions, "osric_character_coins_in_storage", $postArrayIndexOffset);
+OsricHtmlHelper::makeHtmlTableCharacterCoins($character_coins_in_storage, $itemStatusOptions, "osric_character_coins_in_storage", $postArrayIndexOffset);
 $postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
 
 echo "<hr/>\n";
@@ -70,35 +69,35 @@ $character_armour_in_use = $myOsricDb->getCharacterArmourInUse($characterId);
 $num_rows = count($character_armour_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_armour_in_use[$i];
-    echo "<tr>";
+	$row = $character_armour_in_use[$i];
+	echo "<tr>";
 	echo "<td>{$row['ArmourType']}</td>";
 	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
-    echo "<td>{$row['ArmourEncumbrance']}</td>";
-    echo "<td>{$row['ArmourMovementRate']}</td>";
+	echo "<td>{$row['ArmourEncumbrance']}</td>";
+	echo "<td>{$row['ArmourMovementRate']}</td>";
 	echo "<td>{$row['ArmourCost']}</td>";
-    $characterArmourId = $row['CharacterArmourId'];
-    $armourId = $row['ArmourId'];    
+	$characterArmourId = $row['CharacterArmourId'];
+	$armourId = $row['ArmourId'];    
     	
-    if($row['Quantity']){
+	if($row['Quantity']){
 		$armourQuantity = $row['Quantity'];
 	}
 	else {
 		$armourQuantity = 0;
 	}
-    $armourMagic = $row['ArmourMagic'];
-    $transferSource = $row['EquipmentStatusId'];
-    $index = $offset + $i;
+	$armourMagic = $row['ArmourMagic'];
+	$transferSource = $row['EquipmentStatusId'];
+	$index = $offset + $i;
 	echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][quantity]' value='{$armourQuantity}' readonly='readonly'></input></td>";
-    echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][armourMagic]' value='{$armourMagic}' readonly='readonly'></input></td>";	
-    echo "<td>";
-    html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);
-    echo "</td>";    
-    echo "<td><input type='number' min='0' max='{$armourQuantity}' name='armour[{$index}][transferQuantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][armourId]' value='{$armourId}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
-    echo "</tr>\n";
+	echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][armourMagic]' value='{$armourMagic}' readonly='readonly'></input></td>";	
+	echo "<td>";
+	OsricHtmlHelper::html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);
+	echo "</td>";    
+	echo "<td><input type='number' min='0' max='{$armourQuantity}' name='armour[{$index}][transferQuantity]' value='0'></input></td>";
+	echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+	echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][armourId]' value='{$armourId}'></input></td>";    
+	echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][characterArmourId]' value='{$characterArmourId}'></input></td>";    
+	echo "</tr>\n";
 }
 echo "</table>\n";
 
@@ -111,17 +110,17 @@ $character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
 for($i=0;$i<$num_rows;$i++)
 {
-    $row = $character_armour_carried[$i];
-    echo "<tr>";
+	$row = $character_armour_carried[$i];
+	echo "<tr>";
 	echo "<td>{$row['ArmourType']}</td>";
 	echo "<td>{$row['ArmourEffectOnArmourClass']}</td>";
-    echo "<td>{$row['ArmourEncumbrance']}</td>";
-    echo "<td>{$row['ArmourMovementRate']}</td>";
+	echo "<td>{$row['ArmourEncumbrance']}</td>";
+	echo "<td>{$row['ArmourMovementRate']}</td>";
 	echo "<td>{$row['ArmourCost']}</td>";
-    $characterArmourId = $row['CharacterArmourId'];
-    $armourId = $row['ArmourId'];    
+	$characterArmourId = $row['CharacterArmourId'];
+	$armourId = $row['ArmourId'];    
     	
-    if($row['Quantity']){
+	if($row['Quantity']){
 		$armourQuantity = $row['Quantity'];
 	}
 	else {
@@ -133,7 +132,7 @@ for($i=0;$i<$num_rows;$i++)
 	echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][quantity]' value='{$armourQuantity}' readonly='readonly'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][armourMagic]' value='{$armourMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
-    html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);    
+    OsricHtmlHelper::html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);    
     echo "</td>";
     echo "<td><input type='number' min='0' max='{$armourQuantity}' name='armour[{$index}][transferQuantity]' value='0'></input></td>";
     echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
@@ -172,7 +171,7 @@ for($i=0;$i<$num_rows;$i++)
 	echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][quantity]' value='{$armourQuantity}' readonly='readonly'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='armour[{$index}][armourMagic]' value='{$armourMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
-    html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("armour[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";    
     echo "<td><input type='number' min='0' max='{$armourQuantity}' name='armour[{$index}][transferQuantity]' value='0'></input></td>";
     echo "<td><input type='hidden' min='0' max='9999999' name='armour[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
@@ -218,7 +217,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
-    html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";      
     echo "<td><input type='number' min='0' max='{$weaponQuantity}' name='weapon[{$index}][transferQuantity]' value='0'></input></td>";
     echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
@@ -255,7 +254,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
-    html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";      
     echo "<td><input type='number' min='0' max='{$weaponQuantity}' name='weapon[{$index}][transferQuantity]' value='0'></input></td>";    
     echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][transferSource]' value='{$transferSource}'></input></td>";
@@ -292,7 +291,7 @@ for($i=0;$i<$num_rows;$i++)
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][quantity]' value='{$weaponQuantity}' readonly='readonly'></input></td>";
     echo "<td><input type='number' min='0' max='9999999' name='weapon[{$index}][weaponMagic]' value='{$weaponMagic}' readonly='readonly'></input></td>";	
     echo "<td>";
-    html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("weapon[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";
     echo "<td><input type='number' min='0' max='{$weaponQuantity}' name='weapon[{$index}][transferQuantity]' value='0'></input></td>";
     echo "<td><input type='hidden' min='0' max='9999999' name='weapon[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
@@ -335,7 +334,7 @@ for($i=0;$i<$num_rows;$i++)
 	}
 	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
     echo "<td>";
-    html_listbox("item[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("item[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
     echo "</td>";
     echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
     
@@ -373,7 +372,7 @@ for($i=0;$i<$num_rows;$i++)
 	}
 	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
     echo "<td>";
-    html_listbox("item[{$index}][transferDestination]", $itemStatusOptions, $transferSource);        
+    OsricHtmlHelper::html_listbox("item[{$index}][transferDestination]", $itemStatusOptions, $transferSource);        
     echo "</td>";
     echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
     

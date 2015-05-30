@@ -7,9 +7,9 @@ echo "Character with CharacterId={$characterId}";
 
 include_once("./inc/misc.inc");
 include_once("./inc/charactertblfuncs.inc");
-include_once("./inc/functions.inc");
 include_once("./inc/db_funcs.inc");
 require_once("./inc/OsricDb.php");
+require_once("./inc/OsricHtmlHelper.php");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $myOsricDb = new OsricDb();
@@ -60,7 +60,7 @@ foreach($labels as $field => $label)
 			echo "<input type='text' name='$field' value='$value'/>";
 		break;
 		case "select":
-            html_listbox($field, $selectOptions[$field], $value);
+            OsricHtmlHelper::html_listbox($field, $selectOptions[$field], $value);
 		break;
 		case "float":
 			echo "<input type='number' name='$field' min='0' step='any' value='$value'/>";

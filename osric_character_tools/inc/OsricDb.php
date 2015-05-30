@@ -223,6 +223,30 @@ class OsricDb
 		return $result_set;
 	}
 	
+	public function getArmour()
+	{
+		$query = "SELECT * FROM armour";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;	
+	}
+	
+	public function getItems()
+	{
+		$query = "SELECT * FROM items";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
+	public function getWeapons()
+	{
+		$query = "SELECT * FROM weapons";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
 	public function addToCharacterArmour($characterId, $armourId, $quantityToAdd)
 	{
 		if($armourId != -1)

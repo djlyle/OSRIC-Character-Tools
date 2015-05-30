@@ -18,22 +18,24 @@ $characterName = $character['CharacterName'];
 
 echo "<h3>Weapons to add to {$characterName}'s inventory:</h3>";
 echo "<input type='submit' value='submit'>";
+$weapons = $myOsricDb->getWeapons();
 echo "<table id='osric_weapons'>";
-$query = "SELECT * FROM weapons";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute query.");
 echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td></tr>";
 $i = 0;
-while($row = mysqli_fetch_assoc($result))
+$num_rows = count($weapons);
+for($i=0;$i<$num_rows;$i++)
 {
- 	echo "<tr>";
+	$row = $weapons[$i];
+
+	echo "<tr>";
 	echo "<td>{$row['WeaponType']}</td>";
 	echo "<td>{$row['WeaponEncumbranceInLbs']}</td>";
 	echo "<td>{$row['WeaponCost']}</td>";
-    $weaponId = $row['WeaponId'];
-    echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='0'></input></td>";
-    echo "<td><input type='hidden' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";
+	$weaponId = $row['WeaponId'];
+	echo "<td><input type='number' min='0' max='9999999' name='weapon[{$i}][quantity]' value='0'></input></td>";
+	echo "<td><input type='hidden' name='weapon[{$i}][weaponId]' value='{$weaponId}'></input></td>";
 	echo "</tr>";
-    $i = $i + 1;	
+	$i = $i + 1;	
 }
 echo "</table>";
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";

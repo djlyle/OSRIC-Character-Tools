@@ -7,7 +7,22 @@ include_once("./functions.inc");
 
 class OsricHtmlHelper
 {
-	public function makeHtmlTableCharacterCoins($character_coins, $itemStatusOptions, $tableId, $offset)	
+	public static function html_listbox($name, $options, $selected_value)
+	{
+    	echo "<select name='$name'>";
+		foreach($options as $val=>$label)
+		{
+		echo "<option value='{$val}'";
+		if($val == $selected_value)
+		{
+			echo "selected";
+		}
+		echo ">{$label}</option>";
+		}
+		echo "</select>";
+	}
+	
+	public static function makeHtmlTableCharacterCoins($character_coins, $itemStatusOptions, $tableId, $offset)	
 	{	
 		echo "<table id='{$tableId}'>\n";
 		echo "<tr><td>Coin Name</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>\n";
@@ -33,7 +48,7 @@ class OsricHtmlHelper
     		echo "<td><input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='{$coinQuantity}'></input></td>";    
     		echo "<td>";
 			$transferSource = $row['ItemStatusId'];
-    		html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
+    		static::html_listbox("coin[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
     		echo "</td>";
     		echo "<td><input type='number' min='0' max='{$coinQuantity}' name='coin[{$index}][transferQuantity]' value='0'></input></td>";
     		echo "<td class='clsDisplayNone'><input type='hidden' min='0' max='9999999' name='coin[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
