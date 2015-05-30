@@ -1,4 +1,8 @@
 <?php
+/*
+Author: Daniel Lyle
+Copyright: May 30,2015
+*/
 include_once("./functions.inc");
 
 class OsricHtmlHelper

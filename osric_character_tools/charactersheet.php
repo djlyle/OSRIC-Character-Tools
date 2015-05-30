@@ -8,6 +8,8 @@ include_once("./inc/misc.inc");
 include_once("./inc/charactertblfuncs.inc");
 include_once("./inc/characterInventory.inc");
 require_once("./inc/OsricDb.php");
+require_once("./inc/Osric.php");
+
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
@@ -71,11 +73,11 @@ for($i=0;$i<$num_rows;$i++)
     $row = $character_weapons_in_use[$i];
     $weaponId = $row['WeaponId'];
     $weaponAsMelee = $myOsricDb->getWeaponAsMelee($weaponId);
-    $weaponAsMeleeDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMelee);
-    $weaponAsMeleeDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMelee);
+    $weaponAsMeleeDmgVsSmallToMedium = Osric::getWeaponDmgVsSmallToMedium($weaponAsMelee);
+    $weaponAsMeleeDmgVsLarge = Osric::getWeaponDmgVsLarge($weaponAsMelee);
     $weaponAsMissile = $myOsricDb->getWeaponAsMissile($weaponId);
-    $weaponAsMissileDmgVsSmallToMedium = osric_getWeaponDmgVsSmallToMedium($weaponAsMissile);
-    $weaponAsMissileDmgVsLarge = osric_getWeaponDmgVsLarge($weaponAsMissile);
+    $weaponAsMissileDmgVsSmallToMedium = Osric::getWeaponDmgVsSmallToMedium($weaponAsMissile);
+    $weaponAsMissileDmgVsLarge = Osric::getWeaponDmgVsLarge($weaponAsMissile);
     if($weaponAsMissile == null){
         $rateOfFire = "N\A";
         $rangeInFt = "N\A";

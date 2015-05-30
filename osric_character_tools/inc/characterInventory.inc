@@ -378,31 +378,6 @@ function osricdb_removeDiscardedCoinRows($cxn)
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
 
-function osric_getWeaponDmgVsSmallToMedium($weapon)
-{
-    if($weapon == null) return "N\A";
-        
-    $modifier = $weapon['DamageModifierVsSmallOrMedium'];
-    $modifierStr = "";    
-    if($modifier > 0)
-    {
-        $modifierStr = "+".$modifier;
-    }
-    return "".$weapon['DamageVsSmallOrMediumMultiples']."d".$weapon['DamageVsSmallOrMedium'].$modifierStr;
-}
-
-function osric_getWeaponDmgVsLarge($weapon)
-{
-    if($weapon == null) return "N\A";
-    $modifier = $weapon['DamageModifierVsLarge'];
-    $modifierStr = "";    
-    if($modifier > 0)
-    {
-        $modifierStr = "+".$modifier;
-    }
-    return "".$weapon['DamageVsLargeMultiples']."d".$weapon['DamageVsLarge'].$modifierStr;
-}
-
 /*
 <summary>Get id portion of a field given a prefix of the field name.
 </summary>
