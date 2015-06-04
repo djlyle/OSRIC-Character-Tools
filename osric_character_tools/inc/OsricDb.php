@@ -3,7 +3,7 @@
 Author: Daniel Lyle
 Copyright: May 30,2015
 */
-include_once("./misc.inc");
+include_once(dirname(__FILE__)."/misc.inc");
 
 class OsricDb
 {
@@ -14,6 +14,161 @@ class OsricDb
 	{
 		$aDbname = "osric_db";
 		$this->cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
+	}
+	
+	public function createCharacter($name="Mr. Generic",$age=42,$gender=1,$weight=140,$height=65,$raceId=0)
+	{
+		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
+		
+		/*Create a new character*/
+		$query = "INSERT INTO characters ";
+		$query = $query . "(";
+		$k = 0;
+		foreach($columnNames as $columnName)
+		{
+			if($k == 0)
+			{
+				$query = $query . $columnName;
+			}
+			else
+			{
+				$query = $query . "," . "{$columnName}";
+			}
+			$k = $k + 1;
+		}
+		$query = $query . ") VALUES (";
+		$query = $query . "'" . $name . "'";
+		$query = $query . ",'" . $age . "'";
+		$query = $query . ",'" . $gender . "'";
+		$query = $query . ",'" . $weight . "'";
+		$query = $query . ",'" . $height . "'";
+		$query = $query . ",'" . $raceId . "'";
+		$query = $query . ")";
+		
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+
+		$newCharacterId = mysqli_insert_id($this->cxn);        
+		$this->initCharacterCoinsToZero($newCharacterId);
+		$this->initCharacterAbilitiesToZero($newCharacterId);
+		$this->initCharacterStatusToZero($newCharacterId);    
+		return $newCharacterId;
+	}
+	
+	public function initCharacterStatusToZero($characterId)
+	{
+		/*Insert a new row in the character_status table with status fields zeroed out*/
+		$query = "INSERT INTO character_status (CharacterId,CharacterStatusArmorClass,CharacterStatusExperiencePoints,CharacterStatusLevel,CharacterStatusFullHitPoints,CharacterStatusRemainingHitPoints) VALUE ('{$characterId}','0','0','0','0','0')";                                           
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't insert a new row in character_status table with status fields zeroed out.");
+	}
+
+
+	public function initCharacterAbilitiesToZero($characterId)
+	{
+		/*Insert a new row in the character_abilities table with abilities zeroed out*/
+		$query = "SELECT AbilityId FROM abilities";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute abilities query.");
+		$k=0;
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$abilityIds[$k] = $row['AbilityId'];
+			$k = $k + 1;
+		}
+		foreach($abilityIds as $abilityId)
+		{
+			$query = "INSERT INTO character_abilities (CharacterId,AbilityId,Value) VALUES ('{$characterId}','{$abilityId}','0')";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+    	}
+	}
+
+	public function initCharacterCoinsToZero($characterId)
+	{
+		/*Insert zeroed out quantities of each coin type for the character in the character_coins table*/
+		$query = "SELECT CoinId FROM coins";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute coins query.");   
+		$k=0;    
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$coinIds[$k] = $row['CoinId'];
+			$k = $k + 1;            
+		}
+		foreach($coinIds as $coinId)
+		{
+			$query = "INSERT INTO character_coins (CharacterId,CoinId,Quantity) VALUES ('{$characterId}','{$coinId}','0')";
+			mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		}    
+	}
+
+	
+	public function editCharacter($character)
+	{
+		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
+		$characterId = $character['CharacterId'];
+    
+		if($characterId == -1)
+		{
+			/*Create a new character*/
+			$query = "INSERT INTO characters ";
+			$query = $query . "(";
+			$k = 0;
+			foreach($columnNames as $columnName)
+			{
+				if($k == 0)
+				{
+					$query = $query . $columnName;
+				}
+				else
+				{
+					$query = $query . "," . "{$columnName}";
+				}
+				$k = $k + 1;
+			}
+			$query = $query . ") VALUES (";
+			$k=0;
+			foreach($columnNames as $columnName)
+			{
+				if($k == 0)
+				{
+					$query = $query . "'" . $character[$columnName] . "'";
+				}		
+				else
+				{
+					$query = $query . "," . "'" . $character[$columnName] . "'";
+				}
+				$k = $k + 1;
+			}
+			$query = $query . ")";
+		}
+		else
+		{
+			/*edit an existing character*/
+			$query = "UPDATE characters ";
+			$query = $query . "SET ";
+			$k = 0;
+			foreach($columnNames as $columnName)
+			{
+				if($k == 0)
+				{
+					$query = $query . $columnName;			
+				}
+				else
+				{
+					$query = $query . "," . $columnName;	
+				}
+				$query = $query . "=" . "'" . $character[$columnName] . "'";
+				$k = $k + 1;
+			}
+		
+			$query = $query . " WHERE CharacterId = '{$characterId}'";
+		}
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+
+		if($characterId == -1)
+		{
+			$newCharacterId = mysqli_insert_id($this->cxn);        
+			initCharacterCoinsToZero($this->cxn,$newCharacterId);
+			initCharacterAbilitiesToZero($this->cxn,$newCharacterId);
+			initCharacterStatusToZero($this->cxn,$newCharacterId);    
+		}
 	}
 	
 	public function getCharacters()

@@ -33,3 +33,27 @@ https://www.apachefriends.org/download.html
 	c)items
 13)Launch a webbrowser and navigate to the start page for OSRIC tools, e.g. if running the browser on the local machine the url would be as follows:
 http://localhost/osric_character_tools/characters.php
+------------------------------------------------------------
+Unit Tests:
+
+Unit tests are a work in progress and are currently being done via phpunit framework.  
+The unit test files are located in the OSRIC-Character_tools/unit_tests folder.  Once PHPUnit is installed, the tests can be run
+by typing the following (excluding the '$' character which represents the command prompt):
+
+$ phpunit -c phpunit.xml 
+
+PHPUnit is installed as follows on a Linux based machine -- this worked on my laptop running Elementary OS (Luna):
+Goto a command prompt and type the following ($ represents the command prompt's prompt character, 
+i.e. you don't need to type it in):
+$ wget https://phar.phpunit.de/phpunit.phar
+$ chmod +x phpunit.phar
+$ sudo mv phpunit.phar /usr/local/bin/phpunit
+$ phpunit --version
+
+The last command with the --version flag should result in the following with x.y.z replaced by the specific version 
+you have installed of phpunit:
+
+PHPUnit x.y.z by Sebastian Bergmann and contributors.
+
+To run the unit tests in 
+--------------------

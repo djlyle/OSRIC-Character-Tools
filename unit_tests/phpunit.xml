@@ -1,0 +1,10 @@
+<phpunit
+  colors="true"
+  verbose="true"
+>
+	<testsuites>
+		<testsuite name="Osric Test Suite">
+			<directory>.</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
