@@ -98,77 +98,39 @@ class OsricDb
 		}    
 	}
 
-	
-	public function editCharacter($character)
+	/*Edit an existing character*/
+	public function editCharacter($characterId,$name,$age,$gender,$weight,$height,$raceId)
 	{
 		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
-		$characterId = $character['CharacterId'];
-    
-		if($characterId == -1)
-		{
-			/*Create a new character*/
-			$query = "INSERT INTO characters ";
-			$query = $query . "(";
-			$k = 0;
-			foreach($columnNames as $columnName)
-			{
-				if($k == 0)
-				{
-					$query = $query . $columnName;
-				}
-				else
-				{
-					$query = $query . "," . "{$columnName}";
-				}
-				$k = $k + 1;
-			}
-			$query = $query . ") VALUES (";
-			$k=0;
-			foreach($columnNames as $columnName)
-			{
-				if($k == 0)
-				{
-					$query = $query . "'" . $character[$columnName] . "'";
-				}		
-				else
-				{
-					$query = $query . "," . "'" . $character[$columnName] . "'";
-				}
-				$k = $k + 1;
-			}
-			$query = $query . ")";
-		}
-		else
-		{
-			/*edit an existing character*/
-			$query = "UPDATE characters ";
-			$query = $query . "SET ";
-			$k = 0;
-			foreach($columnNames as $columnName)
-			{
-				if($k == 0)
-				{
-					$query = $query . $columnName;			
-				}
-				else
-				{
-					$query = $query . "," . $columnName;	
-				}
-				$query = $query . "=" . "'" . $character[$columnName] . "'";
-				$k = $k + 1;
-			}
+		$character = array();
+		$character['CharacterName'] = $name;
+		$character['CharacterAge'] = $age;
+		$character['CharacterGender'] = $gender;
+		$character['CharacterWeight'] = $weight;
+		$character['CharacterHeight'] = $height;
+		$character['RaceId'] = $raceId;
 		
-			$query = $query . " WHERE CharacterId = '{$characterId}'";
+		$query = "UPDATE characters ";
+		$query = $query . "SET ";
+		$k = 0;
+		foreach($columnNames as $columnName)
+		{
+			if($k == 0)
+			{
+				$query = $query . $columnName;			
+			}
+			else
+			{
+				$query = $query . "," . $columnName;	
+			}
+			$query = $query . "=" . "'" . $character[$columnName] . "'";
+			$k = $k + 1;
 		}
+		
+		$query = $query . " WHERE CharacterId = '{$characterId}'";
+		
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
 
-		if($characterId == -1)
-		{
-			$newCharacterId = mysqli_insert_id($this->cxn);        
-			initCharacterCoinsToZero($this->cxn,$newCharacterId);
-			initCharacterAbilitiesToZero($this->cxn,$newCharacterId);
-			initCharacterStatusToZero($this->cxn,$newCharacterId);    
-		}
 	}
 	
 	public function getCharacters()

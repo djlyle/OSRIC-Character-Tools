@@ -19,12 +19,11 @@ if(@$_POST['cancelbutton'] == "Cancel")
   in the database, otherwise it updates an existing row for an existing character in the database*/
 if($characterId == -1)
 {
-	array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
 	$myOsricDb->createCharacter($_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
 }
 else 
 {
-	$myOsricDb->editCharacter($_POST);
+	$myOsricDb->editCharacter($_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
 }
 
 echo "<p>Character updated.</p>";
