@@ -182,8 +182,8 @@ class OsricDb
 	{
 		$query = sprintf("SELECT * FROM character_classes cc INNER JOIN classes c ON cc.ClassId = c.ClassId WHERE CharacterId='%s'",$characterId);
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
-		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
-		return $result_set;    
+		for($classIds = array();$row = mysqli_fetch_assoc($result);$classIds[]=$row['ClassId']);
+		return $classIds;    
 	}
 	
 	public function deleteAllClassesForCharacter($characterId)
@@ -256,6 +256,14 @@ class OsricDb
 			$options[$row['ItemStatusId']] = $row['ItemStatus'];
 		}
 		return $options;
+	}
+	
+	public function getClasses()
+	{
+		$query = "SELECT * FROM classes";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
 	}
 	
 	public function getCharacterCoinsInStorage($characterId)

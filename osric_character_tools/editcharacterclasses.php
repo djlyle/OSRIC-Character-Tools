@@ -1,13 +1,16 @@
 <?php
-/*Program: editcharacterclasses.php
-   Desc: Edits an existing character's classes in the osric_db*/
+/*
+  Author: Daniel Lyle
+  Copyright: June 4,2015
+  Program: editcharacterclasses.php
+ *Desc: Edits an existing character's classes in the osric_db
+ */
 
 $characterId = $_GET['CharacterId'];
 
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
@@ -26,22 +29,16 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$charact
 <?php
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 
-$query = "SELECT * FROM character_classes WHERE CharacterId = $characterId";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute character_classes query.");
-while($row = mysqli_fetch_assoc($result))
-{
-    $selectedClasses[$row['ClassId']] = true;
-}
+$characterClasses = $myOsricDb->getCharacterClasses($characterId);
 
-$query = "SELECT * FROM classes";
-$result = mysqli_query($cxn,$query) or die("Couldn't execute classes query.");
-while($row = mysqli_fetch_assoc($result))
+$classes = $myOsricDb->getClasses();
+foreach($classes as $row)
 {    
     $classId = $row['ClassId'];
     $className = $row['ClassName'];  
     echo "<label>";
     echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
-    if($selectedClasses[$classId])
+    if(in_array($classId,$characterClasses))
     {
         echo " checked='checked'";        
     }

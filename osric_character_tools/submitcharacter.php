@@ -23,7 +23,7 @@ if($characterId == -1)
 }
 else 
 {
-	$myOsricDb->editCharacter($_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
+	$myOsricDb->editCharacter($characterId,$_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
 }
 
 echo "<p>Character updated.</p>";

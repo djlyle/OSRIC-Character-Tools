@@ -64,15 +64,38 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 		$this->myOsricDb->editCharacter($this->myNewCharacterId,$name,$age,$gender,$weight,$height,$raceId);
 		$editedCharacter = $this->myOsricDb->getCharacter($this->myNewCharacterId);
 		$this->assertEquals($character,$editedCharacter);	 	
-	 }
+	}
+	
+	public function addClassesDataProvider()
+	{
+		return array(
+			array(array(9),array(9)),
+			array(array(8),array(8)),
+			array(array(8,9),array(8,9)),
+			array(array(7),array(7)),
+			array(array(7,9),array(7,9)),
+			array(array(7,8),array(7,8)),
+			array(array(7,8,9),array(7,8,9)),
+			array(array(6),array(6)),
+			array(array(99,-1,1,2,3),array(1,2,3))
+			);
+	}
+	
 	
 	/**
-	 * @depends testCreateDefaultCharacter	
-	 */
-	public function testDeleteDefaultCharacter($newCharacterId)
+	 * @dataProvider addClassesDataProvider
+	*/
+	public function testAddClassesForCharacter($characterClassesToAdd,$expectedCharacterClasses)  
 	{
-		$this->myOsricDb->deleteCharacter($newCharacterId);
-		$character = $this->myOsricDb->getCharacter($newCharacterId);	
+		$this->myOsricDb->addClassesForCharacter($this->myNewCharacterId,$characterClassesToAdd);
+		$characterClasses = $this->myOsricDb->getCharacterClasses($this->myNewCharacterId);
+		$this->assertEquals($characterClasses,$expectedCharacterClasses);		
+	}
+	
+	public function testDeleteDefaultCharacter()
+	{
+		$this->myOsricDb->deleteCharacter($this->myNewCharacterId);
+		$character = $this->myOsricDb->getCharacter($this->myNewCharacterId);	
 		$this->assertEquals(null,$character);	
 	}
 }

@@ -18,7 +18,7 @@ $characterName = $character['CharacterName'];
 
 echo "<h3>Armour to add to {$characterName}'s inventory:</h3>";
 echo "<input type='submit' value='submit'>";
-$armour = $myOsricDb->getArmour()
+$armour = $myOsricDb->getArmour();
 echo "<table id='osric_armour'>";
 echo "<tr><td>Armour Type</td><td>Encumbrance (gp)</td><td>Movement Rate</td><td>Effect on Armour Class</td><td>Cost (gp)</td><td>Quantity</td><td></td></tr>";
 $num_rows = count($armour);
