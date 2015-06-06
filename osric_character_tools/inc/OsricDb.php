@@ -76,11 +76,17 @@ class OsricDb
 			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
     	}
 	}
-
-	public function initCharacterCoinsToZero($characterId)
+	
+	public function updateCharacterCoins($characterCoinId, $coinQuantity)
 	{
-		/*Insert zeroed out quantities of each coin type for the character in the character_coins table*/
-		$query = "SELECT CoinId FROM coins";
+		$query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterCoinId = {$characterCoinId}";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		return $result; 
+	}
+
+	public function getCoinIds()
+	{
+		$query = "SELECT CoinId FROM coins ORDER BY CoinId";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute coins query.");   
 		$k=0;    
 		while($row = mysqli_fetch_assoc($result))
@@ -88,10 +94,27 @@ class OsricDb
 			$coinIds[$k] = $row['CoinId'];
 			$k = $k + 1;            
 		}
+		return $coinIds;		
+	}
+	
+	public function initCharacterCoinsToZero($characterId)
+	{
+		$coinIds = $this->getCoinIds();
+		
 		foreach($coinIds as $coinId)
 		{
-			$query = "INSERT INTO character_coins (CharacterId,CoinId,Quantity) VALUES ('{$characterId}','{$coinId}','0')";
-			mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+			$query = sprintf("SELECT * FROM character_coins WHERE CharacterId='%s' AND CoinId='%s'",$characterId,$coinId);
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		   $row = mysqli_fetch_assoc($result);
+		   if($row)
+			{
+				
+			}
+			else 
+			{
+				$query = "INSERT INTO character_coins (CharacterId,CoinId,Quantity) VALUES ('{$characterId}','{$coinId}','0')";
+				mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);	
+			}			
 		}    
 	}
 
@@ -296,6 +319,14 @@ class OsricDb
 	public function getCharacterCoinsCarried($characterId)
 	{
 		return $this->getCharacterCoinsByStatus($characterId,"2");
+	}
+	
+	public function getCharacterCoins($characterId)
+	{
+		$query = "SELECT cc.CharacterId,cc.CoinId,cc.Quantity FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId ORDER BY cc.CoinId";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
 	}
 	
 	private function getCharacterCoinsByStatus($characterId,$itemStatusId)

@@ -64,13 +64,6 @@ function updateCharacterItems($cxn, $characterId, $itemId, $itemQuantity)
 	return $result;
 }
 
-function osricdb_updateCharacterCoins($cxn, $characterCoinId, $coinQuantity)
-{
-    $query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterCoinId = {$characterCoinId}";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-    return $result; 
-}
-
 function updateCharacterArmour($cxn, $characterArmourId, $quantity, $magic, $equipmentStatusId)
 {
     $query = "UPDATE character_armour SET Quantity = '{$quantity}',ArmourMagic = '{$magic}', EquipmentStatusId = '{$equipmentStatusId}' WHERE character_armour.CharacterArmourId = {$characterArmourId}";

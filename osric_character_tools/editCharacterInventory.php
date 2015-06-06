@@ -45,7 +45,7 @@ $coinRows = $_POST['coin'];
   will override any amounts that have been transferred*/
 foreach($coinRows as $coinRow)
 {
-    $result = osricdb_updateCharacterCoins($cxn, $coinRow['characterCoinId'], $coinRow['quantity']);
+    $result = $myOsricDb->updateCharacterCoins($coinRow['characterCoinId'], $coinRow['quantity']);
 }
 
 foreach($coinRows as $coinRow)

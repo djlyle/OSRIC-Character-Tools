@@ -135,13 +135,40 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($characterStatus,$expectedCharacterStatus);	
 	}
 	
+	/**	
+	 *
+	 */
+	public function testInitCharacterCoinsToZero()
+	{
+		//the OsricDb createCharacter() method should have already have initialized the coins to zero, but try again to make sure we don't add
+		//extra rows to our character_coins table in initializing a character's coins to zero		
+		$this->myOsricDb->initCharacterCoinsToZero($this->myNewCharacterId);
+		$characterCoins = $this->myOsricDb->getCharacterCoins($this->myNewCharacterId);
+		
+		$coinIds = $this->myOsricDb->getCoinIds();
+		
+		$expectedCharacterCoins = array();
+		$k = 0;		
+		foreach($coinIds as $coinId)
+		{
+			echo "coinId: ".$coinId;
+			$row = array();		
+			$row['CharacterId'] = $this->myNewCharacterId;
+			$row['CoinId'] = $coinId;
+			$row['Quantity'] = 0;
+			$expectedCharacterCoins[$k] = $row;
+			$k = $k + 1;
+		}
+		
+		$this->assertEquals($characterCoins,$expectedCharacterCoins);
+	}
+	 
 	public function testDeleteDefaultCharacter()
 	{
 		$this->myOsricDb->deleteCharacter($this->myNewCharacterId);
 		$character = $this->myOsricDb->getCharacter($this->myNewCharacterId);	
 		$this->assertEquals(null,$character);	
-	}
-	
+	}	
 }
 
 ?>
