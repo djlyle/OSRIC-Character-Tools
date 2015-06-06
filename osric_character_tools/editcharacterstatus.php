@@ -1,19 +1,21 @@
 <?php
-/*Program: editcharacterstatus.php
-   Desc: Edits an existing character's status in the osric_db*/
+/* 
+   Program: editcharacterstatus.php
+   Desc: Edits an existing character's status in the osric_db
+ */
 
 $characterId = $_GET['CharacterId'];
 
-include("./inc/misc.inc");
-require_once("./inc/OsricDb.php");
+include(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterStatus = $myOsricDb->getCharacterStatus($characterId);
 echo "Status for {$character['CharacterName']} (CharacterId={$characterId}):";
-$labels = array("CharacterStatusArmorClass"=>"Armor Class","CharacterStatusExperiencePoints"=>"Experience Points","CharacterStatusLevel"=>"Level","CharacterStatusFullHitPoints"=>"Full Hit Points","CharacterStatusRemainingHitPoints"=>"Remaining Hit Points");
-$inputTypes = array("CharacterStatusArmorClass"=>"integer","CharacterStatusExperiencePoints"=>"integer","CharacterStatusLevel"=>"integer","CharacterStatusFullHitPoints"=>"integer","CharacterStatusRemainingHitPoints"=>"integer");
+$labels = array("CharacterStatusArmourClass"=>"Armor Class","CharacterStatusExperiencePoints"=>"Experience Points","CharacterStatusFullHitPoints"=>"Full Hit Points","CharacterStatusRemainingHitPoints"=>"Remaining Hit Points");
+$inputTypes = array("CharacterStatusArmourClass"=>"integer","CharacterStatusExperiencePoints"=>"integer","CharacterStatusFullHitPoints"=>"integer","CharacterStatusRemainingHitPoints"=>"integer");
 ?>
 
 <!-- Character status form -->

@@ -92,12 +92,56 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($characterClasses,$expectedCharacterClasses);		
 	}
 	
+	public function testInitCharacterStatusToZero()
+	{
+		$this->myOsricDb->initCharacterStatusToZero($this->myNewCharacterId);
+		$characterStatus = $this->myOsricDb->getCharacterStatus($this->myNewCharacterId);
+		$expectedCharacterStatus = array();
+		$expectedCharacterStatus['CharacterId'] = $this->myNewCharacterId;
+		$expectedCharacterStatus['CharacterStatusArmourClass'] = 0;
+		$expectedCharacterStatus['CharacterStatusExperiencePoints'] = 0;
+		$expectedCharacterStatus['CharacterStatusFullHitPoints'] = 0;
+		$expectedCharacterStatus['CharacterStatusRemainingHitPoints'] = 0;
+		$this->assertEquals($characterStatus,$expectedCharacterStatus);
+	}
+	
+	public function characterStatusDataProvider()
+	{
+		return array(
+			array(array("CharacterStatusArmourClass" => 2,
+							"CharacterStatusExperiencePoints" => 50,
+							"CharacterStatusFullHitPoints" => 6,
+							"CharacterStatusRemainingHitPoints" => 4)),
+			array(array("CharacterStatusArmourClass" => -2,
+							"CharacterStatusExperiencePoints" => 3001,
+							"CharacterStatusFullHitPoints" => 12,
+							"CharacterStatusRemainingHitPoints" => 8)),
+			array(array("CharacterStatusArmourClass" => 0,
+							"CharacterStatusExperiencePoints" => 55555,
+							"CharacterStatusFullHitPoints" => 30,
+							"CharacterStatusRemainingHitPoints" => 22)),		
+		);		
+	}
+	
+	/**
+	 * @dataProvider characterStatusDataProvider
+	 * @depends testInitCharacterStatusToZero
+	 */
+	public function testEditCharacterStatus($expectedCharacterStatus)
+	{
+		$expectedCharacterStatus['CharacterId'] = $this->myNewCharacterId;
+		$this->myOsricDb->editCharacterStatus($this->myNewCharacterId,$expectedCharacterStatus['CharacterStatusArmourClass'],$expectedCharacterStatus['CharacterStatusExperiencePoints'],$expectedCharacterStatus['CharacterStatusFullHitPoints'],$expectedCharacterStatus['CharacterStatusRemainingHitPoints']);
+		$characterStatus = $this->myOsricDb->getCharacterStatus($this->myNewCharacterId);
+		$this->assertEquals($characterStatus,$expectedCharacterStatus);	
+	}
+	
 	public function testDeleteDefaultCharacter()
 	{
 		$this->myOsricDb->deleteCharacter($this->myNewCharacterId);
 		$character = $this->myOsricDb->getCharacter($this->myNewCharacterId);	
 		$this->assertEquals(null,$character);	
 	}
+	
 }
 
 ?>

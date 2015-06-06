@@ -3,7 +3,6 @@ include_once("./inc/misc.inc");
 include_once("./inc/charactertblfuncs.inc");
 require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);

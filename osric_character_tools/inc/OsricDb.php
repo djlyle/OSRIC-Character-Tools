@@ -56,11 +56,8 @@ class OsricDb
 	
 	public function initCharacterStatusToZero($characterId)
 	{
-		/*Insert a new row in the character_status table with status fields zeroed out*/
-		$query = "INSERT INTO character_status (CharacterId,CharacterStatusArmorClass,CharacterStatusExperiencePoints,CharacterStatusLevel,CharacterStatusFullHitPoints,CharacterStatusRemainingHitPoints) VALUE ('{$characterId}','0','0','0','0','0')";                                           
-		$result = mysqli_query($this->cxn,$query) or die("Couldn't insert a new row in character_status table with status fields zeroed out.");
+		$this->editCharacterStatus($characterId,0,0,0,0);
 	}
-
 
 	public function initCharacterAbilitiesToZero($characterId)
 	{
@@ -222,6 +219,31 @@ class OsricDb
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		$row = mysqli_fetch_assoc($result);
 		return $row;
+	}
+	
+	public function editCharacterStatus($characterId,$armourClass,$experiencePoints,$fullHitPoints,$remainingHitPoints)
+	{
+		/*Check whether a row with id==$characterId exists in character_abilities table*/
+ 		$query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);    
+		if($row)
+		{
+			/*Edit an existing row in character_abilities*/
+			$query = "UPDATE character_status ";
+			$query = $query . "SET ";
+			$query = $query . "CharacterStatusArmourClass='".$armourClass."'";			
+			$query = $query . ",CharacterStatusExperiencePoints='".$experiencePoints."'";
+			$query = $query . ",CharacterStatusFullHitPoints='".$fullHitPoints."'";
+			$query = $query . ",CharacterStatusRemainingHitPoints='".$remainingHitPoints."'";
+			$query = $query . " WHERE CharacterId = '{$characterId}'";    
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		}
+		else 
+		{
+			$query = "INSERT INTO character_status (CharacterId,CharacterStatusArmourClass,CharacterStatusExperiencePoints,CharacterStatusFullHitPoints,CharacterStatusRemainingHitPoints) VALUE ('{$characterId}','{$armourClass}','{$experiencePoints}','{$fullHitPoints}','{$remainingHitPoints}')";                                           
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		}	
 	}
 	
 	public function getTotalEncumbranceOnPerson($characterId)

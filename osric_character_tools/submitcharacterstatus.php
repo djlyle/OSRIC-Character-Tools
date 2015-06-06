@@ -1,17 +1,18 @@
 <?php
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-$characterId = $_POST['CharacterId'];
+include(dirname(__FILE__)."/inc/misc.inc");
+include(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 /*If the cancel button was pressed in the form from editcharacterstatus.php
   then return to characters.php */
 if(@$_POST['cancelbutton'] == "Cancel")
 {
 	header("Location: characters.php");
-    exit();
+   exit();
 }
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
-
-editCharacterStatus($cxn,$_POST);
+$characterId = $_POST['CharacterId'];
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+$myOsricDb->editCharacterStatus($characterId,$_POST['CharacterStatusArmourClass'],$_POST['CharacterStatusExperiencePoints'],$_POST['CharacterStatusFullHitPoints'],$_POST['CharacterStatusRemainingHitPoints']);
 
 echo "<p>Character status updated.</p>";
 echo "<a href='characters.php'>Return to list of characters</a>";

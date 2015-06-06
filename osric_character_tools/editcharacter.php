@@ -1,15 +1,19 @@
 <?php
-/*Program: editcharacter.php
-   Desc: Edits an existing character or adds a new character to the Characters table in the osric_db*/
+/**
+  *  Author: Daniel Lyle
+  *  Copyright: June 5,2015
+  *  Program: editcharacter.php
+  *  Desc: Edits an existing character or adds a new character to the Characters table in the osric_db
+**/
 
 $characterId = $_GET['CharacterId'];
 echo "Character with CharacterId={$characterId}";
 
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-include_once("./inc/db_funcs.inc");
-require_once("./inc/OsricDb.php");
-require_once("./inc/OsricHtmlHelper.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+include_once(dirname(__FILE__)."/inc/db_funcs.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $myOsricDb = new OsricDb();
