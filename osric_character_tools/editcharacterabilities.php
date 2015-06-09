@@ -2,9 +2,8 @@
 /*Program: editcharacterabilities.php
    Desc: Edits an existing character's abilities in the osric_db*/
 
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_GET['CharacterId'];
 

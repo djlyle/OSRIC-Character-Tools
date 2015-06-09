@@ -2,9 +2,9 @@
 /*Program: deletecharacter.php
    Desc: Deletes an existing character in the Characters table and related tables in the osric_db*/
 
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_GET['CharacterId'];
 echo "Deleting Character with CharacterId={$characterId}";

@@ -2,23 +2,24 @@
 /*Program: addToCharacterWeapons.php
    Desc: Adds weapons to character's inventory
 */
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_REQUEST['CharacterId'];
 $weaponRows = $_POST['weapon'];
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
-$character = $myOsricDb->getCharacter($characterId);
-$characterName = $character['CharacterName'];
+
 foreach($weaponRows as $weaponRow)
 {
     $weaponId = $weaponRow['weaponId'];
 	 $quantityToAdd = $weaponRow['quantity'];
 	 $myOsricDb->addToCharacterWeapons($characterId, $weaponId, $quantityToAdd);	 
 }
+
+$character = $myOsricDb->getCharacter($characterId);
+$characterName = $character['CharacterName'];
 ?>
 
 <html>

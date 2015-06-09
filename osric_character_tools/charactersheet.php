@@ -5,7 +5,6 @@
 $characterId = $_GET['CharacterId'];
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
-include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
 include_once(dirname(__FILE__)."/inc/characterInventory.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 require_once(dirname(__FILE__)."/inc/Osric.php");
@@ -30,15 +29,15 @@ echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
 echo "<tr><td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td><td><div class='clsCellLabel'>Age:</div><div class='clsCellValue'>{$character['CharacterAge']}</div></td><td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td></tr>\n";
 echo "<tr><td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
-$characterClasses = $myOsricDb->getCharacterClasses($characterId);
-$num_rows = count($characterClasses);
+$characterClassesAsNames = $myOsricDb->getCharacterClassesAsNames($characterId);
+$num_rows = count($characterClassesAsNames);
 for($i=0;$i<$num_rows;$i++)
 {
     if($i > 0)
     {
         echo ",";
     }     
-    echo "{$characterClasses[$i]['ClassName']}";
+    echo "{$characterClassesAsNames[$i]}";
     
 }
 echo "</div>";

@@ -89,6 +89,13 @@ class OsricDb
     	}
 	}
 	
+	public function updateCharacterAbility($characterId, $abilityId, $value)
+	{
+		$query = "UPDATE character_abilities SET Value = '{$value}' WHERE character_abilities.CharacterId = {$characterId} AND character_abilities.AbilityId = {$abilityId}";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		return $result; 
+	}
+	
 	public function updateCharacterCoins($characterCoinId, $coinQuantity)
 	{
 		$query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterCoinId = {$characterCoinId}";
@@ -210,12 +217,25 @@ class OsricDb
 		}
 	}
 	
-	public function getCharacterClasses($characterId)
+	private function getCharacterClassesResultSet($characterId)
 	{
 		$query = sprintf("SELECT * FROM character_classes cc INNER JOIN classes c ON cc.ClassId = c.ClassId WHERE CharacterId='%s'",$characterId);
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		return $result;
+	}
+	
+	public function getCharacterClasses($characterId)
+	{
+		$result = $this->getCharacterClassesResultSet($characterId);
 		for($classIds = array();$row = mysqli_fetch_assoc($result);$classIds[]=$row['ClassId']);
 		return $classIds;    
+	}
+	
+	public function getCharacterClassesAsNames($characterId)
+	{
+		$result = $this->getCharacterClassesResultSet($characterId);
+		for($classNames = array();$row = mysqli_fetch_assoc($result);$classNames[]=$row['ClassName']);
+		return $classNames;
 	}
 	
 	public function deleteAllClassesForCharacter($characterId)

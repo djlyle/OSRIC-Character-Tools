@@ -1,7 +1,7 @@
 <?php
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+
 $characterId = $_REQUEST['CharacterId'];
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);

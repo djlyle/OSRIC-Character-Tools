@@ -10,8 +10,9 @@
 </head>
 <body>
 <?php
-include("./inc/misc.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $genderArray = array("Unknown","Male","Female");

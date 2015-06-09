@@ -1,6 +1,5 @@
 <?php
-include(dirname(__FILE__)."/inc/misc.inc");
-include(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 /*If the cancel button was pressed in the form from editcharacterstatus.php
   then return to characters.php */

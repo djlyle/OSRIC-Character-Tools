@@ -6,7 +6,7 @@
 
 $characterId = $_GET['CharacterId'];
 
-include(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $myOsricDb = new OsricDb();

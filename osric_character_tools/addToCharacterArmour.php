@@ -2,17 +2,15 @@
 /*Program: addToCharacterArmour.php
    Desc: Adds armour to character's inventory
 */
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
-require_once("./inc/OsricDb.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_REQUEST['CharacterId'];
 $armourRows = $_POST['armour'];
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
-$character = $myOsricDb->getCharacter($characterId);
-$characterName = $character['CharacterName'];
+
 $num_rows = count($armourRows);
 foreach($armourRows as $armourRow)
 {
@@ -20,6 +18,9 @@ foreach($armourRows as $armourRow)
     $quantityToAdd = $armourRow['quantity'];
     $myOsricDb->addToCharacterArmour($characterId, $armourId, $quantityToAdd);
 }
+
+$character = $myOsricDb->getCharacter($characterId);
+$characterName = $character['CharacterName'];
 ?>
 
 <html>

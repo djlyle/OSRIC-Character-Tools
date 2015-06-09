@@ -1,6 +1,7 @@
 <?php
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+
 $characterId = $_POST['CharacterId'];
 /*If the cancel button was pressed in the form from editcharacter.php
   then return to characters.php */
@@ -9,7 +10,10 @@ if(@$_POST['cancelbutton'] == "Cancel")
 	header("Location: characters.php");
     exit();
 }
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
+
+$myOsricDb = new OsricDb();
+$myOsricDb->doInit($host,$user,$passwd);
+
 $editedAbilityTag = "editedAbility";
 $editedAbilityTagLen = strlen($editedAbilityTag);
 foreach($_POST as $field => $value)
@@ -24,7 +28,7 @@ foreach($_POST as $field => $value)
 		$abilityId = substr($field,$editedAbilityTagLen,$abilityIdLen);
 		$abilityValue = trim($value);
 		
-		$result = updateCharacterAbility($cxn, $characterId, $abilityId, $abilityValue);
+		$result = $myOsricDb->updateCharacterAbility($characterId, $abilityId, $abilityValue);
         
 	}    
 }

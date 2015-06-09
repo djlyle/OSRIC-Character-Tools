@@ -2,8 +2,7 @@
 /*Program: addToCharacterInventory.php
    Desc: Adds items to character's inventory
 */
-include("./inc/misc.inc");
-include("./inc/charactertblfuncs.inc");
+include(dirname(__FILE__)."/inc/misc.inc");
 require_once("./inc/OsricDb.php");
 
 $characterId = $_REQUEST['CharacterId'];
@@ -11,14 +10,16 @@ $itemRows = $_POST['item'];
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
-$character = $myOsricDb->getCharacter($characterId);
-$characterName = $character['CharacterName'];
+
 foreach($itemRows as $itemRow)
 {
 		$itemId = $itemRow['itemId'];
 		$quantityToAdd = $itemRow['quantity'];
 		$myOsricDb->addToCharacterItems($characterId,$itemId,$quantityToAdd);
 }
+
+$character = $myOsricDb->getCharacter($characterId);
+$characterName = $character['CharacterName'];
 ?>
 
 <html>
