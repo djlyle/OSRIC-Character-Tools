@@ -360,6 +360,30 @@ class OsricDb
 		return $result_set;
 	}
 
+	public function getCharacterBaseArmourClass($characterId)	
+	{
+		$characterStatus = $this->getCharacterStatus($characterId);
+		return $characterStatus['CharacterStatusArmourClass'];		
+	}
+	
+	public function getCharacterArmourEffectOnAC($characterId)
+	{
+		$combinedEffectOnAC = 0;		
+		$armourInUse = $this->getCharacterArmourInUse($characterId);
+		foreach($armourInUse as $row)
+		{
+			$combinedEffectOnAC += ($row['ArmourEffectOnArmourClass'] * $row['Quantity']);
+		}
+		return $combinedEffectOnAC;
+	}
+	
+	public function getCharacterEffectiveArmourClass($characterId)
+	{
+		$baseArmourClass = $this->getCharacterBaseArmourClass($characterId);
+		$combinedEffectOnAC = $this->getCharacterArmourEffectOnAC($characterId);
+		return $baseArmourClass + $combinedEffectOnAC;	
+	}
+
 	public function getCharacterArmourInStorage($characterId)
 	{
 		return $this->getCharacterArmourByStatus($characterId, "1");	

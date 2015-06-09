@@ -4,11 +4,11 @@
 
 $characterId = $_GET['CharacterId'];
 
-include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-include_once("./inc/characterInventory.inc");
-require_once("./inc/OsricDb.php");
-require_once("./inc/Osric.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+include_once(dirname(__FILE__)."/inc/characterInventory.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+require_once(dirname(__FILE__)."/inc/Osric.php");
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
@@ -63,6 +63,10 @@ echo "<hr/>\n";
 
 echo "<h3>Weapons & Armour</h3>\n";
 echo "<div id='TotalEncumbrance'>Total Encumbrance (lbs): {$totalEncumbranceOnPerson}</div>\n";
+
+$effectiveArmourClass = $myOsricDb->getCharacterEffectiveArmourClass($characterId);
+echo "<div id='Effective Armour Class'>Effective Armour Class: {$effectiveArmourClass}</div>\n";
+
 echo "<h4>Weapon(s) in Hand:</h4>\n";
 echo "<table id='CharacterWeaponsInHand'>\n";
 echo "<tr><td>Weapons</td><td>Melee Damage vs S-M</td><td>Melee Damage vs L</td><td>Missile Damage vs S-M</td><td>Missile Damage vs L</td><td>Missile Rate of Fire</td><td>Missile Range</td></tr>\n";
@@ -125,7 +129,15 @@ echo "</div>\n";
 
 echo "<h4>Armour Worn:</h4>\n";
 echo "<table id='CharacterArmourWorn'>\n";
-echo "<tr><td>Armour\\Protection</td><td>AC modifier</td></tr>\n";
+echo "<tr><td>Armour\\Protection (Quantity)</td></td><td>AC modifier</td></tr>\n";
+$character_armour_worn = $myOsricDb->getCharacterArmourInUse($characterId);
+$num_rows = count($character_armour_worn);
+for($i=0;$i<$num_rows;$i++)
+{
+	$row = $character_armour_worn[$i];
+	echo "<tr><td>{$row['ArmourType']} ({$row['Quantity']})</td><td>{$row['ArmourEffectOnArmourClass']}</td></tr>\n";		
+}
+
 echo "</table>\n";
 
 echo "<h4>Armour Carried:</h4>\n";
