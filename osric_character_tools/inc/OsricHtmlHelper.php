@@ -63,7 +63,7 @@ class OsricHtmlHelper
 	}
 
 
-	public static function makeHtmlTableCharacterArmour($character_armour, $itemStatusOptions, $tableId, $offset)	
+	public static function makeHtmlTableCharacterArmour($character_armour, $equipmentStatusOptions, $tableId, $offset)	
 	{	
 		$num_rows = count($character_armour);
 		echo "<table id='{$tableId}'>\n";
@@ -104,7 +104,7 @@ class OsricHtmlHelper
 		echo "</table>\n";
 	}
 
-	public static function makeHtmlTableCharacterWeapons($character_weapons, $itemStatusOptions, $tableId, $offset)
+	public static function makeHtmlTableCharacterWeapons($character_weapons, $equipmentStatusOptions, $tableId, $offset)
 	{
 		$num_rows = count($character_weapons);
 		echo "<table id='{$tableId}'>\n";
@@ -143,6 +143,47 @@ class OsricHtmlHelper
 		}
 		echo "</table>\n";
 	}
+	
+	public static function makeHtmlTableCharacterEquipment($character_items, $equipmentStatusOptions, $tableId, $offset)
+	{
+		
+		$num_rows = count($character_items);
+		echo "<table id='{$tableId}'>\n";
+		echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";		
+		for($i=0;$i<$num_rows;$i++)
+		{
+			$row = $character_items[$i];
+			echo "<tr>";
+			echo "<td>{$row['ItemName']}</td>";
+			echo "<td>{$row['ItemEncumbrance']}</td>";
+			echo "<td>{$row['ItemCost']}</td>";
+			$transferSource = $row['ItemStatusId'];
+			$characterItemId = $row['CharacterItemId'];
+			$itemId = $row['ItemId'];
+			$index = $offset + $i;
+		
+			if($row['Quantity'])
+			{
+				$itemQuantity = $row['Quantity'];
+			}
+			else 
+			{
+				$itemQuantity = 0;
+			}
+			echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
+			echo "<td>";
+			static::html_listbox("item[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
+			echo "</td>";
+			echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
+    
+			echo "<td class='clsDisplayNone'><input type='hidden' min='0' max='9999999' name='item[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
+			echo "<td class='clsDisplayNone'><input type='hidden' min='0' max='9999999' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
+			echo "<td class='clsDisplayNone'><input type='hidden' min='0' max='9999999' name='item[{$index}][characterItemId]' value='{$characterItemId}'></input></td>";     
+			echo "</tr>\n";
+		}
+		echo "</table>\n";
+	}
+	
 }
 
 ?>

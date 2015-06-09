@@ -4,12 +4,12 @@ File: equipcharacter.php
 Author: Daniel Lyle
 Copyright: June 1,2015
 */
-include_once("./inc/misc.inc");
-include_once("./inc/characterInventory.inc");
-include_once("./inc/charactertblfuncs.inc");
-include_once("./inc/db_funcs.inc");
-require_once("./inc/OsricDb.php");
-require_once("./inc/OsricHtmlHelper.php");
+include_once(dirname(__FILE__)."/inc/misc.inc");
+include_once(dirname(__FILE__)."/inc/characterInventory.inc");
+include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+include_once(dirname(__FILE__)."/inc/db_funcs.inc");
+require_once(dirname(__FILE__)."/inc/OsricDb.php");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
 $characterId = $_REQUEST['CharacterId'];
 $myOsricDb = new OsricDb();
@@ -68,19 +68,19 @@ $armourOffset = 0;
 echo "<h3>Armour in Use:</h3>";
 $character_armour_in_use = $myOsricDb->getCharacterArmourInUse($characterId);
 $num_rows = count($character_armour_in_use);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_use, $itemStatusOptions, "osric_character_armour_in_use", $armourOffset);
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_use, $equipmentStatusOptions, "osric_character_armour_in_use", $armourOffset);
 $armourOffset = $armourOffset + $num_rows;
 
 echo "<h3>Armour Carried:</h3>";
 $character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_carried, $itemStatusOptions, "osric_character_armour_carried", $armourOffset);
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_carried, $equipmentStatusOptions, "osric_character_armour_carried", $armourOffset);
 $armourOffset = $armourOffset + $num_rows;
 
 echo "<h3>Armour In Storage: </h3>";
 $character_armour_in_storage = $myOsricDb->getCharacterArmourInStorage($characterId);
 $num_rows = count($character_armour_in_storage);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_storage, $itemStatusOptions, "osric_character_armour_in_storage", $armourOffset);
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_storage, $equipmentStatusOptions, "osric_character_armour_in_storage", $armourOffset);
 
 echo "<hr/>\n";
 
@@ -94,18 +94,18 @@ $weaponOffset = 0;
 echo "<h3>Weapons in Use:</h3>";
 $character_weapons_in_use = $myOsricDb->getCharacterWeaponsInUse($characterId);
 $num_rows = count($character_weapons_in_use);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_use, $itemStatusOptions, "osric_character_weapons_in_use", $weaponOffset);
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_use, $equipmentStatusOptions, "osric_character_weapons_in_use", $weaponOffset);
 $weaponOffset = $weaponOffset + $num_rows;
 
 echo "<h3>Weapons Carried:</h3>\n";
 $character_weapons_carried = $myOsricDb->getCharacterWeaponsCarried($characterId);
 $num_rows = count($character_weapons_carried);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_carried, $itemStatusOptions, "osric_character_weapons_carried", $weaponOffset);
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_carried, $equipmentStatusOptions, "osric_character_weapons_carried", $weaponOffset);
 $weaponOffset = $weaponOffset + $num_rows;
 
 echo "<h3>Weapons in Storage:</h3>\n";
 $character_weapons_in_storage = $myOsricDb->getCharacterWeaponsInStorage($characterId);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_storage, $itemStatusOptions, "osric_character_weapons_in_storage", $weaponOffset);
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_storage, $equipmentStatusOptions, "osric_character_weapons_in_storage", $weaponOffset);
 
 echo "<hr/>\n";
 
@@ -114,82 +114,20 @@ echo "<p>Click on the \"Select new equipment\" link to supplement this character
 echo "<p>To transfer a quantity of equipment items in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit equipment\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
-$offset = 0;
+
+$equipmentOffset = 0;
 echo "<h3>Equipment Carried:</h3>\n";
-echo "<table id='osric_character_equipment_carried'>";
-echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-$itemQuantity = 0;
 $character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
 $num_rows = count($character_items_carried);
-for($i=0;$i<$num_rows;$i++)
-{
-    $row = $character_items_carried[$i];
-	echo "<tr>";
-	echo "<td>{$row['ItemName']}</td>";
-	echo "<td>{$row['ItemEncumbrance']}</td>";
-	echo "<td>{$row['ItemCost']}</td>";
-    $transferSource = $row['ItemStatusId'];
-    $characterItemId = $row['CharacterItemId'];
-	$itemId = $row['ItemId'];
-    $index = $offset + $i;
-		
-    if($row['Quantity']){
-		$itemQuantity = $row['Quantity'];
-	}
-	else {
-		$itemQuantity = 0;
-	}
-	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
-    echo "<td>";
-    OsricHtmlHelper::html_listbox("item[{$index}][transferDestination]", $equipmentStatusOptions, $transferSource);        
-    echo "</td>";
-    echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
-    
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][characterItemId]' value='{$characterItemId}'></input></td>";     
-    echo "</tr>\n";
-}
-echo "</table>\n";
-
-$offset = $offset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_carried, $itemStatusOptions, "osric_character_equipment_carried",$equipmentOffset);
+$equipmentOffset = $equipmentOffset + $num_rows;
 
 echo "<h3>Equipment in Storage:</h3>\n";
-echo "<table id='osric_character_equipment_in_storage'>";
-echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
 $character_items_in_storage = $myOsricDb->getCharacterItemsInStorage($characterId);
 $num_rows = count($character_items_in_storage);
-for($i=0;$i<$num_rows;$i++)
-{
-    $row = $character_items_in_storage[$i];
-	echo "<tr>";
-	echo "<td>{$row['ItemName']}</td>";
-	echo "<td>{$row['ItemEncumbrance']}</td>";
-	echo "<td>{$row['ItemCost']}</td>";
-    $transferSource = $row['ItemStatusId'];
-    $characterItemId = $row['CharacterItemId'];
-	$itemId = $row['ItemId'];
-    $index = $offset + $i;
-		
-    if($row['Quantity']){
-		$itemQuantity = $row['Quantity'];
-	}
-	else {
-		$itemQuantity = 0;
-	}
-	echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}'></input></td>";
-    echo "<td>";
-    OsricHtmlHelper::html_listbox("item[{$index}][transferDestination]", $itemStatusOptions, $transferSource);        
-    echo "</td>";
-    echo "<td><input type='number' min='0' max='{$itemQuantity}' name='item[{$index}][transferQuantity]' value='0'></input></td>";
-    
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][transferSource]' value='{$transferSource}'></input></td>";    
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
-    echo "<td><input type='hidden' min='0' max='9999999' name='item[{$index}][characterItemId]' value='{$characterItemId}'></input></td>";     
-    echo "</tr>\n";
-}
-echo "</table>\n";
+OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_in_storage, $itemStatusOptions, "osric_character_equipment_in_storage", $equipmentOffset);
 echo "<hr/>\n";
+
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
 
 //end tag for scrollable div
