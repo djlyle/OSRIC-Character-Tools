@@ -15,7 +15,6 @@ include_once(dirname(__FILE__)."/inc/db_funcs.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
-$cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 if($characterId != -1)
@@ -27,7 +26,7 @@ $inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","Charact
 $selectOptions['CharacterGender'][0] = "Unknown";
 $selectOptions['CharacterGender'][1] = "Male";
 $selectOptions['CharacterGender'][2] = "Female";
-$selectOptions['RaceId'] = osricdb_getRaceOptions($cxn);
+$selectOptions['RaceId'] = $myOsricDb->getRaceOptions();
 
 ?>
 

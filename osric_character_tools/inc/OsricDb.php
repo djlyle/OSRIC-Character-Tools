@@ -16,6 +16,18 @@ class OsricDb
 		$this->cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
 	}
 	
+	public function getRaceOptions()
+	{
+		$query = "SELECT * FROM races";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$options = array();    
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$options[$row['RaceId']] = $row['RaceName'];
+		}
+		return $options;
+	}
+	
 	public function createCharacter($name="Mr. Generic",$age=42,$gender=1,$weight=140,$height=65,$raceId=0)
 	{
 		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
