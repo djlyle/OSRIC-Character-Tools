@@ -613,6 +613,60 @@ class OsricDb
 		$row = mysqli_fetch_assoc($result);
 		return $row;
 	}
+	
+	public function addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination)
+	{
+		$query = "SELECT * FROM character_coins WHERE CharacterId = $characterId AND CoinId = $coinId AND ItemStatusId = $destination";     
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		if($row)
+		{
+			/*row found  Update it's count to be its existing count plus the count just added.*/
+			$count = max(0,$row['Quantity'] + $quantityToAdd);
+			$query = "UPDATE character_coins SET Quantity = $count WHERE CharacterId = $characterId AND CoinId = $coinId AND ItemStatusId = $destination";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		}
+		else
+		{
+    		/*row not found in existing character's coins inventory.  Insert it as a new row in the character's coins inventory.*/
+			$count = $quantityToAdd;
+			if($count > 0)
+			{
+				$query = "INSERT INTO character_coins (`CharacterId`, `CoinId`, `Quantity`, `ItemStatusId`) VALUES ('{$characterId}', '{$coinId}', '{$count}', '{$destination}')"; 
+				$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);	
+			}
+		}
+	}
+	
+	public function transferCharacterCoinsFromSourceToDest($characterId, $coinId, $transferQuantity, $transferSource, $transferDestination)
+	{
+		$query = "START TRANSACTION";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);    
+
+		$this->addToCharacterCoins($characterId,$coinId,$transferQuantity,$transferDestination);	 	
+   
+		/*Subtract quantity transferred to destination from the transfer source*/ 
+		$this->addToCharacterCoins($characterId,$coinId,-1*$transferQuantity,$transferSource);
+		    
+		/*End transaction*/
+		$query = "COMMIT";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+	}
+	
+	public function transferCharacterCoins($characterId, $coinRow)
+	{
+		$transferQuantity = min($coinRow['transferQuantity'],$coinRow['quantity']);
+		$transferDestination = $coinRow['transferDestination'];
+		$transferSource = $coinRow['transferSource'];
+    
+		if($transferDestination == $transferSource)
+		{/*Don't transfer coins if source and destination are the same*/
+			return;
+		}
+
+		$coinId = $coinRow['coinId'];
+		$this->transferCharacterCoinsFromSourceToDest($characterId,$coinId,$transferQuantity,$transferSource,$transferDestination);
+	}
 }
 
 ?>

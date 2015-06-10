@@ -52,7 +52,7 @@ foreach($coinRows as $coinRow)
 {        
     if($coinRow['transferQuantity'] > 0)
     {
-        $result = osricdb_transferCharacterCoins($cxn, $characterId, $coinRow);
+        $result = $myOsricDb->transferCharacterCoins($characterId, $coinRow);
     }
 }
 /*Delete any coin rows whose quantity is now zero*/

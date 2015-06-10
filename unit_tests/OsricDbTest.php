@@ -151,7 +151,6 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 		$k = 0;		
 		foreach($coinIds as $coinId)
 		{
-			echo "coinId: ".$coinId;
 			$row = array();		
 			$row['CharacterId'] = $this->myNewCharacterId;
 			$row['CoinId'] = $coinId;
@@ -162,13 +161,84 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals($characterCoins,$expectedCharacterCoins);
 	}
-	 
+	
+	public function testAddToCharacterCoins()
+	{
+		$destination = 2;
+		$quantity1 = 55;
+		$quantity2 = 44;		
+		$coinIds = $this->myOsricDb->getCoinIds();
+		foreach($coinIds as $coinId)
+		{		
+			$this->myOsricDb->addToCharacterCoins($this->myNewCharacterId,$coinId,$quantity1,$destination);
+		}
+		
+		$characterCoins1 = $this->myOsricDb->getCharacterCoinsCarried($this->myNewCharacterId);
+		
+		foreach($characterCoins1 as $characterCoin1)
+		{
+			$this->assertEquals($characterCoin1['Quantity'],$quantity1);	
+		}
+		
+		foreach($coinIds as $coinId)
+		{		
+			$this->myOsricDb->addToCharacterCoins($this->myNewCharacterId,$coinId,$quantity2,$destination);
+		}
+		
+		$characterCoins2 = $this->myOsricDb->getCharacterCoinsCarried($this->myNewCharacterId);
+		
+		foreach($characterCoins2 as $characterCoin2)
+		{
+			$this->assertEquals($characterCoin2['Quantity'],$quantity1+$quantity2);
+		}	
+	}
+	
+	public function testTransferCharacterCoins()
+	{
+		$destination = 2;
+		$quantity1 = 55;
+		$quantity2 = 44;		
+		$coinIds = $this->myOsricDb->getCoinIds();
+		foreach($coinIds as $coinId)
+		{		
+			$this->myOsricDb->addToCharacterCoins($this->myNewCharacterId,$coinId,$quantity1,$destination);
+		}
+		
+		$characterCoins1 = $this->myOsricDb->getCharacterCoinsCarried($this->myNewCharacterId);
+		
+		foreach($characterCoins1 as $characterCoin1)
+		{
+			$this->assertEquals($characterCoin1['Quantity'],$quantity1);	
+		}
+		
+		$transferSource = $destination;
+		$transferDestination = 1;
+		foreach($coinIds as $coinId)
+		{		
+			$this->myOsricDb->transferCharacterCoinsFromSourceToDest($this->myNewCharacterId, $coinId, $quantity2, $transferSource, $transferDestination);
+		}
+		
+		$characterCoins2 = $this->myOsricDb->getCharacterCoinsCarried($this->myNewCharacterId);
+		foreach($characterCoins2 as $characterCoin2)
+		{
+			$this->assertEquals($characterCoin2['Quantity'],$quantity1-$quantity2);	
+		}
+		
+		$characterCoins3 = $this->myOsricDb->getCharacterCoinsInStorage($this->myNewCharacterId);
+		foreach($characterCoins3 as $characterCoin3)
+		{
+			$this->assertEquals($characterCoin3['Quantity'],$quantity2);	
+		}
+	}
+	
 	public function testDeleteDefaultCharacter()
 	{
 		$this->myOsricDb->deleteCharacter($this->myNewCharacterId);
 		$character = $this->myOsricDb->getCharacter($this->myNewCharacterId);	
 		$this->assertEquals(null,$character);	
-	}	
+	}
+	
+		
 }
 
 ?>
