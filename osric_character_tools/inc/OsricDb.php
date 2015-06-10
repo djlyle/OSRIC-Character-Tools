@@ -116,6 +116,18 @@ class OsricDb
 		return $coinIds;		
 	}
 	
+	public function getCoinNamesAndIds()
+	{
+		$query = "SELECT CoinName,CoinId FROM coins ORDER BY CoinId";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);   
+		$coinNameIds = array();    
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$coinNameIds[$row['CoinName']] = $row['CoinId'];
+		}
+		return $coinNameIds;		
+	}
+	
 	public function initCharacterCoinsToZero($characterId)
 	{
 		$coinIds = $this->getCoinIds();

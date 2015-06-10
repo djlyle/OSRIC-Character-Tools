@@ -61,6 +61,26 @@ class OsricHtmlHelper
 		}
 		echo "</table>\n";
 	}
+	
+	public static function makeHtmlTableCoinsTreasure($tableId,$coinNamesAndIds)
+	{
+		echo "<table id='{$tableId}'>\n";
+		echo "<tr><td>Coin Name</td><td>Quantity</td></tr>\n";
+		$index = 0;
+		foreach($coinNamesAndIds as $coinName => $coinId)
+		{
+			echo "<tr>";			
+			echo "<td>";
+			echo "{$coinName}";
+			echo "</td>";			
+			echo "<td><input type='number' min='0' max='9999999' name='coin[{$index}][quantity]' value='0'></input></td>";    			
+			echo "<td class='clsDisplayNone'><input type='hidden' min='0' max='9999999' name='coin[{$index}][coinId]' value='{$coinId}'></input></td>";			
+			echo "</tr>";			
+			$index += 1;		
+		}			
+		echo "</table>\n";
+		
+	} 
 
 
 	public static function makeHtmlTableCharacterArmour($character_armour, $equipmentStatusOptions, $tableId, $offset)	

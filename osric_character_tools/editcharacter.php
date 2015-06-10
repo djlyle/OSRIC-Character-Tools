@@ -7,13 +7,12 @@
 **/
 
 $characterId = $_GET['CharacterId'];
-echo "Character with CharacterId={$characterId}";
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
-include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
-include_once(dirname(__FILE__)."/inc/db_funcs.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
+
+echo "Character with CharacterId={$characterId}";
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
