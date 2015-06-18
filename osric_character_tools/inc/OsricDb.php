@@ -1,5 +1,6 @@
 <?php
 /*
+File: OsricDb.php
 Author: Daniel Lyle
 Copyright: May 30,2015
 */
@@ -563,7 +564,7 @@ class OsricDb
 		}
 	}
 	
-	function addToCharacterItems($characterId,$itemId,$quantityToAdd)
+	public function addToCharacterItems($characterId,$itemId,$quantityToAdd)
 	{
 		if($itemId != -1)
 		{
@@ -612,6 +613,34 @@ class OsricDb
 		$result = mysqli_query($this->cxn, $query) or die("Couldn't execute query: ".$query);
 		$row = mysqli_fetch_assoc($result);
 		return $row;
+	}
+	
+	public function 	addToCharacterXP($characterId,$xpToAdd)
+	{
+		$query = "SELECT * FROM character_status WHERE CharacterId = $characterId";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		if($row)
+		{
+			/*Row found. Update its count to be its existing count plus the count just added*/
+			$count = max(0,$row['CharacterStatusExperiencePoints'] + $xpToAdd);
+			$query = "UPDATE character_status SET CharacterStatusExperiencePoints = $count WHERE CharacterId = $characterId";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		}
+	}
+	
+	public function getCharacterXP($characterId){
+		$query = "SELECT * FROM character_status WHERE CharacterId = $characterId";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		if($row)
+		{
+			return $row['CharacterStatusExperiencePoints'];
+		}
+		else 
+		{
+			return -1;
+		}
 	}
 	
 	public function addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination)
@@ -667,6 +696,7 @@ class OsricDb
 		$coinId = $coinRow['coinId'];
 		$this->transferCharacterCoinsFromSourceToDest($characterId,$coinId,$transferQuantity,$transferSource,$transferDestination);
 	}
+	
 }
 
 ?>

@@ -1,4 +1,9 @@
 <?php
+/*
+File: submitcharacterstatus.php
+Author: Daniel Lyle
+Copyright: June 17,2015
+*/
 include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 /*If the cancel button was pressed in the form from editcharacterstatus.php

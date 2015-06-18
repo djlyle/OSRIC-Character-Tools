@@ -1,6 +1,10 @@
 <?php
-/*Program: addToCharacterWeapons.php
-   Desc: Adds weapons to character's inventory
+/*
+
+File: addToCharacterWeapons.php
+Author: Daniel Lyle
+Copyright: June 17,2015
+Desc: Adds weapons to character's inventory
 */
 include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");

@@ -1,6 +1,9 @@
 <?php
-/*Program: addToCharacterInventory.php
-   Desc: Adds items to character's inventory
+/*
+File: addToCharacterInventory.php
+Author: Daniel Lyle
+Copyright: June 17, 2015
+Desc: Adds items to character's inventory
 */
 include(dirname(__FILE__)."/inc/misc.inc");
 require_once("./inc/OsricDb.php");

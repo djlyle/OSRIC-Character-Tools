@@ -1,4 +1,11 @@
 <?php
+/*
+File: OsricDbTest.php
+Author: Daniel Lyle
+Copyright: June 17, 2015
+Desc: unit tests for OsricDb class
+*/
+
 require_once(dirname(__FILE__).'/../osric_character_tools/inc/misc.inc');
 require_once(dirname(__FILE__).'/../osric_character_tools/inc/OsricDb.php');
 class OsricDbTest extends PHPUnit_Framework_TestCase
@@ -192,6 +199,15 @@ class OsricDbTest extends PHPUnit_Framework_TestCase
 			$this->assertEquals($characterCoin2['Quantity'],$quantity1+$quantity2);
 		}	
 	}
+	
+	public function testAddToCharacterXP() 
+	{
+		$firstXPAward = 1001;
+		$secondXPAward = 2123;
+		$this->myOsricDb->addToCharacterXP($this->myNewCharacterId,$firstXPAward);
+		$this->myOsricDb->addToCharacterXP($this->myNewCharacterId,$secondXPAward);
+		$this->assertEquals($this->myOsricDb->getCharacterXP($this->myNewCharacterId),$firstXPAward+$secondXPAward);
+	}	
 	
 	public function testTransferCharacterCoins()
 	{

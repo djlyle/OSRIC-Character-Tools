@@ -1,6 +1,9 @@
 <?php
-/*Program: addToCharacterTreasureAndXP.php
-   Desc: Add treasure and XP to a character
+/*
+File: addToCharacterTreasureAndXP.php
+Author: Daniel Lyle
+Copyright: June 17,2015
+Desc: Add treasure and XP to a character
 */
 include(dirname(__FILE__)."/inc/misc.inc");
 require_once("./inc/OsricDb.php");
@@ -19,12 +22,15 @@ foreach($coinRows as $row)
 		$myOsricDb->addToCharacterCoins($characterId,$coinId,$quantityToAdd,2);
 }
 
+$experiencePointsToAdd = $_POST['experiencePtsToAdd'];
+$myOsricDb->addToCharacterXP($characterId,$experiencePointsToAdd);
+
 $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 ?>
 
 <html>
-<head><title>Coins Added to <?php echo "{$characterName}'s Inventory"; ?></title></head>
+<head><title>Coins and XP Added to <?php echo "{$characterName}'s Inventory"; ?></title></head>
 <body>
 <?php 
 	echo "{$characterName}'s Coins Updated.";

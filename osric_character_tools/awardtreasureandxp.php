@@ -48,7 +48,8 @@ echo "<h3>Award Treasure:</h3>\n";
 $coinNamesAndIds = $myOsricDb->getCoinNamesAndIds();
 OsricHtmlHelper::makeHtmlTableCoinsTreasure("osric_treasure_coins",$coinNamesAndIds);
 echo "<hr/>\n";
-
+echo "<h3>Award Experience Points (XP):</h3>\n";
+OsricHtmlHelper::makeHtmlTableExperiencePoints("osric_treasure_xp");
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
 
 ?>

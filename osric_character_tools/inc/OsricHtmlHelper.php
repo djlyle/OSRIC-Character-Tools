@@ -1,9 +1,9 @@
 <?php
 /*
+File: OsricHtmlHelper.php
 Author: Daniel Lyle
 Copyright: May 30,2015
 */
-include_once("./functions.inc");
 
 class OsricHtmlHelper
 {
@@ -81,6 +81,13 @@ class OsricHtmlHelper
 		echo "</table>\n";
 		
 	} 
+	
+	public static function makeHtmlTableExperiencePoints($tableId)
+	{
+		echo "<table id='{$tableId}'>\n";
+		echo "<tr><td>Experience Points to Add:</td><td><input type='number' min='0' max='9999999' name='experiencePtsToAdd' value='0'></input></td></tr>\n";
+		echo "</table>\n";
+	}
 
 
 	public static function makeHtmlTableCharacterArmour($character_armour, $equipmentStatusOptions, $tableId, $offset)	
