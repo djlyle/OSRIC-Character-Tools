@@ -55,5 +55,4 @@ you have installed of phpunit:
 
 PHPUnit x.y.z by Sebastian Bergmann and contributors.
 
-To run the unit tests in 
 --------------------
