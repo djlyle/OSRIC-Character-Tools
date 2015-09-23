@@ -33,22 +33,6 @@ function osricdb_getTotalEncumbranceItemsCarried($cxn, $characterId)
 	return $row['TotalEncumbrance'];
 }
 
-function osricdb_getTotalEncumbranceWeaponsOnPerson($cxn, $characterId)
-{
-    $query = "SELECT SUM(e.TotalWeaponEncumbrance) AS TotalEncumbrance FROM (SELECT (w.WeaponEncumbranceInLbs * cw.Quantity) AS TotalWeaponEncumbrance FROM character_weapons cw INNER JOIN weapons w ON cw.WeaponId = w.WeaponId WHERE cw.CharacterId = '{$characterId}' AND (cw.EquipmentStatusId = '2' OR cw.EquipmentStatusId = '3')) AS e";
-	$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-	$row = mysqli_fetch_assoc($result);
-	return $row['TotalEncumbrance'];
-}
-
-function osricdb_getTotalEncumbranceArmourOnPerson($cxn, $characterId)
-{
-    $query = "SELECT SUM(e.TotalArmourEncumbrance) AS TotalEncumbrance FROM (SELECT (a.ArmourEncumbrance * ca.Quantity) AS TotalArmourEncumbrance FROM character_armour ca INNER JOIN armour a ON ca.ArmourId = a.ArmourId WHERE ca.CharacterId = '{$characterId}' AND (ca.EquipmentStatusId = '2' OR ca.EquipmentStatusId = '3')) AS e";
-	$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-	$row = mysqli_fetch_assoc($result);
-	return $row['TotalEncumbrance'];
-}
-
 function getTotalCost($cxn, $characterId)
 {
 	$query = "SELECT SUM(e.TotalItemCost) AS TotalCost FROM (SELECT (ci.Quantity * i.ItemCost) AS TotalItemCost FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}') AS e";

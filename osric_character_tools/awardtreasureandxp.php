@@ -15,8 +15,6 @@ $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 $totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId);
-$equipmentStatusOptions = $myOsricDb->getEquipmentStatusOptions();
-$itemStatusOptions = $myOsricDb->getItemStatusOptions();
 
 ?>
 

@@ -432,7 +432,7 @@ class OsricDb
 	
 	private function getCharacterArmourByStatus($characterId, $itemStatus)
 	{
-		$query = sprintf("SELECT * FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId WHERE ci.CharacterId = $characterId AND ci.itemStatusId = '%s'",$itemStatus);
+		$query = sprintf("SELECT * FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId WHERE ca.CharacterId = $characterId AND ca.itemStatusId = '%s'",$itemStatus);
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
