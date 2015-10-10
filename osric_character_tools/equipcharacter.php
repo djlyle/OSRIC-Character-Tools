@@ -61,24 +61,24 @@ echo "<p>To transfer a quantity of armour in a row from one employment to anothe
 //echo "<div><a href='selectarmour.php?CharacterId={$characterId}'>Select new armour</a></div>";
 echo "<br/>\n";
 
-$armourOffset = 0;
+$itemOffset = 0;
 echo "<h3>Armour in Use:</h3>";
 $character_armour_in_use = $myOsricDb->getCharacterArmourInUse($characterId);
 $num_rows = count($character_armour_in_use);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_use, $itemStatusOptions, "osric_character_armour_in_use", $armourOffset);
-$armourOffset = $armourOffset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_use, $itemStatusOptions, "osric_character_armour_in_use", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 
 echo "<h3>Armour Carried:</h3>";
 $character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_carried, $itemStatusOptions, "osric_character_armour_carried", $armourOffset);
-$armourOffset = $armourOffset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_carried, $itemStatusOptions, "osric_character_armour_carried", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 
 echo "<h3>Armour In Storage: </h3>";
 $character_armour_in_storage = $myOsricDb->getCharacterArmourInStorage($characterId);
 $num_rows = count($character_armour_in_storage);
-OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_storage, $itemStatusOptions, "osric_character_armour_in_storage", $armourOffset);
-
+OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_storage, $itemStatusOptions, "osric_character_armour_in_storage", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 echo "<hr/>\n";
 
 echo "<h3>Weapons:</h3>";
@@ -87,23 +87,23 @@ echo "<p>To transfer a quantity of weapons in a row from one employment to anoth
 //echo "<div><a href='selectweapons.php?CharacterId={$characterId}'>Select new weapons</a></div>";
 echo "<br/>";
 
-$weaponOffset = 0;
 echo "<h3>Weapons in Use:</h3>";
 $character_weapons_in_use = $myOsricDb->getCharacterWeaponsInUse($characterId);
 $num_rows = count($character_weapons_in_use);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_use, $itemStatusOptions, "osric_character_weapons_in_use", $weaponOffset);
-$weaponOffset = $weaponOffset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_use, $itemStatusOptions, "osric_character_weapons_in_use", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 
 echo "<h3>Weapons Carried:</h3>\n";
 $character_weapons_carried = $myOsricDb->getCharacterWeaponsCarried($characterId);
 $num_rows = count($character_weapons_carried);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_carried, $itemStatusOptions, "osric_character_weapons_carried", $weaponOffset);
-$weaponOffset = $weaponOffset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_carried, $itemStatusOptions, "osric_character_weapons_carried", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 
 echo "<h3>Weapons in Storage:</h3>\n";
 $character_weapons_in_storage = $myOsricDb->getCharacterWeaponsInStorage($characterId);
-OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_storage, $itemStatusOptions, "osric_character_weapons_in_storage", $weaponOffset);
-
+$num_rows = count($character_weapons_in_storage);
+OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_storage, $itemStatusOptions, "osric_character_weapons_in_storage", $itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 echo "<hr/>\n";
 
 echo "<h3>Equipment:</h3>";
@@ -112,17 +112,16 @@ echo "<p>To transfer a quantity of equipment items in a row from one employment 
 echo "<div><a href='selectequipment.php?CharacterId={$characterId}'>Select new equipment</a></div>";
 echo "<br/>";
 
-$equipmentOffset = 0;
 echo "<h3>Equipment Carried:</h3>\n";
 $character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
 $num_rows = count($character_items_carried);
-OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_carried, $itemStatusOptions, "osric_character_equipment_carried",$equipmentOffset);
-$equipmentOffset = $equipmentOffset + $num_rows;
+OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_carried, $itemStatusOptions, "osric_character_equipment_carried",$itemOffset);
+$itemOffset = $itemOffset + $num_rows;
 
 echo "<h3>Equipment in Storage:</h3>\n";
 $character_items_in_storage = $myOsricDb->getCharacterItemsInStorage($characterId);
 $num_rows = count($character_items_in_storage);
-OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_in_storage, $itemStatusOptions, "osric_character_equipment_in_storage", $equipmentOffset);
+OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_in_storage, $itemStatusOptions, "osric_character_equipment_in_storage", $itemOffset);
 echo "<hr/>\n";
 
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
