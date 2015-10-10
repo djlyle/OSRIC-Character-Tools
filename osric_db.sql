@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2015 at 08:09 PM
+-- Generation Time: Oct 10, 2015 at 02:34 PM
 -- Server version: 5.5.44
--- PHP Version: 5.3.10-1ubuntu3.19
+-- PHP Version: 5.3.10-1ubuntu3.20
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   `Magic` int(11) NOT NULL,
   PRIMARY KEY (`CharacterItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `character_items`
@@ -265,7 +265,10 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (27, 45, 4, 3, 2, 0),
 (28, 45, 12, 3, 1, 0),
 (29, 45, 3, 2, 1, 0),
-(30, 45, 5, 3, 1, 0);
+(30, 45, 5, 3, 1, 0),
+(31, 45, 113, 1, 1, 0),
+(32, 45, 109, 1, 1, 0),
+(33, 45, 111, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -355,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   `ItemCost` float NOT NULL,
   `ItemId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   UNIQUE KEY `ItemId` (`ItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=121 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=160 ;
 
 --
 -- Dumping data for table `items`
@@ -481,7 +484,46 @@ INSERT INTO `items` (`ItemName`, `ItemEncumbrance`, `ItemCost`, `ItemId`) VALUES
 ('Shield, medium', 8, 12, 117),
 ('Shield, small', 5, 10, 118),
 ('Splint Armour', 40, 80, 119),
-('Studded Armour', 20, 15, 120);
+('Studded Armour', 20, 15, 120),
+('Arrows', 0.333333, 0.166667, 121),
+('Axe, battle', 7, 5, 122),
+('Axe, hand', 5, 1, 123),
+('Bolt, heavy crossbow', 0.333333, 0.333333, 124),
+('Bolt, light crossbow', 0.166667, 0.166667, 125),
+('Club', 3, 0.02, 126),
+('Dagger', 1, 2, 127),
+('Dart', 0.5, 0.2, 128),
+('Flail, heavy', 10, 3, 129),
+('Flail, light', 4, 6, 130),
+('Halberd', 18, 9, 131),
+('Hammer, war, heavy', 10, 7, 132),
+('Hammer, war, light', 5, 1, 133),
+('Javelin', 4, 0.5, 134),
+('Lance', 15, 6, 135),
+('Mace, heavy', 10, 10, 136),
+('Mace, light', 5, 4, 137),
+('Morning star', 12, 5, 138),
+('Pick, heavy', 10, 8, 139),
+('Pick, light', 4, 5, 140),
+('Pole arm', 8, 6, 141),
+('Sling bullet', 0.333333, 0.083333, 142),
+('Sling stone', 0.166667, 0, 143),
+('Spear', 5, 1, 144),
+('Staff', 5, 0, 145),
+('Sword, claymore/bastard', 10, 25, 146),
+('Sword, broad', 8, 10, 147),
+('Sword, long', 7, 15, 148),
+('Sword, scimitar', 5, 15, 149),
+('Sword, short', 3, 8, 150),
+('Sword, two-handed', 25, 30, 151),
+('Trident', 5, 4, 152),
+('Bow, long', 12, 60, 153),
+('Bow, short', 8, 15, 154),
+('Composite bow, long', 13, 100, 155),
+('Composite bow, short', 9, 75, 156),
+('Crossbow, heavy', 12, 20, 157),
+('Crossbow, light', 4, 12, 158),
+('Sling', 0.5, 0.5, 159);
 
 -- --------------------------------------------------------
 
@@ -539,8 +581,6 @@ INSERT INTO `races` (`RaceId`, `RaceName`) VALUES
 CREATE TABLE IF NOT EXISTS `weapons` (
   `WeaponId` bigint(11) NOT NULL AUTO_INCREMENT,
   `WeaponType` varchar(32) DEFAULT NULL,
-  `WeaponEncumbranceInLbs` float NOT NULL,
-  `WeaponCost` float NOT NULL,
   `ItemId` bigint(20) NOT NULL,
   PRIMARY KEY (`WeaponId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
@@ -549,46 +589,46 @@ CREATE TABLE IF NOT EXISTS `weapons` (
 -- Dumping data for table `weapons`
 --
 
-INSERT INTO `weapons` (`WeaponId`, `WeaponType`, `WeaponEncumbranceInLbs`, `WeaponCost`, `ItemId`) VALUES
-(1, 'Arrows', 0.33, 0.33, 0),
-(2, 'Axe, battle', 7, 5, 0),
-(3, 'Axe, hand', 5, 1, 0),
-(4, 'Bolt, heavy crossbow', 0.33, 0.33, 0),
-(5, 'Bolt, light crossbow', 0.17, 0.17, 0),
-(6, 'Bow, long', 12, 60, 0),
-(7, 'Bow, short', 8, 15, 0),
-(8, 'Club', 3, 0.02, 0),
-(9, 'Composite bow, long', 13, 100, 0),
-(10, 'Composite bow, short', 9, 75, 0),
-(11, 'Crossbow, heavy', 12, 20, 0),
-(12, 'Crossbow, light', 4, 12, 0),
-(13, 'Dagger', 1, 2, 0),
-(14, 'Dart', 0.5, 0.2, 0),
-(15, 'Flail, heavy', 10, 3, 0),
-(16, 'Flail, light', 4, 6, 0),
-(17, 'Halberd', 18, 9, 0),
-(18, 'Hammer, war, heavy', 10, 7, 0),
-(19, 'Hammer, war, light', 5, 1, 0),
-(20, 'Javelin', 4, 0.5, 0),
-(21, 'Lance', 15, 6, 0),
-(22, 'Mace, heavy', 10, 10, 0),
-(23, 'Mace, light', 5, 4, 0),
-(24, 'Morning Star', 12, 5, 0),
-(25, 'Pick, heavy', 10, 8, 0),
-(26, 'Pick, light', 4, 5, 0),
-(27, 'Pole arm', 8, 6, 0),
-(28, 'Sling', 0.5, 0.5, 0),
-(29, 'Sling bullet', 0.33, 0.08, 0),
-(30, 'Sling stone', 0.17, 0, 0),
-(31, 'Spear', 5, 1, 0),
-(34, 'Staff', 5, 0, 0),
-(35, 'Sword, claymore/bastard', 10, 25, 0),
-(36, 'Sword, broad', 8, 10, 0),
-(37, 'Sword, long', 7, 15, 0),
-(38, 'Sword, scimitar', 5, 15, 0),
-(39, 'Sword, short', 3, 8, 0),
-(40, 'Sword, two-handed', 25, 30, 0),
-(41, 'Trident', 5, 4, 0);
+INSERT INTO `weapons` (`WeaponId`, `WeaponType`, `ItemId`) VALUES
+(1, 'Arrows', 121),
+(2, 'Axe, battle', 122),
+(3, 'Axe, hand', 123),
+(4, 'Bolt, heavy crossbow', 124),
+(5, 'Bolt, light crossbow', 125),
+(6, 'Bow, long', 153),
+(7, 'Bow, short', 154),
+(8, 'Club', 126),
+(9, 'Composite bow, long', 155),
+(10, 'Composite bow, short', 156),
+(11, 'Crossbow, heavy', 157),
+(12, 'Crossbow, light', 158),
+(13, 'Dagger', 127),
+(14, 'Dart', 128),
+(15, 'Flail, heavy', 129),
+(16, 'Flail, light', 130),
+(17, 'Halberd', 131),
+(18, 'Hammer, war, heavy', 132),
+(19, 'Hammer, war, light', 133),
+(20, 'Javelin', 134),
+(21, 'Lance', 135),
+(22, 'Mace, heavy', 136),
+(23, 'Mace, light', 137),
+(24, 'Morning Star', 138),
+(25, 'Pick, heavy', 139),
+(26, 'Pick, light', 140),
+(27, 'Pole arm', 141),
+(28, 'Sling', 159),
+(29, 'Sling bullet', 142),
+(30, 'Sling stone', 143),
+(31, 'Spear', 144),
+(34, 'Staff', 145),
+(35, 'Sword, claymore/bastard', 146),
+(36, 'Sword, broad', 147),
+(37, 'Sword, long', 148),
+(38, 'Sword, scimitar', 149),
+(39, 'Sword, short', 150),
+(40, 'Sword, two-handed', 151),
+(41, 'Trident', 152);
 
 -- --------------------------------------------------------
 
