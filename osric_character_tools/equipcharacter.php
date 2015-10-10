@@ -67,18 +67,19 @@ $character_armour_in_use = $myOsricDb->getCharacterArmourInUse($characterId);
 $num_rows = count($character_armour_in_use);
 OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_use, $itemStatusOptions, "osric_character_armour_in_use", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
-
+echo "itemOffset:".$itemOffset;
 echo "<h3>Armour Carried:</h3>";
 $character_armour_carried = $myOsricDb->getCharacterArmourCarried($characterId);
 $num_rows = count($character_armour_carried);
 OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_carried, $itemStatusOptions, "osric_character_armour_carried", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
-
+echo "itemOffset:".$itemOffset;
 echo "<h3>Armour In Storage: </h3>";
 $character_armour_in_storage = $myOsricDb->getCharacterArmourInStorage($characterId);
 $num_rows = count($character_armour_in_storage);
 OsricHtmlHelper::makeHtmlTableCharacterArmour($character_armour_in_storage, $itemStatusOptions, "osric_character_armour_in_storage", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
+echo "itemOffset:".$itemOffset;
 echo "<hr/>\n";
 
 echo "<h3>Weapons:</h3>";
@@ -92,18 +93,19 @@ $character_weapons_in_use = $myOsricDb->getCharacterWeaponsInUse($characterId);
 $num_rows = count($character_weapons_in_use);
 OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_use, $itemStatusOptions, "osric_character_weapons_in_use", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
-
+echo "itemOffset:".$itemOffset;
 echo "<h3>Weapons Carried:</h3>\n";
 $character_weapons_carried = $myOsricDb->getCharacterWeaponsCarried($characterId);
 $num_rows = count($character_weapons_carried);
 OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_carried, $itemStatusOptions, "osric_character_weapons_carried", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
-
+echo "itemOffset:".$itemOffset;
 echo "<h3>Weapons in Storage:</h3>\n";
 $character_weapons_in_storage = $myOsricDb->getCharacterWeaponsInStorage($characterId);
 $num_rows = count($character_weapons_in_storage);
 OsricHtmlHelper::makeHtmlTableCharacterWeapons($character_weapons_in_storage, $itemStatusOptions, "osric_character_weapons_in_storage", $itemOffset);
 $itemOffset = $itemOffset + $num_rows;
+echo "itemOffset:".$itemOffset;
 echo "<hr/>\n";
 
 echo "<h3>Equipment:</h3>";

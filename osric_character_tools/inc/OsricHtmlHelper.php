@@ -118,7 +118,7 @@ class OsricHtmlHelper
 			$transferSource = $row['ItemStatusId'];
 			$index = $offset + $i;
 			echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='{$itemQuantity}' readonly='readonly'></input></td>";
-			echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][armourMagic]' value='{$itemMagic}' readonly='readonly'></input></td>";	
+			echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][itemMagic]' value='{$itemMagic}' readonly='readonly'></input></td>";	
 			echo "<td>";
 			static::html_listbox("item[{$index}][transferDestination]", $itemStatusOptions, $transferSource);
 			echo "</td>";    
@@ -136,7 +136,6 @@ class OsricHtmlHelper
 		$num_rows = count($character_weapons);
 		echo "<table id='{$tableId}'>\n";
 		echo "<tr><td>Weapon Type</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Magic</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";
-		$offset = 0;
 		for($i=0;$i<$num_rows;$i++)
 		{
 			$row = $character_weapons[$i];
