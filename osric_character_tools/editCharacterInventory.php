@@ -13,7 +13,7 @@ $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 
-$armourRows = $_POST['armour'];
+/*$armourRows = $_POST['armour'];
 foreach($armourRows as $armourRow)
 {
     if($armourRow['transferQuantity'] > 0)
@@ -21,12 +21,13 @@ foreach($armourRows as $armourRow)
         $result = osricdb_transferCharacterArmour($cxn, $characterId, $armourRow);
     }
 }
+*/
 /*Delete any armour rows whose quantity is now zero*/
-osricdb_removeZeroQuantityArmourRows($cxn);
+//osricdb_removeZeroQuantityArmourRows($cxn);
 /*Delete any armour rows whose equipment status is now discarded*/
-osricdb_removeDiscardedArmourRows($cxn);
+//osricdb_removeDiscardedArmourRows($cxn);
 
-
+/*
 $weaponRows = $_POST['weapon'];
 foreach($weaponRows as $weaponRow)
 {
@@ -35,10 +36,11 @@ foreach($weaponRows as $weaponRow)
         $result = osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow);
     }
 }
+*/
 /*Delete any weapon rows whose quantity is now zero*/
-osricdb_removeZeroQuantityWeaponRows($cxn);
+//osricdb_removeZeroQuantityWeaponRows($cxn);
 /*Delete any weapon rows whose equipment status is now discarded*/
-osricdb_removeDiscardedWeaponRows($cxn);
+//osricdb_removeDiscardedWeaponRows($cxn);
 
 $coinRows = $_POST['coin'];
 /*First update quantities for all rows before transferring quantities between storage, carried or discarded.  Otherwise the updated quantity

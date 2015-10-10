@@ -385,7 +385,7 @@ class OsricDb
 
 	private function getCharacterWeaponsByStatus($characterId, $itemStatus)
 	{
-		$query = sprintf("SELECT * FROM character_items ci INNER JOIN weapons w ON ci.ItemId = w.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatus);
+		$query = sprintf("SELECT i.ItemName,i.ItemEncumbrance,i.ItemCost,ci.Quantity,ci.Magic,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN weapons w ON ci.ItemId = w.ItemId INNER JOIN items i ON w.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatus);
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute getCharacterWeaponsByStatus query.");
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
@@ -432,7 +432,7 @@ class OsricDb
 	
 	private function getCharacterArmourByStatus($characterId, $itemStatus)
 	{
-		$query = sprintf("SELECT * FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId WHERE ci.CharacterId = $characterId AND ci.itemStatusId = '%s'",$itemStatus);
+		$query = sprintf("SELECT i.ItemName,a.ArmourEffectOnArmourClass,i.ItemEncumbrance,a.ArmourMovementRate,i.ItemCost,ci.Quantity,ci.Magic,ci.ItemStatusId,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId INNER JOIN items i ON i.ItemId = a.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatus);
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
