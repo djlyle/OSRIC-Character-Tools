@@ -18,6 +18,7 @@ foreach($itemRows as $itemRow)
 {
 		$itemId = $itemRow['itemId'];
 		$quantityToAdd = $itemRow['quantity'];
+		//TODO: this doesn't seem to work yet for weapons and armour
 		$myOsricDb->addToCharacterItems($characterId,$itemId,$quantityToAdd);
 }
 
@@ -31,12 +32,13 @@ $characterName = $character['CharacterName'];
 <?php 
 	echo "{$characterName}'s Inventory Updated.";
 	$totalCost = 0;
+	echo "Items to add:";
+	echo "<br/>";
+		
 	foreach($itemRows as $itemRow)
 	{
 		$itemId = $itemRow['itemId'];
 		$quantityToAdd = $itemRow['quantity'];
-		echo "Items to add:";
-		echo "<br/>";
 		if($quantityToAdd > 0)
 		{
 			$quantityToAdd = $itemRow['quantity'];
@@ -50,7 +52,7 @@ $characterName = $character['CharacterName'];
 			echo "Quantity: '{$quantityToAdd}'";
 			echo "<br/>";
 			echo "Total cost: '{$itemTotalCost}'}";
-			echo "<br/>";
+			echo "<br/><br/>";
 		}	
 	}
 	echo "Purchasing all the items will cost this character '{$totalCost}' gold coins"; 
