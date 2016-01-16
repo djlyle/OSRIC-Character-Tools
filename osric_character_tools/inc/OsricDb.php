@@ -492,13 +492,13 @@ class OsricDb
 	{
 		if($itemId != -1)
 		{
-		/*Check if item is already in character's inventory.  If it is
-			then get the count of that item in the character's inventory and
+		/*Check if item is already in character's in storage inventory).  If it is
+			then get the count of that item in the character's in storage inventory and
 			update it to be the sum of the value submitted to the existing
 			number.  If it isn't yet in the character's inventory then
 			insert it as a new row in the character's inventory.*/ 
-			$query = "SELECT * FROM character_items ci WHERE ci.CharacterId = '{$characterId}' AND ci.ItemId = '{$itemId}'";
-			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+			$query = "SELECT * FROM character_items ci WHERE ci.CharacterId = '{$characterId}' AND ci.ItemId = '{$itemId}' AND ci.ItemStatusId='1'";
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.".$query);
 			$row = mysqli_fetch_assoc($result);
 			if($row)
 			{
@@ -506,8 +506,8 @@ class OsricDb
 				$count = $row['Quantity'] + $quantityToAdd;
 				if($count > 0)
 				{
-					$query = "UPDATE character_items SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ItemId = '{$itemId}'";
-					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
+					$query = "UPDATE character_items SET Quantity = '{$count}' WHERE CharacterId = '{$characterId}' AND ItemId = '{$itemId}' AND ItemStatusId='1'";
+					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.".$query);
 				}
 			}
 			else
@@ -516,7 +516,7 @@ class OsricDb
 				$count = $quantityToAdd;
 				if($count > 0)
 				{
-					$query = "INSERT INTO character_items (`CharacterId`, `ItemId`, `Quantity`) VALUES ('{$characterId}', '{$itemId}', '{$count}')"; 
+					$query = "INSERT INTO character_items (`CharacterId`, `ItemId`, `Quantity`,`ItemStatusId`) VALUES ('{$characterId}', '{$itemId}', '{$count}','1')"; 
 					$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");	
 				}
 			}
