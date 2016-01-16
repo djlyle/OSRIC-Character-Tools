@@ -203,66 +203,15 @@ function osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow)
              
 }
 
-function osricdb_transferCharacterItems($cxn, $characterId, $itemRow)
-{
-    $transferQuantity = min($itemRow['transferQuantity'],$itemRow['quantity']);
-    $transferDestination = $itemRow['transferDestination'];
-    $transferSource = $itemRow['transferSource'];
-    
-    if($transferDestination == $transferSource)
-    {/*Don't transfer coins if source and destination are the same*/
-        return;
-    }
-
-    $itemId = $itemRow['itemId'];
-    $query = "START TRANSACTION";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query:".$query);    
-    
-    $query = "SELECT * FROM character_items WHERE CharacterId = $characterId AND ItemId = $itemId AND ItemStatusId = $transferDestination";     
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-    $row = mysqli_fetch_assoc($result);
-	if($row)
-	{
-            /*row found  Update it's count to be its existing count plus the count just added.*/
-			$count = $row['Quantity'] + $transferQuantity;
-            if($count > 0)
-			{
-				$query = "UPDATE character_items SET Quantity = $count WHERE CharacterId = $characterId AND ItemId = $itemId AND ItemStatusId = $transferDestination";
-                $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-			}
-	}
-	else
-	{
-        /*row not found in existing character's items inventory.  Insert it as a new row in the character's items inventory.*/
-		$count = $transferQuantity;
-		if($count > 0)
-		{
-			$query = "INSERT INTO character_items (`CharacterId`, `ItemId`, `Quantity`, `ItemStatusId`) VALUES ('{$characterId}', '{$itemId}', '{$count}', '{$transferDestination}')"; 
-			$result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);	
-		}
-	}
-   
-    /*Subtract quantity transferred to destination from the transfer source*/ 
-    $characterItemId = $itemRow['characterItemId'];
-    $updatedSourceQuantity = max(0,$itemRow['quantity'] - $itemRow['transferQuantity']);
-    
-    $query = "UPDATE character_items SET Quantity = $updatedSourceQuantity WHERE CharacterItemId = $characterItemId";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-    
-    /*End transaction*/
-    $query = "COMMIT";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
-}
-
-function osricdb_removeZeroQuantityItemRows($cxn)
+function removeZeroQuantityItemRows($cxn)
 {
     $query = "DELETE FROM character_items WHERE Quantity = 0";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);        
 }
 
-function osricdb_removeDiscardedItemRows($cxn)
+function removeDiscardedItemRows($cxn)
 {
-    $query = "DELETE FROM character_items WHERE ItemStatusId = 3";
+    $query = "DELETE FROM character_items WHERE ItemStatusId = 4";
     $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
 }
 

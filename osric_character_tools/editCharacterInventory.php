@@ -67,13 +67,13 @@ foreach($itemRows as $itemRow)
 {
     if($itemRow['transferQuantity'] > 0)
     {
-        $result = osricdb_transferCharacterItems($cxn, $characterId, $itemRow);
+        $result = $myOsricDb->transferCharacterItems($characterId, $itemRow);
     }
 }
 /*Delete any item rows whose quantity is now zero*/
-osricdb_removeZeroQuantityItemRows($cxn);
+$myOsricDb->removeZeroQuantityItemRows();
 /*Delete any item rows whose item status is now discarded*/
-osricdb_removeDiscardedItemRows($cxn);
+$myOsricDb->removeDiscardedItemRows();
 
 
 ?>
