@@ -88,7 +88,7 @@ echo "Updating {$characterName}'s inventory";
 <body>
 <?php
 echo "<p>{$characterName}'s inventory has been updated.</p>";
-echo "<a href=\"equipcharacter.php?CharacterId={$characterId}\">Return to character's inventory.</a>";
+echo "<a href=\"characterinventory.php?CharacterId={$characterId}\">Return to character's inventory.</a>";
 ?>
 </body>
 </head>

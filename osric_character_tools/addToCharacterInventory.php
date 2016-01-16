@@ -30,8 +30,33 @@ $characterName = $character['CharacterName'];
 <body>
 <?php 
 	echo "{$characterName}'s Inventory Updated.";
+	$totalCost = 0;
+	foreach($itemRows as $itemRow)
+	{
+		$itemId = $itemRow['itemId'];
+		$quantityToAdd = $itemRow['quantity'];
+		echo "Items to add:";
+		echo "<br/>";
+		if($quantityToAdd > 0)
+		{
+			$quantityToAdd = $itemRow['quantity'];
+			echo "Item id: '{$itemId}'";
+			echo "<br/>";
+			$cost = $myOsricDb->getItemCost($itemId);
+			echo "Cost: '{$cost}'";
+			echo "<br/>";
+			$itemTotalCost = $cost * $quantityToAdd;
+			$totalCost = $totalCost + $itemTotalCost;
+			echo "Quantity: '{$quantityToAdd}'";
+			echo "<br/>";
+			echo "Total cost: '{$itemTotalCost}'}";
+			echo "<br/>";
+		}	
+	}
+	echo "Purchasing all the items will cost this character '{$totalCost}' gold coins"; 
+		
 	echo "<br/><br/>";
-	echo "<a href='equipcharacter.php?CharacterId={$characterId}'>Return to character's equipment list</a>";
+	echo "<a href='characterinventory.php?CharacterId={$characterId}'>Return to character's inventory</a>";
 ?>
 </body>
 </html>

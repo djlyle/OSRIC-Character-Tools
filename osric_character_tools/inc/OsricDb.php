@@ -472,6 +472,14 @@ class OsricDb
 		return $result_set;
 	}
 	
+	public function getItemCost($itemId)
+	{
+		$query = "SELECT * FROM items WHERE ItemId = '{$itemId}'";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row['ItemCost'];		
+	}
+	
 	public function getWeapons()
 	{
 		$query = "SELECT * FROM weapons";

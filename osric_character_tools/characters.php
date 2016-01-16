@@ -22,7 +22,7 @@ $genderArray = array("Unknown","Male","Female");
 /*Display results in table*/
 $characters = $myOsricDb->getCharacters();
 echo "<table id='osric_characters'>";
-echo "<tr><td>Name</td><td>Traits</td><td>Classes</td><td>Status</td><td>Abilities</td><td>Equip</td><td>Treasure</td><td>Character Sheet</td><td>Delete</td></tr>";
+echo "<tr><td>Name</td><td>Traits</td><td>Classes</td><td>Status</td><td>Abilities</td><td>Inventory</td><td>Outfit</td><td>Treasure</td><td>Character Sheet</td><td>Delete</td></tr>";
 foreach($characters as $character)
 {
 	$characterId = $character['CharacterId'];
@@ -32,7 +32,8 @@ foreach($characters as $character)
 	echo "<td><a href='editcharacterclasses.php?CharacterId={$characterId}'>Edit Classes</a></td>";
 	echo "<td><a href='editcharacterstatus.php?CharacterId={$characterId}'>Edit Status</a></td>";
 	echo "<td><a href='editcharacterabilities.php?CharacterId={$characterId}'>Edit Abilities</a></td>";
-	echo "<td><a href='equipcharacter.php?CharacterId={$characterId}'>Equip Character</a></td>";
+	echo "<td><a href='characterinventory.php?CharacterId={$characterId}'>Character Inventory</a></td>";
+	echo "<td><a href='selectequipment.php?CharacterId={$characterId}'>Outfit Character</td>";
 	echo "<td><a href='awardtreasureandxp.php?CharacterId={$characterId}'>Treasure</td>";	
 	echo "<td><a href='charactersheet.php?CharacterId={$characterId}'>Character Sheet</td>";
 	echo "<td><a href='deletecharacter.php?CharacterId={$characterId}'>Delete Character</a></td>";
