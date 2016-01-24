@@ -487,6 +487,14 @@ class OsricDb
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
 	}
+	
+	public function getWeapon($itemId)
+	{
+		$query = "SELECT * FROM weapons WHERE ItemId = $itemId";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row;
+	}
 
 	public function addToCharacterItems($characterId,$itemId,$quantityToAdd)
 	{

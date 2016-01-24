@@ -74,7 +74,9 @@ $num_rows = count($character_weapons_in_use);
 for($i=0;$i<$num_rows;$i++)
 {
     $row = $character_weapons_in_use[$i];
-    $weaponId = $row['WeaponId'];
+    $itemId = $row['ItemId'];
+    $weapon = $myOsricDb->getWeapon($itemId);
+    $weaponId = $weapon['WeaponId'];
     $weaponAsMelee = $myOsricDb->getWeaponAsMelee($weaponId);
     $weaponAsMeleeDmgVsSmallToMedium = Osric::getWeaponDmgVsSmallToMedium($weaponAsMelee);
     $weaponAsMeleeDmgVsLarge = Osric::getWeaponDmgVsLarge($weaponAsMelee);
@@ -90,7 +92,7 @@ for($i=0;$i<$num_rows;$i++)
         $rangeInFt = $weaponAsMissile['RangeInFt'];
     }    
     
-    echo "<tr><td>{$row['WeaponType']}({$row['Quantity']})</td><td>{$weaponAsMeleeDmgVsSmallToMedium}</td><td>{$weaponAsMeleeDmgVsLarge}</td><td>{$weaponAsMissileDmgVsSmallToMedium}</td><td>{$weaponAsMissileDmgVsLarge}</td><td>{$rateOfFire}</td><td>{$rangeInFt}</td></tr>";
+    echo "<tr><td>{$row['ItemName']}({$row['Quantity']})</td><td>{$weaponAsMeleeDmgVsSmallToMedium}</td><td>{$weaponAsMeleeDmgVsLarge}</td><td>{$weaponAsMissileDmgVsSmallToMedium}</td><td>{$weaponAsMissileDmgVsLarge}</td><td>{$rateOfFire}</td><td>{$rangeInFt}</td></tr>";
 }
 echo "</table>\n";
 
@@ -105,7 +107,7 @@ for($i=0;$i<$num_rows;$i++)
     {
         echo "|";
     }
-    echo "{$row['WeaponType']}";
+    echo "{$row['ItemName']}";
     echo "({$row['Quantity']})";
 }
 echo "</div>\n";
@@ -121,7 +123,7 @@ for($i=0;$i<$num_rows;$i++)
     {
         echo "|";
     }
-    echo "{$row['WeaponType']}";
+    echo "{$row['ItemName']}";
 	echo "({$row['Quantity']})";
 }	
 echo "</div>\n";
@@ -134,7 +136,7 @@ $num_rows = count($character_armour_worn);
 for($i=0;$i<$num_rows;$i++)
 {
 	$row = $character_armour_worn[$i];
-	echo "<tr><td>{$row['ArmourType']} ({$row['Quantity']})</td><td>{$row['ArmourEffectOnArmourClass']}</td></tr>\n";		
+	echo "<tr><td>{$row['ItemName']} ({$row['Quantity']})</td><td>{$row['ArmourEffectOnArmourClass']}</td></tr>\n";		
 }
 
 echo "</table>\n";
@@ -150,7 +152,7 @@ for($i=0;$i<$num_rows;$i++)
     {
         echo "|";
     }    
-	echo "{$row['ArmourType']}";
+	echo "{$row['ItemName']}";
 	echo "({$row['Quantity']})";
 }	
 echo "</div>\n";
@@ -166,7 +168,7 @@ for($i=0;$i<$num_rows;$i++)
     {
         echo "|";
     }    
-	echo "{$row['ArmourType']}";
+	echo "{$row['ItemName']}";
 	echo "({$row['Quantity']})";
 }
 echo "</div>\n";
