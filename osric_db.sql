@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 10, 2015 at 02:34 PM
--- Server version: 5.5.44
--- PHP Version: 5.3.10-1ubuntu3.20
+-- Generation Time: Jan 23, 2016 at 09:05 PM
+-- Server version: 5.5.46
+-- PHP Version: 5.3.10-1ubuntu3.21
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -123,16 +123,17 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
 
 --
 -- Dumping data for table `characters`
 --
 
 INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `CharacterHeight`, `CharacterWeight`, `CharacterId`, `CharacterAlignment`, `RaceId`) VALUES
-('Roland1', 1, 77, 68, 143, 45, 0, 0),
+('Roland1', 1, 77, 68, 143, 45, 0, 2),
 ('R2', 2, 22, 59, 130, 46, 0, 1),
-('Mr. Generic', 1, 43, 65, 140, 67, 0, 0);
+('Mr. Generic', 1, 43, 65, 140, 67, 0, 0),
+('Noobe', 0, 0, 0, 0, 114, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -151,8 +152,8 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
-(45, 1, 18),
-(45, 2, 13),
+(45, 1, 20),
+(45, 2, 14),
 (45, 3, 18),
 (45, 4, 18),
 (45, 5, 16),
@@ -168,7 +169,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (67, 3, 3),
 (67, 4, 4),
 (67, 5, 6),
-(67, 6, 8);
+(67, 6, 8),
+(114, 1, 0),
+(114, 2, 0),
+(114, 3, 0),
+(114, 4, 0),
+(114, 5, 0),
+(114, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -187,10 +194,11 @@ CREATE TABLE IF NOT EXISTS `character_classes` (
 
 INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (46, 5),
-(45, 4),
-(45, 9),
 (67, 4),
-(67, 6);
+(67, 6),
+(45, 3),
+(45, 4),
+(45, 9);
 
 -- --------------------------------------------------------
 
@@ -205,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
   `Quantity` int(11) NOT NULL,
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterCoinId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=734 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1246 ;
 
 --
 -- Dumping data for table `character_coins`
@@ -220,18 +228,19 @@ INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quan
 (8, 46, 3, 4, 1),
 (9, 46, 4, 5, 1),
 (10, 46, 5, 22, 1),
-(44, 45, 1, 20500, 2),
+(44, 45, 1, 20409, 2),
 (45, 46, 1, 2, 2),
 (46, 45, 3, 3064, 2),
 (48, 45, 4, 28, 2),
-(49, 45, 5, 2, 2),
-(622, 45, 2, 30146, 2),
+(49, 45, 5, 5, 2),
+(622, 45, 2, 30155, 2),
 (623, 45, 2, 20000, 1),
-(729, 67, 1, 0, 1),
-(730, 67, 2, 0, 1),
-(731, 67, 3, 0, 1),
-(732, 67, 4, 0, 1),
-(733, 67, 5, 0, 1);
+(990, 45, 1, 100, 4),
+(1241, 114, 1, 1, 1),
+(1242, 114, 2, 1, 1),
+(1243, 114, 3, 1, 1),
+(1244, 114, 4, 2, 1),
+(1245, 114, 5, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -247,28 +256,58 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   `Magic` int(11) NOT NULL,
   PRIMARY KEY (`CharacterItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=125 ;
 
 --
 -- Dumping data for table `character_items`
 --
 
 INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quantity`, `ItemStatusId`, `Magic`) VALUES
-(1, 45, 1, 15, 1, 0),
-(2, 45, 7, 41, 1, 0),
-(3, 45, 9, 6, 1, 0),
+(2, 45, 7, 44, 1, 0),
+(3, 45, 9, 11, 1, 0),
 (4, 46, 1, 1, 1, 0),
 (5, 46, 9, 1, 1, 0),
 (6, 46, 12, 1, 1, 0),
-(25, 45, 1, 15, 2, 0),
 (26, 45, 4, 3, 1, 0),
-(27, 45, 4, 3, 2, 0),
 (28, 45, 12, 3, 1, 0),
-(29, 45, 3, 2, 1, 0),
-(30, 45, 5, 3, 1, 0),
-(31, 45, 113, 1, 1, 0),
-(32, 45, 109, 1, 1, 0),
-(33, 45, 111, 2, 1, 0);
+(29, 45, 3, 10, 1, 0),
+(30, 45, 5, 7, 1, 0),
+(44, 45, 159, 1, 1, 0),
+(49, 45, 159, 1, 2, 0),
+(51, 45, 19, 8, 1, 0),
+(52, 45, 17, 3, 1, 0),
+(54, 45, 145, 3, 1, 0),
+(55, 45, 153, 4, 1, 0),
+(57, 45, 155, 7, 1, 0),
+(73, 45, 127, 1, 1, 0),
+(75, 45, 135, 1, 1, 0),
+(76, 45, 137, 1, 1, 0),
+(83, 114, 1, 1, 1, 0),
+(84, 114, 3, 2, 1, 0),
+(85, 114, 5, 3, 1, 0),
+(86, 114, 111, 3, 1, 0),
+(87, 114, 113, 4, 1, 0),
+(88, 114, 115, 3, 1, 0),
+(89, 114, 131, 1, 1, 0),
+(90, 114, 133, 2, 1, 0),
+(91, 114, 135, 2, 1, 0),
+(92, 114, 151, 1, 1, 0),
+(93, 114, 157, 1, 1, 0),
+(94, 114, 111, 6, 2, 0),
+(95, 45, 1, 83, 1, 0),
+(96, 45, 115, 1, 1, 0),
+(97, 45, 141, 30, 1, 0),
+(102, 45, 149, 1, 2, 0),
+(111, 45, 115, 5, 2, 0),
+(115, 45, 153, 1, 3, 0),
+(116, 45, 129, 1, 3, 0),
+(117, 45, 135, 2, 2, 0),
+(118, 45, 127, 2, 2, 0),
+(119, 45, 141, 2, 3, 0),
+(121, 45, 115, 2, 3, 0),
+(122, 114, 11, 34, 1, 0),
+(123, 114, 131, 1, 3, 0),
+(124, 114, 135, 1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -289,9 +328,10 @@ CREATE TABLE IF NOT EXISTS `character_status` (
 --
 
 INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmourClass`, `CharacterStatusExperiencePoints`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
-(45, 4, 72, 16, 11),
+(45, 3, 186, 16, 11),
 (46, 4, 2, 3, 1),
-(67, 0, 12, 0, 0);
+(67, 0, 12, 0, 0),
+(114, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
