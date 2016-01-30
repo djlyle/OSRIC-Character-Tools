@@ -3,8 +3,6 @@
  *Desc: Edits character's existing inventory
  */
 include_once("./inc/misc.inc");
-include_once("./inc/charactertblfuncs.inc");
-include_once("./inc/characterInventory.inc");
 require_once("./inc/OsricDb.php");
 $characterId = $_REQUEST['CharacterId'];
 $cxn = mysqli_connect($host,$user,$passwd,$dbname) or die("Couldn't connect to server");
@@ -12,35 +10,6 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
-
-/*$armourRows = $_POST['armour'];
-foreach($armourRows as $armourRow)
-{
-    if($armourRow['transferQuantity'] > 0)
-    {
-        $result = osricdb_transferCharacterArmour($cxn, $characterId, $armourRow);
-    }
-}
-*/
-/*Delete any armour rows whose quantity is now zero*/
-//osricdb_removeZeroQuantityArmourRows($cxn);
-/*Delete any armour rows whose equipment status is now discarded*/
-//osricdb_removeDiscardedArmourRows($cxn);
-
-/*
-$weaponRows = $_POST['weapon'];
-foreach($weaponRows as $weaponRow)
-{
-    if($weaponRow['transferQuantity'] > 0)
-    {
-        $result = osricdb_transferCharacterWeapons($cxn, $characterId, $weaponRow);
-    }
-}
-*/
-/*Delete any weapon rows whose quantity is now zero*/
-//osricdb_removeZeroQuantityWeaponRows($cxn);
-/*Delete any weapon rows whose equipment status is now discarded*/
-//osricdb_removeDiscardedWeaponRows($cxn);
 
 $coinRows = $_POST['coin'];
 /*First update quantities for all rows before transferring quantities between storage, carried or discarded.  Otherwise the updated quantity
@@ -58,9 +27,9 @@ foreach($coinRows as $coinRow)
     }
 }
 /*Delete any coin rows whose quantity is now zero*/
-osricdb_removeZeroQuantityCoinRows($cxn);
+$myOsricDb->removeZeroQuantityCoinRows();
 /*Delete any coin rows whose equipment status is now discarded*/
-osricdb_removeDiscardedCoinRows($cxn);
+$myOsricDb->removeDiscardedCoinRows();
 
 $itemRows = $_POST['item'];
 foreach($itemRows as $itemRow)

@@ -352,6 +352,11 @@ class OsricDb
 		return $this->getCharacterCoinsByStatus($characterId,"2");
 	}
 	
+	public function getCharacterCoinsInUse($characterId)
+	{
+		return $this->getCharacterCoinsByStatus($characterId,"3");
+	}
+	
 	public function getCharacterCoins($characterId)
 	{
 		$query = "SELECT cc.CharacterId,cc.CoinId,cc.Quantity FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId ORDER BY cc.CoinId";
@@ -362,7 +367,7 @@ class OsricDb
 	
 	private function getCharacterCoinsByStatus($characterId,$itemStatusId)
 	{
-		$query = sprintf("SELECT * FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId AND cc.ItemStatusId = '%s'",$itemStatusId);
+		$query = "SELECT * FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = $characterId AND cc.ItemStatusId = $itemStatusId";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
@@ -385,10 +390,15 @@ class OsricDb
 
 	private function getCharacterWeaponsByStatus($characterId, $itemStatus)
 	{
-		$query = sprintf("SELECT i.ItemName,i.ItemEncumbrance,i.ItemCost,ci.Quantity,ci.Magic,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN weapons w ON ci.ItemId = w.ItemId INNER JOIN items i ON w.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatus);
-		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute getCharacterWeaponsByStatus query.");
+		return $this->getCharacterItemTypeByStatus($characterId, "2", $itemStatus);
+	}
+	
+	private function getCharacterItemTypeByStatus($characterId, $itemType, $itemStatus)
+	{
+		$query = "SELECT i.ItemName,i.ItemEncumbrance,i.ItemCost,ci.Quantity,ci.Magic,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND i.ItemType = $itemType AND ci.ItemStatusId = $itemStatus";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
-		return $result_set;
+		return $result_set;	
 	}
 
 	public function getCharacterBaseArmourClass($characterId)	
@@ -432,10 +442,15 @@ class OsricDb
 	
 	private function getCharacterArmourByStatus($characterId, $itemStatus)
 	{
-		$query = sprintf("SELECT i.ItemName,a.ArmourEffectOnArmourClass,i.ItemEncumbrance,a.ArmourMovementRate,i.ItemCost,ci.Quantity,ci.Magic,ci.ItemStatusId,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId INNER JOIN items i ON i.ItemId = a.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatus);
+		$query = "SELECT i.ItemName,a.ArmourEffectOnArmourClass,i.ItemEncumbrance,a.ArmourMovementRate,i.ItemCost,ci.Quantity,ci.Magic,ci.ItemStatusId,ci.CharacterItemId,i.ItemId FROM character_items ci INNER JOIN armour a ON ci.ItemId = a.ItemId INNER JOIN items i ON i.ItemId = a.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = $itemStatus";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
+	}
+	
+	public function getCharacterItemsInUse($characterId)
+	{
+		return $this->getCharacterItemsByStatus($characterId,"3");
 	}
 	
 	public function getCharacterItemsCarried($characterId)
@@ -450,7 +465,7 @@ class OsricDb
 
 	private function getCharacterItemsByStatus($characterId,$itemStatusId)
 	{
-		$query = sprintf("SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND ci.ItemStatusId = '%s'",$itemStatusId);
+		$query = "SELECT * FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = $characterId AND i.ItemType = '0' AND ci.ItemStatusId = $itemStatusId";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
@@ -688,6 +703,18 @@ class OsricDb
 	function removeDiscardedItemRows()
 	{
 		$query = "DELETE FROM character_items WHERE ItemStatusId = 4";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+	}
+	
+	function removeZeroQuantityCoinRows()
+	{
+   	$query = "DELETE FROM character_coins WHERE Quantity = 0";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+	}
+	
+	function removeDiscardedCoinRows()
+	{
+		$query = "DELETE FROM character_coins WHERE ItemStatusId = 4";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 	}
 	

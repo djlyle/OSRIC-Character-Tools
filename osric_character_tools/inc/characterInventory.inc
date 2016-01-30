@@ -230,20 +230,20 @@ function osricdb_removeDiscardedWeaponRows($cxn)
 
 function osricdb_removeZeroQuantityArmourRows($cxn)
 {
-    $query = "DELETE FROM character_armour WHERE Quantity = 0";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);        
+	 $query = "DELETE FROM character_armour WHERE Quantity = 0";
+    $result = mysqli_query($cxn,$query);        
 }
 
 function osricdb_removeDiscardedArmourRows($cxn)
 {
     $query = "DELETE FROM character_armour WHERE EquipmentStatusId = 4";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    $result = mysqli_query($cxn,$query);
 }
 
 function osricdb_removeZeroQuantityCoinRows($cxn)
 {
     $query = "DELETE FROM character_coins WHERE Quantity = 0";
-    $result = mysqli_query($cxn,$query) or die("Couldn't execute query: ".$query);
+    $result = mysqli_query($cxn,$query);
 }
 
 function osricdb_removeDiscardedCoinRows($cxn)

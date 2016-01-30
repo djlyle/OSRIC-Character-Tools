@@ -43,6 +43,14 @@ $itemStatusOptions = $myOsricDb->getItemStatusOptions();
 //in the rows of the html table in question.
 $postArrayIndexOffset = 0;
 
+$character_coins_in_use = $myOsricDb->getCharacterCoinsInUse($characterId);
+$num_rows = count($character_coins_in_use);
+if($num_rows > 0){
+	echo "<h3>Coins in use:</h3>\n";
+	OsricHtmlHelper::makeHtmlTableCharacterCoins($character_coins_in_use, $itemStatusOptions, "osric_character_coins_in_use",$postArrayIndexOffset);
+	$postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
+}
+
 echo "<h3>Coins carried:</h3>\n";
 $character_coins_carried = $myOsricDb->getCharacterCoinsCarried($characterId);
 $num_rows = count($character_coins_carried);
@@ -109,6 +117,14 @@ echo "<hr/>\n";
 echo "<h3>Equipment:</h3>";
 echo "<p>To transfer a quantity of equipment items in a row from one employment to another (e.g. from in storage to being carried), modify the Transfer Destination field of the row in question and enter a non-zero Transfer Quantity. Then click the \"submit equipment\" button to submit the transfer and commit it to the database.</p>\n";
 echo "<br/>";
+
+$character_items_in_use = $myOsricDb->getCharacterItemsInUse($characterId);
+$num_rows = count($character_items_in_use);
+if($num_rows > 0){
+	echo "<h3>Equipment In Use:</h3>\n";
+	OsricHtmlHelper::makeHtmlTableCharacterEquipment($character_items_in_use, $itemStatusOptions, "osric_character_items_in_use", $itemOffset);
+	$itemOffset = $itemOffset + $num_rows;
+}
 
 echo "<h3>Equipment Carried:</h3>\n";
 $character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
