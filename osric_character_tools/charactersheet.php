@@ -5,7 +5,7 @@
 $characterId = $_GET['CharacterId'];
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
-include_once(dirname(__FILE__)."/inc/characterInventory.inc");
+//include_once(dirname(__FILE__)."/inc/characterInventory.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 require_once(dirname(__FILE__)."/inc/Osric.php");
 
