@@ -314,12 +314,28 @@ class OsricDb
 		}	
 	}
 	
+	public function getTotalEncumbranceItemsCarried($characterId)
+	{
+		$query = "SELECT SUM(e.TotalItemEncumbrance) AS TotalEncumbrance FROM (SELECT (i.ItemEncumbrance * ci.Quantity) AS TotalItemEncumbrance FROM character_items ci INNER JOIN items i ON ci.ItemId = i.ItemId WHERE ci.CharacterId = '{$characterId}') AS e";
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row['TotalEncumbrance'];
+	}	
+
+	public function getTotalEncumbranceCoinsCarried($characterId)	
+	{
+		$query = "SELECT SUM(e.TotalCoinEncumbrance) AS TotalEncumbrance FROM (SELECT (c.CoinEncumbranceInLbs * cc.Quantity) AS TotalCoinEncumbrance FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = '{$characterId}') AS e"; 
+    	$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+    	$row = mysqli_fetch_assoc($result);
+    	return $row['TotalEncumbrance'];
+	}
+	
 	public function getTotalEncumbranceOnPerson($characterId)
 	{
-    $totalEncumbranceItemsCarried = osricdb_getTotalEncumbranceItemsCarried($this->cxn,$characterId);
-    $totalEncumbranceCoinsCarried = osricdb_getTotalEncumbranceCoinsCarried($this->cxn,$characterId);
-    $totalEncumbranceOnPerson = $totalEncumbranceItemsCarried + $totalEncumbranceCoinsCarried;
-    return $totalEncumbranceOnPerson;
+		$totalEncumbranceItemsCarried = $this->getTotalEncumbranceItemsCarried($characterId);
+		$totalEncumbranceCoinsCarried = $this->getTotalEncumbranceCoinsCarried($characterId);
+		$totalEncumbranceOnPerson = $totalEncumbranceItemsCarried + $totalEncumbranceCoinsCarried;
+		return $totalEncumbranceOnPerson;
 	}
 	
 	public function getItemStatusOptions()
