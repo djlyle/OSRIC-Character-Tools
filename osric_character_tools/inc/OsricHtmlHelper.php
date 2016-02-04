@@ -172,7 +172,6 @@ class OsricHtmlHelper
 	
 	public static function makeHtmlTableCharacterEquipment($character_items, $itemStatusOptions, $tableId, $offset)
 	{
-		
 		$num_rows = count($character_items);
 		echo "<table id='{$tableId}'>\n";
 		echo "<tr><td>Item Name</td><td>Encumbrance (lbs)</td><td>Cost (gp)</td><td>Quantity</td><td>Transfer Destination</td><td>Transfer Quantity</td></tr>";		
@@ -210,6 +209,28 @@ class OsricHtmlHelper
 		echo "</table>\n";
 	}
 	
+	public static function makeHtmlTableItemsToPurchase($items, $tableId, $offset)
+	{
+		$num_rows = count($items);
+
+		echo "<table id='{$tableId}'>\n";
+		echo "<tr><td>Item Name</td><td>Encumbrance (gp)</td><td>Cost (gp)</td><td>Quantity</td></tr>\n";
+
+		for($i=0;$i<$num_rows;$i++)
+		{
+			$row = $items[$i];
+			$index = $offset + $i;
+			echo "<tr>";
+			echo "<td>{$row['ItemName']}</td>";
+			echo "<td>{$row['ItemEncumbrance']}</td>";
+			echo "<td>{$row['ItemCost']}</td>";
+			$itemId = $row['ItemId'];
+			echo "<td><input type='number' min='0' max='9999999' name='item[{$index}][quantity]' value='0'></input></td>";
+			echo "<td class='clsDisplayNone'><input type='hidden' name='item[{$index}][itemId]' value='{$itemId}'></input></td>";
+			echo "</tr>\n";
+		}
+		echo "</table>\n";
+	}
 }
 
 ?>

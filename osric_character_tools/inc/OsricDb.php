@@ -503,6 +503,14 @@ class OsricDb
 		return $result_set;
 	}
 	
+	public function getItemsByItemType($itemType)
+	{
+		$query = sprintf("SELECT * FROM items WHERE ItemType = '%s'",$itemType);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
 	public function getItemCost($itemId)
 	{
 		$query = "SELECT * FROM items WHERE ItemId = '{$itemId}'";

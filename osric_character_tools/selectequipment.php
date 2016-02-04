@@ -6,6 +6,7 @@ Copyright: June 17,2015
 */
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_REQUEST['CharacterId'];
@@ -21,29 +22,34 @@ $characterName = $character['CharacterName'];
 <body>
 <form action="addToCharacterInventory.php" method="POST">
 <?php
-
-echo "<h3>Equipment to add to {$characterName}'s inventory:</h3>";
+echo "<h3>{$characterName}</h3>\n";
+echo "<br/>";
+echo "<a href='characters.php'>Return to list of characters</a>\n";
+echo "<p>Select items to purchase and add to your inventory.</p>";
+echo "<p>Press the submit button below when ready to finalize any changes.</p>";
 echo "<input type='submit' value='submit'>";
-$items = $myOsricDb->getItems();
-echo "<table id='osric_equipment_not_carried'>";
-echo "<tr><td>Item Name</td><td>Encumbrance (gp)</td><td>Cost (gp)</td><td>Quantity</td><td></td></tr>";
-$i = 0;
+echo "<hr/>\n";
+
+echo "<div id='PurchaseableInventoryContent' class='clsScrollable'>\n";
+echo "<h3>Armour:</h3>\n";
+$postArrayIndexOffset = 0;
+$items = $myOsricDb->getItemsByItemType(1);
 $num_rows = count($items);
-for($i=0;$i<$num_rows;$i++)
-{
-	$row = $items[$i];
-	echo "<tr>";
-	echo "<td>{$row['ItemName']}</td>";
-	echo "<td>{$row['ItemEncumbrance']}</td>";
-	echo "<td>{$row['ItemCost']}</td>";
-	$itemId = $row['ItemId'];
-	echo "<td><input type='number' min='0' max='9999999' name='item[{$i}][quantity]' value='0'></input></td>";
-	echo "<td><input type='hidden' name='item[{$i}][itemId]' value='{$itemId}'></input></td>";
-	echo "</tr>";
-	$i = $i + 1;	
-}
-echo "</table>";
+OsricHtmlHelper::makeHtmlTableItemsToPurchase($items, "osric_items_to_purchase_armour", $postArrayIndexOffset);
+$postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
+echo "<hr/>\n";
+echo "<h3>Weapons:</h3>\n";
+$items = $myOsricDb->getItemsByItemType(2);
+$num_rows = count($items);
+OsricHtmlHelper::makeHtmlTableItemsToPurchase($items, "osric_items_to_purchase_weapons", $postArrayIndexOffset);
+$postArrayIndexOffset = $postArrayIndexOffset + $num_rows;
+echo "<hr/>\n";
+echo "<h3>Equipment:</h3>\n";
+$items = $myOsricDb->getItemsByItemType(0);
+OsricHtmlHelper::makeHtmlTableItemsToPurchase($items, "osric_items_to_purchase_equipment", $postArrayIndexOffset);
+
 echo "<input type='hidden' name='CharacterId' value='{$characterId}'/>";
+echo "</div>";
 ?>
 </form>
 </body>
