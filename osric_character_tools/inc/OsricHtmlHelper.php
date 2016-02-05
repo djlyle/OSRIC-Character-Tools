@@ -231,6 +231,24 @@ class OsricHtmlHelper
 		}
 		echo "</table>\n";
 	}
+	
+	public static function makeHtmlCharacterClasses($classes,$characterClasses)
+	{
+		foreach($classes as $row)
+		{    
+    		$classId = $row['ClassId'];
+    		$className = $row['ClassName'];  
+    		echo "<label>";
+    		echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
+    		if(in_array($classId,$characterClasses))
+    		{
+        		echo " checked='checked'";        
+    		}
+    		echo "/>";
+    		echo "{$className}";
+    		echo "</label><br/>";
+		}
+	}
 }
 
 ?>

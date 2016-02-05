@@ -9,7 +9,7 @@
 $characterId = $_GET['CharacterId'];
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
-include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $myOsricDb = new OsricDb();
@@ -31,22 +31,8 @@ echo "Character Classes for {$character['CharacterName']} (CharacterId={$charact
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 
 $characterClasses = $myOsricDb->getCharacterClasses($characterId);
-
 $classes = $myOsricDb->getClasses();
-foreach($classes as $row)
-{    
-    $classId = $row['ClassId'];
-    $className = $row['ClassName'];  
-    echo "<label>";
-    echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
-    if(in_array($classId,$characterClasses))
-    {
-        echo " checked='checked'";        
-    }
-    echo "/>";
-    echo "{$className}";
-    echo "</label><br/>";
-}
+OsricHtmlHelper::makeHtmlCharacterClasses($classes,$characterClasses);
 
 ?>
 <div id="submit">

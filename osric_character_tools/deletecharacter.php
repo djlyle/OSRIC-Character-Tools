@@ -3,7 +3,6 @@
    Desc: Deletes an existing character in the Characters table and related tables in the osric_db*/
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
-include_once(dirname(__FILE__)."/inc/charactertblfuncs.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_GET['CharacterId'];
