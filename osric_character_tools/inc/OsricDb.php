@@ -357,6 +357,43 @@ class OsricDb
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;
 	}
+
+	public function getCharacterGoldCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsInStorageByCoinId($characterId,"1");
+	}
+	
+	public function getCharacterSilverCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsInStorageByCoinId($characterId,"2");	
+	}	
+
+	public function getCharacterCopperCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsInStorageByCoinId($characterId,"3");	
+	}
+	
+	public function getCharacterPlatinumCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsInStorageByCoinId($characterId,"4");	
+	}
+	
+	public function getCharacterElectrumCoinsInStorage($characterId)
+	{
+		return $this->getCharacterCoinsInStorageByCoinId($characterId,"5");	
+	}
+	
+	private function getCharacterCoinsInStorageByCoinId($characterId,$coinId)
+	{
+		$character_coins_in_storage = $this->getCharacterCoinsInStorage($characterId);
+		foreach($character_coins_in_storage as $row)
+		{
+			if($row['CoinId'] == $coinId)
+			{
+				return $row['Quantity'];
+			}
+		}
+	}
 	
 	public function getCharacterCoinsInStorage($characterId)
 	{
@@ -668,7 +705,7 @@ class OsricDb
 		$this->transferCharacterCoinsFromSourceToDest($characterId,$coinId,$transferQuantity,$transferSource,$transferDestination);
 	}
 	
-	function transferCharacterItems($characterId, $itemRow)
+	public function transferCharacterItems($characterId, $itemRow)
 	{
     	$transferQuantity = min($itemRow['transferQuantity'],$itemRow['quantity']);
     	$transferDestination = $itemRow['transferDestination'];
@@ -718,28 +755,207 @@ class OsricDb
     	$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 	}
 	
-	function removeZeroQuantityItemRows()
+	public function removeZeroQuantityItemRows()
 	{
 		$query = "DELETE FROM character_items WHERE Quantity = 0";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);        
 	}
 
-	function removeDiscardedItemRows()
+	public function removeDiscardedItemRows()
 	{
 		$query = "DELETE FROM character_items WHERE ItemStatusId = 4";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 	}
 	
-	function removeZeroQuantityCoinRows()
+	public function removeZeroQuantityCoinRows()
 	{
    	$query = "DELETE FROM character_coins WHERE Quantity = 0";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 	}
 	
-	function removeDiscardedCoinRows()
+	public function removeDiscardedCoinRows()
 	{
 		$query = "DELETE FROM character_coins WHERE ItemStatusId = 4";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+	}
+	
+	public function subtractDebitFromCharacterCoins($characterId,$debitInGold)
+	{
+		$debit_cc = bcmul($debitInGold, "100", 2);
+		
+		$orig_purse_pc = $this->getCharacterPlatinumCoinsInStorage($characterId);		
+		$orig_purse_gc = $this->getCharacterGoldCoinsInStorage($characterId);
+		$orig_purse_ec = $this->getCharacterElectrumCoinsInStorage($characterId);
+		$orig_purse_sc = $this->getCharacterSilverCoinsInStorage($characterId);
+		$orig_purse_cc = $this->getCharacterCopperCoinsInStorage($characterId);
+		$purse_pc = $orig_purse_pc;
+		$purse_gc = $orig_purse_gc;
+		$purse_ec = $orig_purse_ec;
+		$purse_sc = $orig_purse_sc;
+		$purse_cc = $orig_purse_cc;
+		echo "<br/>";		
+		echo "purse_pc:".$purse_pc."<br/>";
+		echo "purse_gc:".$purse_gc."<br/>";
+		echo "purse_ec:".$purse_ec."<br/>";
+		echo "purse_sc:".$purse_sc."<br/>";
+		echo "purse_cc:".$purse_cc."<br/>";
+		
+		//pay off as much of debit in copper coins	
+		$cc_spent = min($purse_cc,$debit_cc);
+		$purse_cc -= $cc_spent;
+		$debit_cc -= $cc_spent;
+		echo "cc_spent:".$cc_spent."<br/>";	
+		echo "debit_cc:".$debit_cc."<br/>";
+		echo "purse_pc:".$purse_pc."<br/>";
+		echo "purse_gc:".$purse_gc."<br/>";
+		echo "purse_ec:".$purse_ec."<br/>";
+		echo "purse_sc:".$purse_sc."<br/>";
+		echo "purse_cc:".$purse_cc."<br/>";
+				
+		if($debit_cc > 0)
+		{
+			//Pay off as much of debit in silver coins
+			$sc_factor = 10;
+			$sc_spent = min($purse_sc,intval($debit_cc/$sc_factor));
+			$purse_sc -= $sc_spent;
+			$debit_cc -= ($sc_spent*$sc_factor);
+			if(($debit_cc > 0) and ($purse_sc > 0))
+			{
+				//Try to make change if there are coins left
+				$sc_spent += 1;
+			   $purse_sc -= 1;   	
+				$change = $sc_factor - $debit_cc;
+				$debit_cc = 0;
+				$purse_cc += $change;
+			}			
+			echo "sc_spent:".$sc_spent."<br/>";
+			echo "debit_cc:".$debit_cc."<br/>";
+			echo "purse_pc:".$purse_pc."<br/>";
+			echo "purse_gc:".$purse_gc."<br/>";
+			echo "purse_ec:".$purse_ec."<br/>";
+			echo "purse_sc:".$purse_sc."<br/>";
+			echo "purse_cc:".$purse_cc."<br/>";
+					
+			if($debit_cc > 0)
+			{
+				$ec_factor = 50;
+				$ec_spent = min($purse_ec,intval($debit_cc/$ec_factor));
+				$purse_ec -= $ec_spent;
+				$debit_cc -= ($ec_spent*$ec_factor);
+								
+				if(($debit_cc > 0) and ($purse_ec > 0))
+				{
+					//Try to make change if there are coins left
+					//Change will be distributed in denominations less than electrum
+					$ec_spent += 1;
+					$purse_ec -= 1;    	
+					$change_cc = ($ec_factor - $debit_cc);
+					$debit_cc = 0;					
+					$purse_sc += intval($change_cc / $sc_factor);
+					$purse_cc += $change_cc % $sc_factor;
+				}				
+				echo "ec_spent:".$ec_spent."<br/>";
+				echo "debit_cc:".$debit_cc."<br/>"; 
+				echo "purse_pc:".$purse_pc."<br/>";
+				echo "purse_gc:".$purse_gc."<br/>";
+				echo "purse_ec:".$purse_ec."<br/>";
+				echo "purse_sc:".$purse_sc."<br/>";
+				echo "purse_cc:".$purse_cc."<br/>";
+						
+				if($debit_cc > 0)
+				{
+					$gc_factor = 100;
+					$gc_spent = min($purse_gc,intval($debit_cc/$gc_factor));
+					$purse_gc -= $gc_spent;
+					$debit_cc -= ($gc_spent*$gc_factor);
+					if(($debit_cc > 0) and ($purse_gc > 0))
+					{
+						//Try to make change if there are coins left
+						//Change will be distributed in denominations less than gold
+						$gc_spent += 1;
+						$purse_gc -= 1;
+						$change_cc = ($gc_factor - $debit_cc);
+						$debit_cc = 0;						
+						$purse_ec += intval($change_cc / $ec_factor);
+						$change_cc = ($change_cc % $ec_factor);
+						$purse_sc += intval($change_cc / $sc_factor);
+						$purse_cc += ($change_cc % $sc_factor);
+					}
+					echo "gc_spent:".$gc_spent."<br/>";
+					echo "debit_cc:".$debit_cc."<br/>";
+					echo "purse_pc:".$purse_pc."<br/>";
+					echo "purse_gc:".$purse_gc."<br/>";
+					echo "purse_ec:".$purse_ec."<br/>";
+					echo "purse_sc:".$purse_sc."<br/>";
+					echo "purse_cc:".$purse_cc."<br/>";
+							
+					if($debit_cc > 0)
+					{
+						$pc_factor = 500;
+						$pc_spent = min($purse_pc,intval($debit_cc/$pc_factor));
+						$purse_pc -= $pc_spent;
+						$debit_cc -= ($pc_spent*$pc_factor);
+						if(($debit_cc > 0) and ($purse_pc > 0))
+						{
+							//Try to make change if there are coins left
+							//Change will be distributed in denominations less than platinum
+							$pc_spent += 1;
+							$purse_pc -= 1;
+							$change_cc = ($pc_factor - $debit_cc);
+							$debit_cc = 0;							
+							$purse_gc += intval($change_cc / $gc_factor);
+							$change_cc = ($change_cc % $gc_factor);
+							$purse_ec += intval($change_cc / $ec_factor);
+							$change_cc = ($change_cc % $ec_factor);
+							$purse_sc += intval($change_cc / $sc_factor);
+							$purse_cc += ($change_cc % $sc_factor); 	
+						}
+						echo "pc_spent:".$pc_spent."<br/>";
+						echo "debit_cc:".$debit_cc."<br/>";
+						echo "purse_pc:".$purse_pc."<br/>";
+						echo "purse_gc:".$purse_gc."<br/>";
+						echo "purse_ec:".$purse_ec."<br/>";
+						echo "purse_sc:".$purse_sc."<br/>";
+						echo "purse_cc:".$purse_cc."<br/>";
+			
+					}	
+				}	
+			}	
+		}
+		//Now adjust the characters purse (coins in storage)
+		$destination = 1;//add or subtract to coins in storage				
+		
+		$coinId = 4;//Platinum coin id
+		$quantityToAdd = $purse_pc - $orig_purse_pc;
+		echo sprintf("Adding: %d %s coins", $quantityToAdd,"platinum");
+		echo "<br/>";
+		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
+		
+		$coinId = 1;//Gold coin id
+		$quantityToAdd = $purse_gc - $orig_purse_gc;
+		echo sprintf("Adding: %d %s coins", $quantityToAdd,"gold");
+		echo "<br/>";		
+		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
+		
+		$coinId = 5;//Electrum coin id
+		$quantityToAdd = $purse_ec - $orig_purse_ec;
+		echo sprintf("Adding: %d %s coins", $quantityToAdd,"electrum");
+		echo "<br/>";
+		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
+
+		
+		$coinId = 2;//Silver coin id
+		$quantityToAdd = $purse_sc - $orig_purse_sc;
+		echo sprintf("Adding: %d %s coins", $quantityToAdd,"silver");
+		echo "<br/>";
+		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
+					
+		$coinId = 3;//Copper coin id
+		$quantityToAdd = $purse_cc - $orig_purse_cc;
+		echo sprintf("Adding: %d %s coins", $quantityToAdd,"copper");
+		echo "<br/>";
+		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
+	
 	}
 	
 }

@@ -56,7 +56,7 @@ $characterName = $character['CharacterName'];
 		}	
 	}
 	echo "Purchasing all the items will cost this character '{$totalCost}' gold coins"; 
-		
+	$myOsricDb->subtractDebitFromCharacterCoins($characterId,$totalCost);	
 	echo "<br/><br/>";
 	echo "<a href='characterinventory.php?CharacterId={$characterId}'>Return to character's inventory</a>";
 ?>
