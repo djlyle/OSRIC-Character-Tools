@@ -32,8 +32,6 @@ $characterName = $character['CharacterName'];
 <?php 
 	echo "{$characterName}'s Inventory Updated.";
 	$totalCost = 0;
-	echo "Items to add:";
-	echo "<br/>";
 		
 	foreach($itemRows as $itemRow)
 	{
@@ -42,20 +40,12 @@ $characterName = $character['CharacterName'];
 		if($quantityToAdd > 0)
 		{
 			$quantityToAdd = $itemRow['quantity'];
-			echo "Item id: '{$itemId}'";
-			echo "<br/>";
 			$cost = $myOsricDb->getItemCost($itemId);
-			echo "Cost: '{$cost}'";
-			echo "<br/>";
 			$itemTotalCost = bcmul($cost,$quantityToAdd, 2);//$itemTotalCost = $cost * $quantityToAdd;
 			$totalCost = bcadd($totalCost, $itemTotalCost, 2);//$totalCost = $totalCost + $itemTotalCost;
-			echo "Quantity: '{$quantityToAdd}'";
-			echo "<br/>";
-			echo "Total cost: '{$itemTotalCost}'}";
-			echo "<br/><br/>";
 		}	
 	}
-	echo "Purchasing all the items will cost this character '{$totalCost}' gold coins"; 
+	echo "The amount of '{$totalCost}' gold coins has been subtracted from {$characterName}'s account."; 
 	$myOsricDb->subtractDebitFromCharacterCoins($characterId,$totalCost);	
 	echo "<br/><br/>";
 	echo "<a href='characterinventory.php?CharacterId={$characterId}'>Return to character's inventory</a>";

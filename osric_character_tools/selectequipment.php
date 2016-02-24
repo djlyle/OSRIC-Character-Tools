@@ -20,7 +20,7 @@ $characterName = $character['CharacterName'];
 <header><title>Equipment List</title></header>
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 <body>
-<form action="addToCharacterInventory.php" method="POST">
+<form action="confirmPurchase.php" method="POST">
 <?php
 echo "<h3>{$characterName}</h3>\n";
 echo "<br/>";
