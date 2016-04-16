@@ -45,12 +45,21 @@ foreach($itemRows as $itemRow)
 	}	
 }
 echo "Purchasing all these items will cost '{$totalCost}' gold coins"; 
+$characterPurchasePower = $myOsricDb->getStoredCoinsValueInGoldCoins($characterId);
+
+echo "Character currently has the equivalent of '{$characterPurchasePower}' gold coins in storage"; 
 ?>	
 <form action="addToCharacterInventory.php" method="POST">
 <?php
 
-echo "<p>Press the submit button below to confirm your purchase.</p>";
-echo "<input type='submit' value='Confirm Purchase'>";
+if($totalCost < $characterPurchasePower) {
+	echo "<p>Press the submit button below to confirm your purchase.</p>";
+	echo "<input type='submit' value='Confirm Purchase'>";
+}
+else 
+{
+	echo "Sorry, this character doesn't have enough money for this purchase.";
+}
 echo "<hr/>";
 echo "<table>";
 $index = 0;

@@ -426,6 +426,24 @@ class OsricDb
 		return $result_set;
 	}
 	
+	///<summary>
+	///For a given character,
+	///get the total value in gold coins of all coins with a given itemStatusId 
+	///that is: {held, carried, or in storage} 
+	///</summary>	
+	private function getCharacterCoinsValueInGoldCoins($characterId,$itemStatusId)
+	{
+		$query = "SELECT SUM(e.TotalValueInACoinType) AS TotalCoinValue FROM (SELECT (c.CoinValueInGoldCoins * cc.Quantity) AS TotalValueInACoinType FROM character_coins cc INNER JOIN coins c ON cc.CoinId = c.CoinId WHERE cc.CharacterId = '{$characterId}' AND cc.ItemStatusId = $itemStatusId) AS e"; 
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		return $row['TotalCoinValue'];	
+	}	
+	
+	public function getStoredCoinsValueInGoldCoins($characterId)
+	{
+		return $this->getCharacterCoinsValueInGoldCoins($characterId,"1");
+	}
+	
 	public function getCharacterWeaponsInStorage($characterId)
 	{
 		return $this->getCharacterWeaponsByStatus($characterId, "1");
