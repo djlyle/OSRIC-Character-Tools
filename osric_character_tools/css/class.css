@@ -1,3 +1,9 @@
+
+body
+{
+	background-color: #6FC468;
+}
+
 table
 {
 	border: 1px solid black;
@@ -10,6 +16,10 @@ td
 	border-bottom: 1px solid black;
 }
 
+.clsPrintable{
+	background-color: white;
+	font-family: Verdana;	
+}
 .clsDisplayNone
 {
 	display: none;
@@ -31,4 +41,30 @@ td
 	text-align: center;
 	font-weight: bold;
 	text-decoration: underline; 
+}
+
+.clsTitle
+{
+	font-style: Verdana;
+	font-size: large;
+}
+
+.clsOsricForm
+{
+	border-radius: 25px;
+	border-style: solid;
+	border-width: 1px;	
+	border-color: black;
+	padding: 10px;
+}
+
+.clsCharacterClass
+{
+	margin: 5px;
+	font-family:Georgia,serif;
+}
+
+.clsSubmitBtnsDiv
+{
+	padding: 10px;
 }

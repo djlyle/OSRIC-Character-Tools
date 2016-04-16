@@ -21,7 +21,8 @@ $characterStatus = $myOsricDb->getCharacterStatus($characterId);
 <title>Character Sheet</title>
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 </head>
-<body>
+<body class='clsPrintable'>
+<div id='CharacterSheet'>
 <?php
 echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
 
@@ -175,7 +176,7 @@ echo "</div>\n";
 echo "<hr/>\n";
 
 echo "<h3>Equipment</h3>\n";
-echo "<h4>Equipment Carried:</h4>";
+echo "<h4>Equipment Carried:</h4>\n";
 
 echo "<div id='CharacterEquipmentCarried'>\n";
 $character_items_carried = $myOsricDb->getCharacterItemsCarried($characterId);
@@ -209,5 +210,6 @@ for($i=0;$i<$num_rows;$i++)
 echo "</div>\n";
 
 ?>
+</div>
 </body>
 </html>	

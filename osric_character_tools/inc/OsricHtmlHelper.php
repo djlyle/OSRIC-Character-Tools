@@ -238,7 +238,7 @@ class OsricHtmlHelper
 		{    
     		$classId = $row['ClassId'];
     		$className = $row['ClassName'];  
-    		echo "<label>";
+    		echo "<label class='clsCharacterClass'>";
     		echo "<input type='checkbox' name='characterClass[]' value='{$classId}'";
     		if(in_array($classId,$characterClasses))
     		{
@@ -246,7 +246,7 @@ class OsricHtmlHelper
     		}
     		echo "/>";
     		echo "{$className}";
-    		echo "</label><br/>";
+    		echo "</label><br/>\n";
 		}
 	}
 }

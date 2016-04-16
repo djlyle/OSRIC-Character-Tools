@@ -12,7 +12,6 @@ include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
-echo "Character with CharacterId={$characterId}";
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
@@ -28,18 +27,18 @@ $selectOptions['CharacterGender'][2] = "Female";
 $selectOptions['RaceId'] = $myOsricDb->getRaceOptions();
 
 ?>
-
-/*Character form*/
 <html>
 <head>
 <title>Edit Character</title>
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 </head>
 <body>
-<form action='submitcharacter.php' method='post'>
+<div id='CharacterTraits'>
 <?php
+echo "<div class='clsTitle'>Character Traits for {$character['CharacterName']}:</div>\n";
+echo "<form class='clsOsricForm' action='submitcharacter.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
-echo "<table>";
+echo "<table>\n";
 foreach($labels as $field => $label)
 {
 	echo "<tr>";
@@ -69,14 +68,15 @@ foreach($labels as $field => $label)
 		break;
 	}
 	echo "</td>";
-	echo "</tr>";
+	echo "</tr>\n";
 }
-echo "</table>";
+echo "</table>\n";
 ?>
-<div id="submit">
+<div class='clsSubmitBtnsDiv' id="submit">
 	<input type="submit" value="Submit Character"/>
 	<input type="submit" name="cancelbutton" value="Cancel"/>
 </div>
 </form>
+</div>
 </body>
 </html>	

@@ -13,7 +13,6 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 $characterStatus = $myOsricDb->getCharacterStatus($characterId);
-echo "Status for {$character['CharacterName']} (CharacterId={$characterId}):";
 $labels = array("CharacterStatusArmourClass"=>"Armor Class","CharacterStatusExperiencePoints"=>"Experience Points","CharacterStatusFullHitPoints"=>"Full Hit Points","CharacterStatusRemainingHitPoints"=>"Remaining Hit Points");
 $inputTypes = array("CharacterStatusArmourClass"=>"integer","CharacterStatusExperiencePoints"=>"integer","CharacterStatusFullHitPoints"=>"integer","CharacterStatusRemainingHitPoints"=>"integer");
 ?>
@@ -25,8 +24,9 @@ $inputTypes = array("CharacterStatusArmourClass"=>"integer","CharacterStatusExpe
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 </head>
 <body>
-<form action='submitcharacterstatus.php' method='post'>
 <?php
+echo "<div class='clsTitle'>Character Status for {$character['CharacterName']}:</div>\n";
+echo "<form class='clsOsricForm' action='submitcharacterstatus.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 echo "<table>";
 foreach($labels as $field => $label)

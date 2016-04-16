@@ -11,7 +11,6 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 
-echo "Character Abilities for {$character['CharacterName']} (CharacterId={$characterId}):";
 ?>
 
 <!-- Character form -->
@@ -21,8 +20,10 @@ echo "Character Abilities for {$character['CharacterName']} (CharacterId={$chara
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 </head>
 <body>
-<form action='submitcharacterabilities.php' method='post'>
+
 <?php
+echo "<div class='clsTitle'>Character Abilities for {$character['CharacterName']}:</div>\n";
+echo "<form class='clsOsricForm' action='submitcharacterabilities.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 echo "<table>";
 $character_abilities = $myOsricDb->getCharacterAbilities($characterId);

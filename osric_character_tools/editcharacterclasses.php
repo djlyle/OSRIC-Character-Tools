@@ -16,18 +16,16 @@ $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
 
-echo "Character Classes for {$character['CharacterName']} (CharacterId={$characterId}):";
 ?>
-
-<!-- Character Classes form -->
 <html>
 <head>
 <title>Edit Character Classes</title>
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
 </head>
 <body>
-<form action='submitcharacterclasses.php' method='post'>
 <?php
+echo "<div class='clsTitle'>Character Classes for {$character['CharacterName']}:</div>\n";
+echo "<form class='clsOsricForm' action='submitcharacterclasses.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
 
 $characterClasses = $myOsricDb->getCharacterClasses($characterId);
@@ -35,7 +33,7 @@ $classes = $myOsricDb->getClasses();
 OsricHtmlHelper::makeHtmlCharacterClasses($classes,$characterClasses);
 
 ?>
-<div id="submit">
+<div class='clsSubmitBtnsDiv' id="submit">
 	<input type="submit" value="Submit Classes"/>
 	<input type="submit" name="cancelbutton" value="Cancel"/>
 </div>
