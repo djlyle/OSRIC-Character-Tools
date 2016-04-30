@@ -4,6 +4,7 @@
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
 $characterId = $_GET['CharacterId'];
 
@@ -25,24 +26,8 @@ $character = $myOsricDb->getCharacter($characterId);
 echo "<div class='clsTitle'>Character Abilities for {$character['CharacterName']}:</div>\n";
 echo "<form class='clsOsricForm' action='submitcharacterabilities.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
-echo "<table>";
 $character_abilities = $myOsricDb->getCharacterAbilities($characterId);
-$num_abilities = count($character_abilities);
-for($i=0;$i<$num_abilities;$i++)
-{
-	echo "<tr>";
-	echo "<td>{$character_abilities[$i]['AbilityLongName']}</td>";
-	$abilityId = $character_abilities[$i]['AbilityId'];
-	if($character_abilities[$i]['Value']){
-		$value = $character_abilities[$i]['Value'];
-	}
-	else {
-		$value = 0;
-	}
-	echo "<td><input type='number' min='0' max='9999999' name='editedAbility{$abilityId}' value='{$value}'></input></td>";    
-	echo "</tr>";
-}
-echo "</table>";
+OsricHtmlHelper::makeHtmlTableCharacterAbilities($character_abilities);
 ?>
 <div id="submit">
 	<input type="submit" value="Submit Abilities"/>

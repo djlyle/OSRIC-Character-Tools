@@ -28,7 +28,7 @@ $inputTypes = array("CharacterStatusArmourClass"=>"integer","CharacterStatusExpe
 echo "<div class='clsTitle'>Character Status for {$character['CharacterName']}:</div>\n";
 echo "<form class='clsOsricForm' action='submitcharacterstatus.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
-echo "<table>";
+echo "<table>\n";
 foreach($labels as $field => $label)
 {
 	echo "<tr>";
@@ -45,9 +45,9 @@ foreach($labels as $field => $label)
 		break;
 	}
 	echo "</td>";
-	echo "</tr>";
+	echo "</tr>\n";
 }
-echo "</table>";
+echo "</table>\n";
 ?>
 <div id="submit">
 	<input type="submit" value="Submit Character Status"/>

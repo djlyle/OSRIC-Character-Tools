@@ -10,11 +10,22 @@ table
 	border-collapse: collapse;
 }
 
+table.clsPropertiesTbl
+{
+	border: none;	
+}
+
 td
 {
 	border-right: 1px solid black;
 	border-bottom: 1px solid black;
 }
+
+table.clsPropertiesTbl td
+{
+	border: none;	
+}
+
 
 .clsPrintable{
 	background-color: white;

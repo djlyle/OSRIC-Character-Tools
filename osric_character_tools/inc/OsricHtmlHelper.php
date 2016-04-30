@@ -249,6 +249,27 @@ class OsricHtmlHelper
     		echo "</label><br/>\n";
 		}
 	}
+	
+	public static function makeHtmlTableCharacterAbilities($character_abilities)
+	{
+		echo "<table class='clsPropertiesTbl'>";
+		$num_abilities = count($character_abilities);
+		for($i=0;$i<$num_abilities;$i++)
+		{
+			echo "<tr>";
+			echo "<td>{$character_abilities[$i]['AbilityLongName']}</td>";
+			$abilityId = $character_abilities[$i]['AbilityId'];
+			if($character_abilities[$i]['Value']){
+				$value = $character_abilities[$i]['Value'];
+			}
+			else {
+				$value = 0;
+			}
+			echo "<td><input type='number' min='0' max='9999999' name='editedAbility{$abilityId}' value='{$value}'></input></td>";    
+			echo "</tr>";
+		}
+		echo "</table>";
+	}
 }
 
 ?>
