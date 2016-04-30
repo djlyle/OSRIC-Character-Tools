@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2016 at 06:59 PM
+-- Generation Time: Apr 30, 2016 at 04:14 PM
 -- Server version: 5.5.47
 -- PHP Version: 5.3.10-1ubuntu3.21
 
@@ -221,22 +221,18 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
 --
 
 INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quantity`, `ItemStatusId`) VALUES
-(1, 45, 1, 6751, 1),
-(3, 45, 3, 15, 1),
-(4, 45, 4, 31, 1),
-(5, 45, 5, 13, 1),
+(1, 45, 1, 15, 1),
 (7, 46, 2, 3, 1),
 (8, 46, 3, 4, 1),
 (9, 46, 4, 5, 1),
 (10, 46, 5, 22, 1),
-(44, 45, 1, 20409, 2),
+(44, 45, 1, 20363, 2),
 (45, 46, 1, 2, 2),
 (46, 45, 3, 3064, 2),
 (48, 45, 4, 28, 2),
 (49, 45, 5, 5, 2),
-(622, 45, 2, 30155, 2),
-(623, 45, 2, 20000, 1),
-(990, 45, 1, 100, 4),
+(622, 45, 2, 30132, 2),
+(623, 45, 2, 3, 1),
 (1241, 114, 1, 1, 1),
 (1242, 114, 2, 1, 1),
 (1243, 114, 3, 1, 1),
@@ -258,14 +254,14 @@ CREATE TABLE IF NOT EXISTS `character_items` (
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   `Magic` int(11) NOT NULL,
   PRIMARY KEY (`CharacterItemId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=134 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=157 ;
 
 --
 -- Dumping data for table `character_items`
 --
 
 INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quantity`, `ItemStatusId`, `Magic`) VALUES
-(2, 45, 7, 44, 1, 0),
+(2, 45, 7, 51, 1, 0),
 (3, 45, 9, 11, 1, 0),
 (4, 46, 1, 1, 1, 0),
 (5, 46, 9, 1, 1, 0),
@@ -274,14 +270,14 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (28, 45, 12, 3, 1, 0),
 (29, 45, 3, 10, 1, 0),
 (30, 45, 5, 7, 1, 0),
-(44, 45, 159, 1, 1, 0),
+(44, 45, 159, 4, 1, 0),
 (49, 45, 159, 1, 2, 0),
 (51, 45, 19, 8, 1, 0),
 (52, 45, 17, 3, 1, 0),
 (54, 45, 145, 3, 1, 0),
 (55, 45, 153, 4, 1, 0),
 (57, 45, 155, 7, 1, 0),
-(73, 45, 127, 1, 1, 0),
+(73, 45, 127, 2, 1, 0),
 (75, 45, 135, 1, 1, 0),
 (76, 45, 137, 1, 1, 0),
 (83, 114, 1, 1, 1, 0),
@@ -296,7 +292,7 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (92, 114, 151, 1, 1, 0),
 (93, 114, 157, 1, 1, 0),
 (94, 114, 111, 6, 2, 0),
-(95, 45, 1, 83, 1, 0),
+(95, 45, 1, 95, 1, 0),
 (96, 45, 115, 1, 1, 0),
 (97, 45, 141, 30, 1, 0),
 (102, 45, 149, 1, 2, 0),
@@ -310,15 +306,38 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 (122, 114, 11, 34, 1, 0),
 (123, 114, 131, 1, 3, 0),
 (124, 114, 135, 1, 2, 0),
-(125, 45, 108, 2, 1, 0),
-(126, 45, 128, 6, 1, 0),
+(125, 45, 108, 140, 1, 0),
+(126, 45, 128, 22, 1, 0),
 (127, 45, 129, 2, 1, 0),
 (128, 45, 32, 3, 1, 0),
 (129, 45, 36, 1, 1, 0),
 (130, 45, 120, 1, 1, 0),
 (131, 45, 121, 3, 1, 0),
 (132, 45, 122, 1, 1, 0),
-(133, 45, 123, 1, 1, 0);
+(133, 45, 123, 1, 1, 0),
+(134, 45, 109, 24, 1, 0),
+(135, 45, 124, 13, 1, 0),
+(136, 45, 125, 11, 1, 0),
+(137, 45, 126, 12, 1, 0),
+(138, 45, 112, 8, 1, 0),
+(139, 45, 138, 2, 1, 0),
+(140, 45, 142, 10, 1, 0),
+(141, 45, 113, 8, 1, 0),
+(142, 45, 114, 1, 1, 0),
+(143, 45, 116, 1, 1, 0),
+(144, 45, 111, 8, 1, 0),
+(145, 45, 95, 1, 1, 0),
+(146, 45, 96, 2, 1, 0),
+(147, 45, 97, 2, 1, 0),
+(148, 45, 98, 3, 1, 0),
+(149, 45, 100, 5, 1, 0),
+(150, 45, 134, 7, 1, 0),
+(151, 45, 21, 3, 1, 0),
+(152, 45, 130, 58, 1, 0),
+(153, 45, 45, 4, 1, 0),
+(154, 45, 13, 3, 1, 0),
+(155, 45, 110, 1, 1, 0),
+(156, 45, 0, 8, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -380,7 +399,7 @@ INSERT INTO `classes` (`ClassId`, `ClassName`) VALUES
 CREATE TABLE IF NOT EXISTS `coins` (
   `CoinId` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CoinName` varchar(16) NOT NULL,
-  `CoinValueInGoldCoins` float NOT NULL,
+  `CoinValueInGoldCoins` decimal(10,2) NOT NULL,
   `CoinEncumbranceInLbs` float NOT NULL,
   PRIMARY KEY (`CoinId`),
   UNIQUE KEY `CoinId` (`CoinId`)
@@ -391,11 +410,33 @@ CREATE TABLE IF NOT EXISTS `coins` (
 --
 
 INSERT INTO `coins` (`CoinId`, `CoinName`, `CoinValueInGoldCoins`, `CoinEncumbranceInLbs`) VALUES
-(1, 'Gold', 1, 0.1),
-(2, 'Silver', 0.1, 0.1),
+(1, 'Gold', 1.00, 0.1),
+(2, 'Silver', 0.10, 0.1),
 (3, 'Copper', 0.01, 0.1),
-(4, 'Platinum', 5, 0.1),
-(5, 'Electrum', 0.5, 0.1);
+(4, 'Platinum', 5.00, 0.1),
+(5, 'Electrum', 1.00, 0.1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_types`
+--
+
+CREATE TABLE IF NOT EXISTS `data_types` (
+  `type_id` int(11) NOT NULL,
+  `type_name` varchar(16) NOT NULL,
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_types`
+--
+
+INSERT INTO `data_types` (`type_id`, `type_name`) VALUES
+(0, 'string'),
+(1, 'integer'),
+(2, 'float'),
+(3, 'decimal');
 
 -- --------------------------------------------------------
 
@@ -609,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `item_type` (
   `ItemType` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(32) NOT NULL,
   PRIMARY KEY (`ItemType`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `item_type`
