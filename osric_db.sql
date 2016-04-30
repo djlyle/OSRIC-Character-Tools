@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2016 at 04:14 PM
+-- Generation Time: Apr 30, 2016 at 04:18 PM
 -- Server version: 5.5.47
 -- PHP Version: 5.3.10-1ubuntu3.21
 
@@ -414,7 +414,7 @@ INSERT INTO `coins` (`CoinId`, `CoinName`, `CoinValueInGoldCoins`, `CoinEncumbra
 (2, 'Silver', 0.10, 0.1),
 (3, 'Copper', 0.01, 0.1),
 (4, 'Platinum', 5.00, 0.1),
-(5, 'Electrum', 1.00, 0.1);
+(5, 'Electrum', 0.50, 0.1);
 
 -- --------------------------------------------------------
 
