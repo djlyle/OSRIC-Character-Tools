@@ -270,6 +270,30 @@ class OsricHtmlHelper
 		}
 		echo "</table>";
 	}
+	
+	public static function makeHtmlTableCharacterStatus($character_status)
+	{
+		$num_columns = count($character_status);
+		echo "num_columns: ".$num_columns."\n";
+		echo "<table class='clsPropertiesTbl'>\n";
+		
+		for($i=0;$i<$num_columns;$i++)
+		{
+			echo "<tr>";
+			echo "<td>{$character_status[$i]['DisplayName']}</td>";
+			$statusId = $character_status[$i]['StatusId'];
+			if($character_status[$i]['Value']){
+				$value = $character_status[$i]['Value'];
+			}
+			else {
+				$value = 0;
+			}
+			echo "<td><input type='number' min='0' max='9999999' name='characterstatus[{$i}][value]' value='{$value}'></input></td>";    
+			echo "<td class='clsDisplayNone'><input type='hidden' name='characterstatus[{$i}][statusId]' value='{$statusId}'></input></td>";
+			echo "</tr>\n";
+		}
+		echo "</table>";
+	}
 }
 
 ?>

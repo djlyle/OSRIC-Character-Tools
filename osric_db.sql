@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2016 at 04:18 PM
+-- Generation Time: Apr 30, 2016 at 07:07 PM
 -- Server version: 5.5.47
 -- PHP Version: 5.3.10-1ubuntu3.21
 
@@ -347,21 +347,19 @@ INSERT INTO `character_items` (`CharacterItemId`, `CharacterId`, `ItemId`, `Quan
 
 CREATE TABLE IF NOT EXISTS `character_status` (
   `CharacterId` bigint(20) NOT NULL,
-  `CharacterStatusArmourClass` int(11) NOT NULL,
-  `CharacterStatusExperiencePoints` int(11) NOT NULL,
-  `CharacterStatusFullHitPoints` int(11) NOT NULL,
-  `CharacterStatusRemainingHitPoints` int(11) NOT NULL
+  `StatusId` int(11) NOT NULL,
+  `Value` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `character_status`
 --
 
-INSERT INTO `character_status` (`CharacterId`, `CharacterStatusArmourClass`, `CharacterStatusExperiencePoints`, `CharacterStatusFullHitPoints`, `CharacterStatusRemainingHitPoints`) VALUES
-(45, 3, 186, 16, 11),
-(46, 4, 2, 3, 1),
-(67, 0, 12, 0, 0),
-(114, 0, 5, 9, 2);
+INSERT INTO `character_status` (`CharacterId`, `StatusId`, `Value`) VALUES
+(45, 0, '4'),
+(45, 1, '62'),
+(45, 2, '53'),
+(45, 3, '20');
 
 -- --------------------------------------------------------
 
@@ -685,6 +683,29 @@ INSERT INTO `races` (`RaceId`, `RaceName`) VALUES
 (5, 'Half Elf'),
 (6, 'Halfling'),
 (7, 'Half-Orc');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `status`
+--
+
+CREATE TABLE IF NOT EXISTS `status` (
+  `StatusId` int(11) NOT NULL,
+  `DisplayName` varchar(32) NOT NULL,
+  `data_type` int(11) NOT NULL,
+  PRIMARY KEY (`StatusId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `status`
+--
+
+INSERT INTO `status` (`StatusId`, `DisplayName`, `data_type`) VALUES
+(0, 'Armour Class', 1),
+(1, 'Experience Points', 1),
+(2, 'Full Hit Points', 1),
+(3, 'Remaining Hit Points', 1);
 
 -- --------------------------------------------------------
 

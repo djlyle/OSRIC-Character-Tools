@@ -97,6 +97,24 @@ class OsricDb
 		return $result; 
 	}
 	
+	public function updateCharacterStatus($characterId, $statusId, $value)
+	{		
+		$query = sprintf("SELECT * FROM character_status WHERE CharacterId='%s' AND StatusId='%s'",$characterId,$statusId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		if($row)
+		{
+			$query = "UPDATE character_status SET Value = '{$value}' WHERE character_status.CharacterId = {$characterId} AND character_status.StatusId = {$statusId}";	
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);		
+		}
+		else 
+		{
+			$query = "INSERT INTO character_status (CharacterId,StatusId,Value) VALUES ('{$characterId}','{$statusId}','{$value}')";
+			mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);	
+		}
+		return $result;	
+	}
+	
 	public function updateCharacterCoins($characterCoinId, $coinQuantity)
 	{
 		$query = "UPDATE character_coins SET Quantity = '{$coinQuantity}' WHERE character_coins.CharacterCoinId = {$characterCoinId}";
@@ -283,10 +301,10 @@ class OsricDb
 	
 	public function getCharacterStatus($characterId)
 	{
-		$query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
+		$query = sprintf("SELECT s.StatusId,s.DisplayName,cs.Value FROM status s LEFT JOIN character_status cs ON s.StatusId = cs.StatusId AND cs.CharacterId = '%s'",$characterId);		
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
-		$row = mysqli_fetch_assoc($result);
-		return $row;
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;		
 	}
 	
 	public function editCharacterStatus($characterId,$armourClass,$experiencePoints,$fullHitPoints,$remainingHitPoints)

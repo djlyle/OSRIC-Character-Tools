@@ -8,6 +8,7 @@ $characterId = $_GET['CharacterId'];
 
 include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
+require_once(dirname(__FILE__)."/inc/OsricHtmlHelper.php");
 
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
@@ -28,7 +29,9 @@ $inputTypes = array("CharacterStatusArmourClass"=>"integer","CharacterStatusExpe
 echo "<div class='clsTitle'>Character Status for {$character['CharacterName']}:</div>\n";
 echo "<form class='clsOsricForm' action='submitcharacterstatus.php' method='post'>\n";
 echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
-echo "<table>\n";
+OsricHtmlHelper::makeHtmlTableCharacterStatus($characterStatus);
+
+/*echo "<table>\n";
 foreach($labels as $field => $label)
 {
 	echo "<tr>";
@@ -48,6 +51,7 @@ foreach($labels as $field => $label)
 	echo "</tr>\n";
 }
 echo "</table>\n";
+*/
 ?>
 <div id="submit">
 	<input type="submit" value="Submit Character Status"/>
