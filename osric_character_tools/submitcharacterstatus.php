@@ -17,11 +17,8 @@ $characterId = $_POST['CharacterId'];
 $characterStatusUpdateRows = $_POST['characterstatus'];
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
-//$myOsricDb->editCharacterStatus($characterId,$_POST['CharacterStatusArmourClass'],$_POST['CharacterStatusExperiencePoints'],$_POST['CharacterStatusFullHitPoints'],$_POST['CharacterStatusRemainingHitPoints']);
 foreach($characterStatusUpdateRows as $statusUpdateRow)
 {
-	echo "statusId:".$statusUpdateRow['statusId'];
-	echo "value:".$statusUpdateRow['value'];
 	$myOsricDb->updateCharacterStatus($characterId,$statusUpdateRow['statusId'],$statusUpdateRow['value']);
 }
 echo "<p>Character status updated.</p>";

@@ -274,7 +274,6 @@ class OsricHtmlHelper
 	public static function makeHtmlTableCharacterStatus($character_status)
 	{
 		$num_columns = count($character_status);
-		echo "num_columns: ".$num_columns."\n";
 		echo "<table class='clsPropertiesTbl'>\n";
 		
 		for($i=0;$i<$num_columns;$i++)

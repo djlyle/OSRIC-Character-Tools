@@ -63,13 +63,7 @@ class OsricDb
 		$newCharacterId = mysqli_insert_id($this->cxn);        
 		$this->initCharacterCoinsToZero($newCharacterId);
 		$this->initCharacterAbilitiesToZero($newCharacterId);
-		$this->initCharacterStatusToZero($newCharacterId);    
 		return $newCharacterId;
-	}
-	
-	public function initCharacterStatusToZero($characterId)
-	{
-		$this->editCharacterStatus($characterId,0,0,0,0);
 	}
 
 	public function initCharacterAbilitiesToZero($characterId)
@@ -305,31 +299,6 @@ class OsricDb
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
 		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
 		return $result_set;		
-	}
-	
-	public function editCharacterStatus($characterId,$armourClass,$experiencePoints,$fullHitPoints,$remainingHitPoints)
-	{
-		/*Check whether a row with id==$characterId exists in character_abilities table*/
- 		$query = sprintf("SELECT * FROM `character_status` WHERE CharacterId='%s'",$characterId);
-		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
-		$row = mysqli_fetch_assoc($result);    
-		if($row)
-		{
-			/*Edit an existing row in character_abilities*/
-			$query = "UPDATE character_status ";
-			$query = $query . "SET ";
-			$query = $query . "CharacterStatusArmourClass='".$armourClass."'";			
-			$query = $query . ",CharacterStatusExperiencePoints='".$experiencePoints."'";
-			$query = $query . ",CharacterStatusFullHitPoints='".$fullHitPoints."'";
-			$query = $query . ",CharacterStatusRemainingHitPoints='".$remainingHitPoints."'";
-			$query = $query . " WHERE CharacterId = '{$characterId}'";    
-			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
-		}
-		else 
-		{
-			$query = "INSERT INTO character_status (CharacterId,CharacterStatusArmourClass,CharacterStatusExperiencePoints,CharacterStatusFullHitPoints,CharacterStatusRemainingHitPoints) VALUE ('{$characterId}','{$armourClass}','{$experiencePoints}','{$fullHitPoints}','{$remainingHitPoints}')";                                           
-			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
-		}	
 	}
 	
 	public function getTotalEncumbranceItemsCarried($characterId)
