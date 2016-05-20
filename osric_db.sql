@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2016 at 07:07 PM
--- Server version: 5.5.47
--- PHP Version: 5.3.10-1ubuntu3.21
+-- Generation Time: May 20, 2016 at 02:36 PM
+-- Server version: 5.5.49
+-- PHP Version: 5.3.10-1ubuntu3.22
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `CharacterAlignment` int(11) NOT NULL,
   `RaceId` bigint(20) NOT NULL,
   PRIMARY KEY (`CharacterId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=115 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=116 ;
 
 --
 -- Dumping data for table `characters`
@@ -133,7 +133,8 @@ INSERT INTO `characters` (`CharacterName`, `CharacterGender`, `CharacterAge`, `C
 ('Roland1', 1, 77, 68, 143, 45, 0, 2),
 ('R2', 2, 22, 59, 130, 46, 0, 1),
 ('Mr. Generic', 1, 43, 65, 140, 67, 0, 0),
-('Noobe', 1, 0, 0, 0, 114, 0, 0);
+('Noobe', 1, 0, 0, 0, 114, 0, 0),
+('DJL', 0, 44, 64, 136, 115, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -152,8 +153,8 @@ CREATE TABLE IF NOT EXISTS `character_abilities` (
 --
 
 INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
-(45, 1, 20),
-(45, 2, 14),
+(45, 1, 22),
+(45, 2, 16),
 (45, 3, 18),
 (45, 4, 18),
 (45, 5, 16),
@@ -175,7 +176,13 @@ INSERT INTO `character_abilities` (`CharacterId`, `AbilityId`, `Value`) VALUES
 (114, 3, 0),
 (114, 4, 0),
 (114, 5, 0),
-(114, 6, 0);
+(114, 6, 0),
+(115, 1, 0),
+(115, 2, 0),
+(115, 3, 0),
+(115, 4, 0),
+(115, 5, 0),
+(115, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -199,7 +206,8 @@ INSERT INTO `character_classes` (`CharacterId`, `ClassId`) VALUES
 (45, 3),
 (45, 4),
 (45, 9),
-(114, 3);
+(114, 3),
+(115, 6);
 
 -- --------------------------------------------------------
 
@@ -214,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `character_coins` (
   `Quantity` int(11) NOT NULL,
   `ItemStatusId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`CharacterCoinId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1247 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1252 ;
 
 --
 -- Dumping data for table `character_coins`
@@ -238,7 +246,12 @@ INSERT INTO `character_coins` (`CharacterCoinId`, `CharacterId`, `CoinId`, `Quan
 (1243, 114, 3, 1, 1),
 (1244, 114, 4, 2, 1),
 (1245, 114, 5, 3, 1),
-(1246, 114, 1, 49, 2);
+(1246, 114, 1, 49, 2),
+(1247, 115, 1, 0, 1),
+(1248, 115, 2, 0, 1),
+(1249, 115, 3, 0, 1),
+(1250, 115, 4, 0, 1),
+(1251, 115, 5, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -356,10 +369,22 @@ CREATE TABLE IF NOT EXISTS `character_status` (
 --
 
 INSERT INTO `character_status` (`CharacterId`, `StatusId`, `Value`) VALUES
-(45, 0, '4'),
-(45, 1, '62'),
-(45, 2, '53'),
-(45, 3, '20');
+(45, 0, '7'),
+(45, 1, '61'),
+(45, 2, '51'),
+(45, 3, '21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_traits`
+--
+
+CREATE TABLE IF NOT EXISTS `character_traits` (
+  `CharacterId` bigint(20) NOT NULL,
+  `TraitId` int(11) NOT NULL,
+  `Value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -434,7 +459,8 @@ INSERT INTO `data_types` (`type_id`, `type_name`) VALUES
 (0, 'string'),
 (1, 'integer'),
 (2, 'float'),
-(3, 'decimal');
+(3, 'decimal'),
+(4, 'choice');
 
 -- --------------------------------------------------------
 
@@ -706,6 +732,32 @@ INSERT INTO `status` (`StatusId`, `DisplayName`, `data_type`) VALUES
 (1, 'Experience Points', 1),
 (2, 'Full Hit Points', 1),
 (3, 'Remaining Hit Points', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `traits`
+--
+
+CREATE TABLE IF NOT EXISTS `traits` (
+  `TraitId` int(11) NOT NULL,
+  `DisplayName` varchar(32) NOT NULL,
+  `data_type` int(11) NOT NULL,
+  `ChoiceTableName` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `traits`
+--
+
+INSERT INTO `traits` (`TraitId`, `DisplayName`, `data_type`, `ChoiceTableName`) VALUES
+(0, 'Name', 0, ''),
+(1, 'Gender', 4, 'gender'),
+(2, 'Age', 2, ''),
+(3, 'Height', 2, ''),
+(4, 'Weight', 2, ''),
+(5, 'Alignment', 4, 'alignment'),
+(6, 'Race', 4, 'races');
 
 -- --------------------------------------------------------
 
