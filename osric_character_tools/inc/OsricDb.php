@@ -223,6 +223,14 @@ class OsricDb
 		return $row; 
 	}
 	
+	public function getCharacterTraits($characterId)
+	{
+		$query = sprintf("SELECT t.TraitId,t.DisplayName,t.data_type,t.ChoiceTableName,ct.Value FROM traits t LEFT JOIN character_traits ct ON t.TraitId = ct.TraitId AND ct.CharacterId = '%s'",$characterId);		
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query:".$query);
+		for($result_set = array();$row = mysqli_fetch_assoc($result);$result_set[]=$row);
+		return $result_set;
+	}
+	
 	public function deleteCharacter($characterId)
 	{
 		if($characterId != -1)
