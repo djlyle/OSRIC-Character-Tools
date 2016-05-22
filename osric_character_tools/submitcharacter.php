@@ -10,6 +10,8 @@ include_once(dirname(__FILE__)."/inc/misc.inc");
 require_once(dirname(__FILE__)."/inc/OsricDb.php");
 
 $characterId = $_POST['CharacterId'];
+$characterTraitsUpdateRows = $_POST['charactertraits'];
+
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 
@@ -25,11 +27,15 @@ if(@$_POST['cancelbutton'] == "Cancel")
   in the database, otherwise it updates an existing row for an existing character in the database*/
 if($characterId == -1)
 {
-	$myOsricDb->createCharacter($_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
+	$myOsricDb->createCharacter($_POST['CharacterName']);
 }
 else 
 {
-	$myOsricDb->editCharacter($characterId,$_POST['CharacterName'],$_POST['CharacterAge'],$_POST['CharacterGender'],$_POST['CharacterWeight'],$_POST['CharacterHeight'],$_POST['RaceId']);
+	$myOsricDb->editCharacter($characterId,$_POST['CharacterName']);
+	foreach($characterTraitsUpdateRows as $traitsUpdateRow)
+	{
+		$myOsricDb->updateCharacterTraits($characterId,$traitsUpdateRow['traitId'],$traitsUpdateRow['value']);
+	}	
 }
 
 echo "<p>Character updated.</p>";

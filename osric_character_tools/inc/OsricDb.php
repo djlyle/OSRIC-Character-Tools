@@ -17,6 +17,18 @@ class OsricDb
 		$this->cxn = mysqli_connect($aHost,$aUser,$aPasswd,$aDbname) or die("Couldn't connect to server");
 	}
 	
+	public function getOptions($optionsTableName)
+	{
+		$query = sprintf("SELECT * FROM %s",$optionsTableName);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$options = array();    
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$options[$row['Id']] = $row['Name'];
+		}
+		return $options;	
+	}
+	
 	public function getRaceOptions()
 	{
 		$query = "SELECT * FROM races";
@@ -29,37 +41,11 @@ class OsricDb
 		return $options;
 	}
 	
-	public function createCharacter($name="Mr. Generic",$age=42,$gender=1,$weight=140,$height=65,$raceId=0)
+	public function createCharacter($name="GenericName")
 	{
-		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
-		
 		/*Create a new character*/
-		$query = "INSERT INTO characters ";
-		$query = $query . "(";
-		$k = 0;
-		foreach($columnNames as $columnName)
-		{
-			if($k == 0)
-			{
-				$query = $query . $columnName;
-			}
-			else
-			{
-				$query = $query . "," . "{$columnName}";
-			}
-			$k = $k + 1;
-		}
-		$query = $query . ") VALUES (";
-		$query = $query . "'" . $name . "'";
-		$query = $query . ",'" . $age . "'";
-		$query = $query . ",'" . $gender . "'";
-		$query = $query . ",'" . $weight . "'";
-		$query = $query . ",'" . $height . "'";
-		$query = $query . ",'" . $raceId . "'";
-		$query = $query . ")";
-		
+		$query = "INSERT INTO characters (CharacterName) VALUES ('{$name}')";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
-
 		$newCharacterId = mysqli_insert_id($this->cxn);        
 		$this->initCharacterCoinsToZero($newCharacterId);
 		$this->initCharacterAbilitiesToZero($newCharacterId);
@@ -163,38 +149,10 @@ class OsricDb
 	}
 
 	/*Edit an existing character*/
-	public function editCharacter($characterId,$name,$age,$gender,$weight,$height,$raceId)
+	public function editCharacter($characterId,$name)
 	{
-		$columnNames = array("CharacterName","CharacterAge","CharacterGender","CharacterWeight","CharacterHeight","RaceId");
-		$character = array();
-		$character['CharacterName'] = $name;
-		$character['CharacterAge'] = $age;
-		$character['CharacterGender'] = $gender;
-		$character['CharacterWeight'] = $weight;
-		$character['CharacterHeight'] = $height;
-		$character['RaceId'] = $raceId;
-		
-		$query = "UPDATE characters ";
-		$query = $query . "SET ";
-		$k = 0;
-		foreach($columnNames as $columnName)
-		{
-			if($k == 0)
-			{
-				$query = $query . $columnName;			
-			}
-			else
-			{
-				$query = $query . "," . $columnName;	
-			}
-			$query = $query . "=" . "'" . $character[$columnName] . "'";
-			$k = $k + 1;
-		}
-		
-		$query = $query . " WHERE CharacterId = '{$characterId}'";
-		
+		$query = "UPDATE characters SET CharacterName = '{$name}' WHERE CharacterId = '{$characterId}'";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query.");
-
 	}
 	
 	public function getCharacters()
@@ -969,6 +927,24 @@ class OsricDb
 		echo "<br/>";
 		$this->addToCharacterCoins($characterId,$coinId,$quantityToAdd,$destination);
 	
+	}
+	
+	public function updateCharacterTraits($characterId, $traitId, $value)
+	{		
+		$query = sprintf("SELECT * FROM character_traits WHERE CharacterId='%s' AND TraitId='%s'",$characterId,$traitId);
+		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
+		$row = mysqli_fetch_assoc($result);
+		if($row)
+		{
+			$query = "UPDATE character_traits SET Value = '{$value}' WHERE character_traits.CharacterId = {$characterId} AND character_traits.TraitId = {$traitId}";	
+			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);		
+		}
+		else 
+		{
+			$query = "INSERT INTO character_traits (CharacterId,TraitId,Value) VALUES ('{$characterId}','{$traitId}','{$value}')";
+			mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);	
+		}
+		return $result;	
 	}
 	
 }

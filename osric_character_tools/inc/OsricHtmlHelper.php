@@ -9,7 +9,7 @@ class OsricHtmlHelper
 {
 	public static function html_listbox($name, $options, $selected_value)
 	{
-    	echo "<select name='$name'>";
+    	echo "<select name='$name'>\n";
 		foreach($options as $val=>$label)
 		{
 		echo "<option value='{$val}'";
@@ -17,9 +17,9 @@ class OsricHtmlHelper
 		{
 			echo "selected";
 		}
-		echo ">{$label}</option>";
+		echo ">{$label}</option>\n";
 		}
-		echo "</select>";
+		echo "</select>\n";
 	}
 	
 	public static function makeHtmlTableCharacterCoins($character_coins, $itemStatusOptions, $tableId, $offset)	
@@ -292,6 +292,47 @@ class OsricHtmlHelper
 			echo "</tr>\n";
 		}
 		echo "</table>";
+	}
+	
+	public static function makeHtmlTableRowsForCharacterTraits($character_traits,$m_OsricDb)
+	{
+		$num_columns = count($character_traits);
+		
+		for($i=0;$i<$num_columns;$i++)
+		{
+			echo "<tr>\n";
+			echo "<td>{$character_traits[$i]['DisplayName']}</td>\n";
+			$traitId = $character_traits[$i]['TraitId'];
+			if($character_traits[$i]['Value']){
+				$value = $character_traits[$i]['Value'];
+			}
+			else {
+				$value = 0;
+			}
+			$dataType = $character_traits[$i]['data_type'];
+			$name = sprintf("charactertraits[%d][value]",$i);
+			switch($dataType)
+			{
+				case 0:
+					//datatype = 0 (string):
+					echo "<td><input type='text' name='{$name}' value='$value'></input></td>\n";
+				break;
+				case 2:
+					//datatype = 2 (float)
+					echo "<td><input type='number' name='{$name}' min='0' step='any' value='$value'></input></td>";
+				break;
+				case 4:
+					//datatype = 4 (choice)
+					$optionsTableName = $character_traits[$i]['ChoiceTableName'];			
+					$options = $m_OsricDb->getOptions($optionsTableName);
+					echo "<td>";			
+					OsricHtmlHelper::html_listbox($name, $options, $value);
+					echo "</td>";
+            break;				
+			}
+			echo "<td class='clsDisplayNone'><input type='hidden' name='charactertraits[{$i}][traitId]' value='{$traitId}'></input></td>\n";			
+			echo "</tr>\n";
+		}
 	}
 }
 

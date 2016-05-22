@@ -18,13 +18,8 @@ $myOsricDb->doInit($host,$user,$passwd);
 if($characterId != -1)
 {
 	$character = $myOsricDb->getCharacter($characterId);
+	$character_traits = $myOsricDb->getCharacterTraits($characterId);
 }
-$labels = array("CharacterName"=>"Name","CharacterGender"=>"Gender","CharacterAge"=>"Age (years)","CharacterWeight"=>"Weight (lbs)","CharacterHeight"=>"Height (inches)","RaceId"=>"Race");
-$inputTypes = array("CharacterName"=>"text","CharacterGender"=>"select","CharacterAge"=>"float","CharacterWeight"=>"float","CharacterHeight"=>"float","RaceId"=>"select");
-$selectOptions['CharacterGender'][0] = "Unknown";
-$selectOptions['CharacterGender'][1] = "Male";
-$selectOptions['CharacterGender'][2] = "Female";
-$selectOptions['RaceId'] = $myOsricDb->getRaceOptions();
 
 ?>
 <html>
@@ -35,41 +30,13 @@ $selectOptions['RaceId'] = $myOsricDb->getRaceOptions();
 <body>
 <div id='CharacterTraits'>
 <?php
-echo "<div class='clsTitle'>Character Traits for {$character['CharacterName']}:</div>\n";
+$character_name = $character['CharacterName'];
+echo "<div class='clsTitle'>Character Traits for {$character_name}:</div>\n";
 echo "<form class='clsOsricForm' action='submitcharacter.php' method='post'>\n";
-echo "<input type='hidden' name='CharacterId' value='$characterId'/>";
-echo "<table>\n";
-foreach($labels as $field => $label)
-{
-	echo "<tr>";
-	echo "<td>";
-	echo "<label for='$field'>$label</label>";
-	echo "</td>";
-	if($characterId != -1)
-	{
-		$value = $character[$field];	
-	}
-	else
-	{
-		$value = "";	
-	}
-	echo "<td>";
-	$inputType = $inputTypes[$field];
-	switch($inputType)
-	{
-		case "text":
-			echo "<input type='text' name='$field' value='$value'/>";
-		break;
-		case "select":
-            OsricHtmlHelper::html_listbox($field, $selectOptions[$field], $value);
-		break;
-		case "float":
-			echo "<input type='number' name='$field' min='0' step='any' value='$value'/>";
-		break;
-	}
-	echo "</td>";
-	echo "</tr>\n";
-}
+echo "<input type='hidden' name='CharacterId' value='$characterId'/>\n";
+echo "<table class='clsPropertiesTbl'>\n";
+echo "<tr><td>Name:</td><td><input type='text' name='CharacterName' value='{$character_name}'></input></td></tr>\n";
+OsricHtmlHelper::makeHtmlTableRowsForCharacterTraits($character_traits,$myOsricDb);
 echo "</table>\n";
 ?>
 <div class='clsSubmitBtnsDiv' id="submit">
