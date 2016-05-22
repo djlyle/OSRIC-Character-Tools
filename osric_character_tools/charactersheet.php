@@ -25,11 +25,10 @@ $characterStatus = $myOsricDb->getCharacterStatus($characterId);
 <body class='clsPrintable'>
 <div id='CharacterSheet'>
 <?php
-echo "<h3 class='cs_section_title'>PERSONAL STATS:</h3>\n";
+echo "<h3 class='cs_section_title'>CHARACTER:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
 echo "<tr>";
 echo "<td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td>";
-echo "<td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td>";
 echo "</tr>\n";
 echo "<tr>";
 echo "<td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
@@ -46,13 +45,35 @@ for($i=0;$i<$num_rows;$i++)
 }
 echo "</div>";
 echo "</td>";
-echo "<td><div class='clsCellLabel'>Remaining HP:</div>";
-echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td>";
-echo "</tr>\n";
-echo "<tr><td><div class='clsCellLabel'>XP:</div>";
-echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td>";
 echo "</tr>\n";
 echo "</table>\n";
+
+echo "<h3 class='cs_section_title'>CHARACTER STATUS:</h3>\n";
+$num_statii = count($characterStatus);
+echo "<table id='CharacterStatus'>\n";
+for($i=0;$i < $num_statii;$i++)
+{
+	echo "<tr>";
+	echo "<td><div class='clsCellLabel'>{$characterStatus[$i]['DisplayName']}</div></td>";
+	if($characterStatus[$i]['data_type'] == 4)
+	{
+		$options = $myOsricDb->getOptions($characterStatus[$i]['ChoiceTableName']);
+		$value = $options[$characterStatus[$i]['Value']];
+	}
+	else {
+		$value = $characterStatus[$i]['Value'];
+	}
+	echo "<td><div class='clsCellValue'>{$value}</div></td>";	
+	echo "</tr>\n";
+}
+echo "</table>\n";
+
+//echo "<td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td>";
+//echo "<td><div class='clsCellLabel'>Remaining HP:</div>";
+//echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td>";
+//echo "</tr>\n";
+//echo "<tr><td><div class='clsCellLabel'>XP:</div>";
+//echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td>";
 
 echo "<h3 class='cs_section_title'>PERSONAL TRAITS:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
