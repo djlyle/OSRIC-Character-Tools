@@ -11,6 +11,7 @@ require_once(dirname(__FILE__)."/inc/Osric.php");
 $myOsricDb = new OsricDb();
 $myOsricDb->doInit($host,$user,$passwd);
 $character = $myOsricDb->getCharacter($characterId);
+$character_traits = $myOsricDb->getCharacterTraits($characterId);
 $totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId);
 $characterStatus = $myOsricDb->getCharacterStatus($characterId);
 
@@ -24,11 +25,14 @@ $characterStatus = $myOsricDb->getCharacterStatus($characterId);
 <body class='clsPrintable'>
 <div id='CharacterSheet'>
 <?php
-echo "<h3 class='cs_section_title'>PERSONAL ATTRIBUTES:</h3>\n";
-
+echo "<h3 class='cs_section_title'>PERSONAL STATS:</h3>\n";
 echo "<table id='CharacterAttributes'>\n";
-echo "<tr><td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td><td><div class='clsCellLabel'>Age:</div><div class='clsCellValue'>{$character['CharacterAge']}</div></td><td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td></tr>\n";
-echo "<tr><td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
+echo "<tr>";
+echo "<td><div class='clsCellLabel'>Name:</div><div class='clsCellValue'>{$character['CharacterName']}</div></td>";
+echo "<td><div class='clsCellLabel'>Full HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusFullHitPoints']}</div></td>";
+echo "</tr>\n";
+echo "<tr>";
+echo "<td><div class='clsCellLabel'>Class(es*):</div><div class='clsCellValue'>";
 $characterClassesAsNames = $myOsricDb->getCharacterClassesAsNames($characterId);
 $num_rows = count($characterClassesAsNames);
 for($i=0;$i<$num_rows;$i++)
@@ -41,9 +45,33 @@ for($i=0;$i<$num_rows;$i++)
     
 }
 echo "</div>";
-echo "</td><td><div class='clsCellLabel'>Height:</div><div class='clsCellValue'>{$character['CharacterHeight']}</div></td><td><div class='clsCellLabel'>Remaining HP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td></tr>\n";
-echo "<tr><td><div class='clsCellLabel'>XP:</div><div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td></tr>";
+echo "</td>";
+echo "<td><div class='clsCellLabel'>Remaining HP:</div>";
+echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusRemainingHitPoints']}</div></td>";
+echo "</tr>\n";
+echo "<tr><td><div class='clsCellLabel'>XP:</div>";
+echo "<div class='clsCellValue'>{$characterStatus['CharacterStatusExperiencePoints']}</div></td>";
+echo "</tr>\n";
 echo "</table>\n";
+
+echo "<h3 class='cs_section_title'>PERSONAL TRAITS:</h3>\n";
+echo "<table id='CharacterAttributes'>\n";
+$num_traits = count($character_traits);
+for($i = 0;$i < $num_traits;$i++){
+	echo "<tr>";
+	echo "<td><div class='clsCellLabel'>{$character_traits[$i]['DisplayName']}</div></td>";
+	if($character_traits[$i]['data_type'] == 4)
+	{
+		$options = $myOsricDb->getOptions($character_traits[$i]['ChoiceTableName']);
+		$value = $options[$character_traits[$i]['Value']];
+	}
+	else {
+		$value = $character_traits[$i]['Value'];
+	}
+	echo "<td><div class='clsCellValue'>{$value}</div></td>";	
+	echo "</tr>\n";
+}
+echo "</table>";
 
 echo "<hr/>\n";
 
