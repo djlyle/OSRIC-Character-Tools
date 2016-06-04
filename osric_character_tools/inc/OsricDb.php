@@ -602,14 +602,14 @@ class OsricDb
 	
 	public function 	addToCharacterXP($characterId,$xpToAdd)
 	{
-		$query = "SELECT * FROM character_status WHERE CharacterId = $characterId";
+		$query = "SELECT * FROM character_status WHERE CharacterId = $characterId AND StatusId = '1'";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 		$row = mysqli_fetch_assoc($result);
 		if($row)
 		{
 			/*Row found. Update its count to be its existing count plus the count just added*/
-			$count = max(0,$row['CharacterStatusExperiencePoints'] + $xpToAdd);
-			$query = "UPDATE character_status SET CharacterStatusExperiencePoints = $count WHERE CharacterId = $characterId";
+			$count = max(0,$row['Value'] + $xpToAdd);
+			$query = "UPDATE character_status SET Value = $count WHERE CharacterId = $characterId AND StatusId = '1'";
 			$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 		}
 	}

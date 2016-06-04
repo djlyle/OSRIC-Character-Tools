@@ -33,9 +33,9 @@ $characterName = $character['CharacterName'];
 <head><title>Coins and XP Added to <?php echo "{$characterName}'s Inventory"; ?></title></head>
 <body>
 <?php 
-	echo "{$characterName}'s Coins Updated.";
+	echo "{$characterName}'s Coins and XP Updated.";
 	echo "<br/><br/>";
-	echo "<a href='awardtreasureandxp.php?CharacterId={$characterId}'>Return to award treasure and xp</a>";
+	echo "<a href='characters.php'>Return to list of characters</a>";
 ?>
 </body>
 </html>
