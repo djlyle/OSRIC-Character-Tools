@@ -18,8 +18,10 @@ $totalEncumbranceOnPerson = $myOsricDb->getTotalEncumbranceOnPerson($characterId
 ?>
 
 <html>
-<header><title><?php echo "Award {$characterName} with Treasure:"; ?></title></header>
+<head>
+<title><?php echo "Award {$characterName} with Treasure:"; ?></title>
 <link rel="stylesheet" type="text/css" href="./css/class.css" />
+</head>
 <body>
 <form action="addToCharacterTreasureAndXP.php" method="POST">
 

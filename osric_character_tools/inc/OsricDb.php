@@ -519,11 +519,17 @@ class OsricDb
 		return $result_set;
 	}
 	
-	public function getItemCost($itemId)
+	public function getItem($itemId)
 	{
 		$query = "SELECT * FROM items WHERE ItemId = '{$itemId}'";
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 		$row = mysqli_fetch_assoc($result);
+		return $row;
+	}
+	
+	public function getItemCost($itemId)
+	{
+		$row = $this->getItem($itemId);		
 		return $row['ItemCost'];		
 	}
 	
@@ -765,23 +771,23 @@ class OsricDb
 		$purse_sc = $orig_purse_sc;
 		$purse_cc = $orig_purse_cc;
 		echo "<br/>";		
-		echo "purse_pc:".$purse_pc."<br/>";
-		echo "purse_gc:".$purse_gc."<br/>";
-		echo "purse_ec:".$purse_ec."<br/>";
-		echo "purse_sc:".$purse_sc."<br/>";
-		echo "purse_cc:".$purse_cc."<br/>";
+		//echo "purse_pc:".$purse_pc."<br/>";
+		//echo "purse_gc:".$purse_gc."<br/>";
+		//echo "purse_ec:".$purse_ec."<br/>";
+		//echo "purse_sc:".$purse_sc."<br/>";
+		//echo "purse_cc:".$purse_cc."<br/>";
 		
 		//pay off as much of debit in copper coins	
 		$cc_spent = min($purse_cc,$debit_cc);
 		$purse_cc -= $cc_spent;
 		$debit_cc -= $cc_spent;
-		echo "cc_spent:".$cc_spent."<br/>";	
-		echo "debit_cc:".$debit_cc."<br/>";
-		echo "purse_pc:".$purse_pc."<br/>";
-		echo "purse_gc:".$purse_gc."<br/>";
-		echo "purse_ec:".$purse_ec."<br/>";
-		echo "purse_sc:".$purse_sc."<br/>";
-		echo "purse_cc:".$purse_cc."<br/>";
+		//echo "cc_spent:".$cc_spent."<br/>";	
+		//echo "debit_cc:".$debit_cc."<br/>";
+		//echo "purse_pc:".$purse_pc."<br/>";
+		//echo "purse_gc:".$purse_gc."<br/>";
+		//echo "purse_ec:".$purse_ec."<br/>";
+		//echo "purse_sc:".$purse_sc."<br/>";
+		//echo "purse_cc:".$purse_cc."<br/>";
 				
 		if($debit_cc > 0)
 		{
@@ -799,13 +805,13 @@ class OsricDb
 				$debit_cc = 0;
 				$purse_cc += $change;
 			}			
-			echo "sc_spent:".$sc_spent."<br/>";
-			echo "debit_cc:".$debit_cc."<br/>";
-			echo "purse_pc:".$purse_pc."<br/>";
-			echo "purse_gc:".$purse_gc."<br/>";
-			echo "purse_ec:".$purse_ec."<br/>";
-			echo "purse_sc:".$purse_sc."<br/>";
-			echo "purse_cc:".$purse_cc."<br/>";
+			//echo "sc_spent:".$sc_spent."<br/>";
+			//echo "debit_cc:".$debit_cc."<br/>";
+			//echo "purse_pc:".$purse_pc."<br/>";
+			//echo "purse_gc:".$purse_gc."<br/>";
+			//echo "purse_ec:".$purse_ec."<br/>";
+			//echo "purse_sc:".$purse_sc."<br/>";
+			//echo "purse_cc:".$purse_cc."<br/>";
 					
 			if($debit_cc > 0)
 			{
@@ -825,13 +831,13 @@ class OsricDb
 					$purse_sc += intval($change_cc / $sc_factor);
 					$purse_cc += $change_cc % $sc_factor;
 				}				
-				echo "ec_spent:".$ec_spent."<br/>";
-				echo "debit_cc:".$debit_cc."<br/>"; 
-				echo "purse_pc:".$purse_pc."<br/>";
-				echo "purse_gc:".$purse_gc."<br/>";
-				echo "purse_ec:".$purse_ec."<br/>";
-				echo "purse_sc:".$purse_sc."<br/>";
-				echo "purse_cc:".$purse_cc."<br/>";
+				//echo "ec_spent:".$ec_spent."<br/>";
+				//echo "debit_cc:".$debit_cc."<br/>"; 
+				//echo "purse_pc:".$purse_pc."<br/>";
+				//echo "purse_gc:".$purse_gc."<br/>";
+				//echo "purse_ec:".$purse_ec."<br/>";
+				//echo "purse_sc:".$purse_sc."<br/>";
+				//echo "purse_cc:".$purse_cc."<br/>";
 						
 				if($debit_cc > 0)
 				{
@@ -852,13 +858,13 @@ class OsricDb
 						$purse_sc += intval($change_cc / $sc_factor);
 						$purse_cc += ($change_cc % $sc_factor);
 					}
-					echo "gc_spent:".$gc_spent."<br/>";
-					echo "debit_cc:".$debit_cc."<br/>";
-					echo "purse_pc:".$purse_pc."<br/>";
-					echo "purse_gc:".$purse_gc."<br/>";
-					echo "purse_ec:".$purse_ec."<br/>";
-					echo "purse_sc:".$purse_sc."<br/>";
-					echo "purse_cc:".$purse_cc."<br/>";
+					//echo "gc_spent:".$gc_spent."<br/>";
+					//echo "debit_cc:".$debit_cc."<br/>";
+					//echo "purse_pc:".$purse_pc."<br/>";
+					//echo "purse_gc:".$purse_gc."<br/>";
+					//echo "purse_ec:".$purse_ec."<br/>";
+					//echo "purse_sc:".$purse_sc."<br/>";
+					//echo "purse_cc:".$purse_cc."<br/>";
 							
 					if($debit_cc > 0)
 					{
@@ -881,13 +887,13 @@ class OsricDb
 							$purse_sc += intval($change_cc / $sc_factor);
 							$purse_cc += ($change_cc % $sc_factor); 	
 						}
-						echo "pc_spent:".$pc_spent."<br/>";
-						echo "debit_cc:".$debit_cc."<br/>";
-						echo "purse_pc:".$purse_pc."<br/>";
-						echo "purse_gc:".$purse_gc."<br/>";
-						echo "purse_ec:".$purse_ec."<br/>";
-						echo "purse_sc:".$purse_sc."<br/>";
-						echo "purse_cc:".$purse_cc."<br/>";
+						//echo "pc_spent:".$pc_spent."<br/>";
+						//echo "debit_cc:".$debit_cc."<br/>";
+						//echo "purse_pc:".$purse_pc."<br/>";
+						//echo "purse_gc:".$purse_gc."<br/>";
+						//echo "purse_ec:".$purse_ec."<br/>";
+						//echo "purse_sc:".$purse_sc."<br/>";
+						//echo "purse_cc:".$purse_cc."<br/>";
 			
 					}	
 				}	

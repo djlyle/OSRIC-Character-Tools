@@ -31,6 +31,7 @@ $characterName = $character['CharacterName'];
 <body>
 <?php 
 	echo "{$characterName}'s Inventory Updated.";
+	echo "<br\>";
 	$totalCost = 0;
 		
 	foreach($itemRows as $itemRow)
