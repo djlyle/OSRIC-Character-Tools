@@ -32,9 +32,12 @@ echo "<a href='characters.php'>Return to list of characters</a>\n";
 echo "<p>View and/or modify the character inventory below.</p>";
 echo "<p>Press the submit button below when ready to finalize any changes.</p>";
 echo "<div><input type='submit' value='submit inventory changes'/></div>\n";
+$itemStatusOptions = $myOsricDb->getItemStatusOptions();
+echo "Transfer Destination: ";
+OsricHtmlHelper::html_listbox("transferDestination", $itemStatusOptions, -1);        			
 echo "<hr/>\n";
 echo "<div id='CharacterInventoryContent' class='clsScrollable'>\n";
-$itemStatusOptions = $myOsricDb->getItemStatusOptions();
+
 
 //Html form will POST row data via an array.  Each row will be POSTED with a given index.
 //If same array name is used in multiple tables then the starting index for that array will

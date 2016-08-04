@@ -667,10 +667,9 @@ class OsricDb
 		$result = mysqli_query($this->cxn,$query) or die("Couldn't execute query: ".$query);
 	}
 	
-	public function transferCharacterCoins($characterId, $coinRow)
+	public function transferCharacterCoins($characterId, $coinRow, $transferDestination)
 	{
 		$transferQuantity = min($coinRow['transferQuantity'],$coinRow['quantity']);
-		$transferDestination = $coinRow['transferDestination'];
 		$transferSource = $coinRow['transferSource'];
     
 		if($transferDestination == $transferSource)
@@ -682,12 +681,11 @@ class OsricDb
 		$this->transferCharacterCoinsFromSourceToDest($characterId,$coinId,$transferQuantity,$transferSource,$transferDestination);
 	}
 	
-	public function transferCharacterItems($characterId, $itemRow)
+	public function transferCharacterItems($characterId, $itemRow, $transferDestination)
 	{
     	$transferQuantity = min($itemRow['transferQuantity'],$itemRow['quantity']);
-    	$transferDestination = $itemRow['transferDestination'];
     	$transferSource = $itemRow['transferSource'];
-      if($transferDestination == $transferSource)
+       if($transferDestination == $transferSource)
     	{/*Don't transfer item if source and destination are the same*/
       	  return;
     	}

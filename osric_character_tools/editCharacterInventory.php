@@ -12,6 +12,8 @@ $character = $myOsricDb->getCharacter($characterId);
 $characterName = $character['CharacterName'];
 
 $coinRows = $_POST['coin'];
+$transferDestination = $_POST['transferDestination'];
+
 /*First update quantities for all rows before transferring quantities between storage, carried or discarded.  Otherwise the updated quantity
   will override any amounts that have been transferred*/
 foreach($coinRows as $coinRow)
@@ -23,7 +25,7 @@ foreach($coinRows as $coinRow)
 {        
     if($coinRow['transferQuantity'] > 0)
     {
-        $result = $myOsricDb->transferCharacterCoins($characterId, $coinRow);
+        $result = $myOsricDb->transferCharacterCoins($characterId, $coinRow, $transferDestination);
     }
 }
 /*Delete any coin rows whose quantity is now zero*/
@@ -36,7 +38,7 @@ foreach($itemRows as $itemRow)
 {
     if($itemRow['transferQuantity'] > 0)
     {
-        $result = $myOsricDb->transferCharacterItems($characterId, $itemRow);
+        $result = $myOsricDb->transferCharacterItems($characterId, $itemRow, $transferDestination);
     }
 }
 /*Delete any item rows whose quantity is now zero*/
